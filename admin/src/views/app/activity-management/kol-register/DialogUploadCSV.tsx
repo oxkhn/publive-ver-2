@@ -56,6 +56,15 @@ const DialogUploadCSV = (props: Props) => {
             })
     }
 
+    const downloadFile = () => {
+        const link = document.createElement('a')
+        link.href = './sample_affiliate.xlsx'
+        link.setAttribute('download', 'sampleAffiliate.xlsx')
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    }
+
     return (
         <Dialog open={open} fullWidth>
             <DialogTitle className='flex  justify-between items-center'>
@@ -101,7 +110,7 @@ const DialogUploadCSV = (props: Props) => {
                 <Divider className='my-4' />
 
                 <div className='flex justify-end gap-2'>
-                    <Button component='label' startIcon={<i className='tabler-download' />}>
+                    <Button component='label' startIcon={<i className='tabler-download' />} onClick={downloadFile}>
                         Download Sample file
                     </Button>
                     <Button variant='contained' color='success' onClick={handleSubmitFile}>

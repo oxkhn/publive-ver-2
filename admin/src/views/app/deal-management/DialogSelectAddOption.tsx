@@ -37,7 +37,9 @@ const DialogSelectAddOption = (props: Props) => {
                         >
                             Upload via CSV file
                         </Button>
-                        <Button variant='text'>Create from template</Button>
+                        <Button variant='text' disabled>
+                            Create from template
+                        </Button>
                     </div>
                 </DialogContent>
             </Dialog>

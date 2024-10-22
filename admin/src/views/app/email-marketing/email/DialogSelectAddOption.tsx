@@ -42,7 +42,6 @@ const DialogSelectAddOption = (props: Props) => {
                         </Button>
                         <Button
                             variant='text'
-                            disabled
                             onClick={() => {
                                 handleClose()
                                 openAdd()

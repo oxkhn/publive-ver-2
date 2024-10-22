@@ -38,6 +38,7 @@ services:
     volumes:
       - ../api:/usr/src/api
       - ../api/src/common/template:/usr/src/app/templates
+      - ../api/public:/usr/src/app/public
 
 
 volumes:

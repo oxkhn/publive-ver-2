@@ -46,7 +46,7 @@ const DialogUploadCSV = (props: Props) => {
 
     const downloadFile = () => {
         const link = document.createElement('a')
-        link.href = './sampleProduct.xlsx'
+        link.href = 'api/sampleProduct.xlsx'
         link.setAttribute('download', 'sampleProduct.xlsx')
         document.body.appendChild(link)
         link.click()

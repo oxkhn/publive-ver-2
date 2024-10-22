@@ -14,6 +14,8 @@ import { UploadS3Module } from './module/upload-s3/upload-s3.module';
 import { EmailModule } from './module/email/email.module';
 import { BullModule } from '@nestjs/bullmq';
 import { FormRegisterModule } from './module/form-register/form-register.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -34,6 +36,9 @@ import { FormRegisterModule } from './module/form-register/form-register.module'
     UploadS3Module,
     EmailModule,
     FormRegisterModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),  // Path to your static files directory
+    }),
   ],
   controllers: [],
   providers: [

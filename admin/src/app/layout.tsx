@@ -12,10 +12,11 @@ import { Inter } from 'next/font/google'
 import '@assets/iconify-icons/generated-icons.css'
 
 export const metadata = {
-    title: 'Vuexy - MUI Next.js Admin Dashboard Template',
+    title: 'PubLive',
     description:
-        'Vuexy - MUI Next.js Admin Dashboard Template - is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.'
+        'Tham gia PubLive ngay hôm nay, chia sẻ sản phẩm yêu thích và nhận hoa hồng không giới hạn cho mỗi giao dịch thành công!'
 }
+
 const inter = Inter({ subsets: ['latin'] })
 
 const RootLayout = ({ children }: ChildrenType) => {

@@ -1,0 +1,231 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { GetProductDto } from 'src/common/dto/ProductGetAll.dto';
+import { Product } from 'src/common/models/product.model';
+import { readExcelFileWithImage } from 'src/common/utils/FormatCsvUtils';
+
+@Injectable()
+export class ProductService {
+  constructor(
+    @InjectModel(Product.name) private readonly productModel: Model<Product>,
+  ) {}
+
+  async createProductFromFile(file, productType: number) {
+    try {
+      const processData = readExcelFileWithImage(file.path);
+
+      for (let i = 0; i < processData.length; i++) {
+        const data = processData[i];
+
+        data.commission =
+          typeof data.commission !== 'number' ? 0 : data.commission;
+        data.type = productType;
+
+        const oldProduct = await this.productModel.findOne({
+          sku: data.sku,
+          type: productType,
+        });
+
+        if (oldProduct) {
+          await this.productModel.findOneAndUpdate({ sku: data.sku }, data);
+        } else {
+          const newProduct = new this.productModel(data);
+          await newProduct.save();
+        }
+      }
+
+      return;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async getAllProducts(getProductData: GetProductDto): Promise<{
+    products: Product[];
+    totalPages: number;
+    nextPage: number | null;
+    currentPage: number;
+    totalItems: number;
+  }> {
+    try {
+      const {
+        limit = 1000,
+        page = 1,
+        cat,
+        commission,
+        name,
+        bu,
+        brand,
+        publisher,
+        sortBy,
+        sortOrder = 'asc',
+        sku,
+        filterType = 1,
+      } = getProductData;
+
+      // Chuyển đổi và kiểm tra các giá trị limit và page
+      const sanitizedLimit = Math.max(1, parseInt(limit.toString(), 10));
+      const sanitizedPage = Math.max(1, parseInt(page.toString(), 10));
+
+      const query: any = {};
+
+      if (bu && bu.toLowerCase() !== '') {
+        query.bu = bu;
+      }
+
+      if (brand && brand.toLowerCase() !== '') {
+        query.brand = brand;
+      }
+
+      if (cat && cat.toLowerCase() !== '') {
+        query.cat = cat;
+      }
+
+      if (publisher && publisher.toLowerCase() !== '') {
+        query.publisher = publisher;
+      }
+
+      if (filterType) {
+        query.type = filterType;
+      }
+
+      if (publisher && publisher.toLowerCase() !== '') {
+        query.publisher = publisher;
+      }
+
+      const nameSkuConditions: any[] = [];
+
+      if (name && name.trim() !== '') {
+        nameSkuConditions.push({
+          productName: { $regex: name.trim(), $options: 'i' },
+        });
+      }
+
+      if (sku && sku.trim() !== '') {
+        nameSkuConditions.push({ sku: { $regex: sku.trim(), $options: 'i' } });
+      }
+
+      if (nameSkuConditions.length > 0) {
+        query.$or = nameSkuConditions;
+      }
+
+      if (commission != null) {
+        const commissionNumber = Number(commission);
+        if (isNaN(commissionNumber)) {
+          throw new BadRequestException('Commission phải là một số.');
+        }
+        query.commission = { $lt: commissionNumber };
+      }
+
+      const sortCriteria: any = {};
+      if (sortBy) {
+        const sortOrderValue = sortOrder.toLowerCase() === 'desc' ? -1 : 1;
+        sortCriteria[sortBy] = sortOrderValue;
+      }
+
+      const totalDocuments = await this.productModel
+        .countDocuments(query)
+        .exec();
+      const totalPages = Math.ceil(totalDocuments / sanitizedLimit);
+      const nextPage =
+        sanitizedPage + 1 > totalPages ? null : sanitizedPage + 1;
+
+      const products = await this.productModel
+        .find(query)
+        .sort(sortCriteria)
+        .skip((sanitizedPage - 1) * sanitizedLimit)
+        .limit(sanitizedLimit)
+        .lean()
+        .exec();
+
+      return {
+        products,
+        totalPages,
+        nextPage,
+        currentPage: sanitizedPage,
+        totalItems: totalDocuments,
+      };
+    } catch (error) {
+      throw new BadRequestException('Failed to get all products');
+    }
+  }
+
+  async getProduct(sku: string) {
+    try {
+      const product = await this.productModel.findOne({ sku });
+      return product;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async updateStock(file) {
+    try {
+      const processData = readExcelFileWithImage(file.path);
+
+      for (let i = 0; i < processData.length; i++) {
+        const data = processData[i];
+
+        const oldProduct = await this.productModel.findOne({ sku: data.sku });
+
+        if (oldProduct) {
+          await this.productModel.findOneAndUpdate(
+            { sku: data.sku },
+            {
+              availableStock: data.availableStock,
+            },
+          );
+        }
+      }
+
+      return;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async getCategories() {
+    const products = await this.productModel.find().exec();
+
+    const groupedData = products.reduce((acc, curr) => {
+      // Tìm kiếm bu hiện tại trong acc
+      const buIndex = acc.findIndex((item) => item.bu === curr.bu);
+
+      if (buIndex !== -1) {
+        // Nếu BU đã tồn tại, kiểm tra cat
+        const catIndex = acc[buIndex].categories.findIndex(
+          (cat) => cat.cat === curr.cat,
+        );
+
+        if (catIndex !== -1) {
+          // Nếu cat đã tồn tại, thêm brand nếu chưa có
+          if (!acc[buIndex].categories[catIndex].brands.includes(curr.brand)) {
+            acc[buIndex].categories[catIndex].brands.push(curr.brand);
+          }
+        } else {
+          // Nếu cat chưa tồn tại, thêm cat và brand
+          acc[buIndex].categories.push({
+            cat: curr.cat,
+            brands: [curr.brand],
+          });
+        }
+      } else {
+        // Nếu BU chưa tồn tại, thêm BU với cat và brand
+        acc.push({
+          bu: curr.bu,
+          categories: [
+            {
+              cat: curr.cat,
+              brands: [curr.brand],
+            },
+          ],
+        });
+      }
+
+      return acc;
+    }, []);
+
+    return groupedData;
+  }
+}

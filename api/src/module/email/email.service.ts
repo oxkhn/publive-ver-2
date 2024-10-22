@@ -150,13 +150,17 @@ export class EmailService {
   }
 
   getTemplateFiles() {
-    const templateDir = join(__dirname, '../src/common/template');
-    const files = readdirSync(templateDir);
+    try {
+      const templateDir = join(__dirname, '../src/common/template');
+      const files = readdirSync(templateDir);
 
-    return files.map((file) => ({
-      filename: file,
-      path: file,
-    }));
+      return files.map((file) => ({
+        filename: file,
+        path: file,
+      }));
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async updateConfig(config: EmailUpdateConfigDto) {

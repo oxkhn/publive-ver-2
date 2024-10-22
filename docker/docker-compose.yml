@@ -37,7 +37,7 @@ services:
       - REDIS_URL=redis://redis_container:6379
     volumes:
       - ../api:/usr/src/api
-      - ./src/common/template:/usr/src/app/templates
+      - ../api/src/common/template:/usr/src/app/templates
 
 
 volumes:

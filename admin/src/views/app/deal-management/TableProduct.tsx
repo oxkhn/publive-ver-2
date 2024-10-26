@@ -1,6 +1,6 @@
 'use client'
 import { ProductType } from '@/types/product.type'
-import { Card, CardContent } from '@mui/material'
+import { Card, CardContent, Divider } from '@mui/material'
 import {
     ColumnDef,
     createColumnHelper,
@@ -85,9 +85,16 @@ export const TableProduct = (props: Props) => {
             columnHelper.accessor('productName', {
                 header: 'Tên sản phẩm',
                 cell: ({ row }) => (
-                    <div className='flex gap-2 items-center'>
-                        <img width={38} height={38} src={row.original.imageList[0]} alt='' className='rounded' />
-                        <Typography className='truncate max-w-[200px] text-sm line-clamp-2' color='text.primary'>
+                    <div className='flex items-center gap-2'>
+                        <img
+                            width={38}
+                            height={38}
+                            src={row.original.imageList[0]}
+                            alt=''
+                            className='rounded backdrop-blur-md'
+                        />
+                        <p className='text-primary'>+{row.original.imageList.length - 1}</p>
+                        <Typography className='truncate max-w-[200px] text-sm line-clamp-2  ml-2' color='text.primary'>
                             {row.original.productName}
                         </Typography>
                     </div>

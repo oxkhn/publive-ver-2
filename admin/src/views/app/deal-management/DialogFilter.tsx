@@ -123,7 +123,7 @@ const DialogFilter = (props: Props) => {
                                 onChange={handleBUChange}
                             >
                                 <MenuItem value='all'>All Categories</MenuItem>
-                                {categoriesData.map((bu: BU) => (
+                                {categoriesData?.map((bu: BU) => (
                                     <MenuItem key={bu.bu} value={bu.bu}>
                                         {bu.bu}
                                     </MenuItem>
@@ -141,7 +141,7 @@ const DialogFilter = (props: Props) => {
                                 disabled={!selectedBU}
                             >
                                 <MenuItem value=''>Select Category</MenuItem>
-                                {categories.map(cat => (
+                                {categories?.map(cat => (
                                     <MenuItem key={cat.cat} value={cat.cat}>
                                         {cat.cat}
                                     </MenuItem>
@@ -160,7 +160,7 @@ const DialogFilter = (props: Props) => {
                                 disabled={!selectedCategory}
                             >
                                 <MenuItem value=''>Select Brand</MenuItem>
-                                {brands.map(brand => (
+                                {brands?.map(brand => (
                                     <MenuItem key={brand} value={brand}>
                                         {brand}
                                     </MenuItem>

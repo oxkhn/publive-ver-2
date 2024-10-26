@@ -94,16 +94,20 @@ const EditorToolbar = ({ editor }: { editor: Editor | null }) => {
 
 const EditorBasic = ({
     content,
+    label,
+    placeholder,
     onContentChange
 }: {
     content?: string
+    label: string
+    placeholder: string
     onContentChange: (content: string) => void
 }) => {
     const editor = useEditor({
         extensions: [
             StarterKit,
             Placeholder.configure({
-                placeholder: 'Nội dung campaign'
+                placeholder: placeholder
             }),
             TextAlign.configure({
                 types: ['heading', 'paragraph']
@@ -125,7 +129,7 @@ const EditorBasic = ({
 
     return (
         <div>
-            <label className='text-[14px] mb-4'>Campaign description</label>
+            <label className='text-[14px] mb-4'>{label}</label>
             <div className='border rounded-md'>
                 <EditorToolbar editor={editor} />
                 <Divider />

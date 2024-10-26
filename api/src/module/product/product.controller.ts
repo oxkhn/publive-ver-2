@@ -21,6 +21,7 @@ import {
 import { ProductService } from './product.service';
 import { GetProductDto } from 'src/common/dto/ProductGetAll.dto';
 import { Product } from 'src/common/models/product.model';
+import { CreateProductDto } from 'src/common/dto/ProductCreate.dto';
 
 @Controller('product')
 export class ProductController {
@@ -81,6 +82,16 @@ export class ProductController {
   async getCategories() {
     try {
       const res = await this.productService.getCategories();
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Post('create-or-update')
+  async postProductDetail(@Body() product: CreateProductDto) {
+    try {
+      const res = await this.productService.createOrUpdate(product);
       return new ResponseSuccess(res);
     } catch (error) {
       throw new HttpException(error.message, error.status);

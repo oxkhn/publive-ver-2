@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { CreateProductDto } from 'src/common/dto/ProductCreate.dto';
 import { GetProductDto } from 'src/common/dto/ProductGetAll.dto';
 import { Product } from 'src/common/models/product.model';
 import { readExcelFileWithImage } from 'src/common/utils/FormatCsvUtils';
@@ -227,5 +228,22 @@ export class ProductService {
     }, []);
 
     return groupedData;
+  }
+
+  async createOrUpdate(createProductDto: CreateProductDto): Promise<Product> {
+    try {
+      const { sku } = createProductDto;
+      const existingProduct = await this.productModel.findOne({ sku }).exec();
+      console.log(existingProduct);
+      if (existingProduct) {
+        await this.productModel.updateOne({ sku }, createProductDto).exec();
+        return this.productModel.findOne({ sku }).exec();
+      } else {
+        const createdProduct = new this.productModel(createProductDto);
+        return createdProduct.save();
+      }
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

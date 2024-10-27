@@ -6,11 +6,12 @@ import { usePostImage } from '@/services/api/product/usePostImage'
 import { BrandCategory, BU, useProductContext } from '@/services/provider/ProductProvider'
 import { Box, Button, Card, CardContent, Grid, IconButton, InputAdornment, MenuItem, Typography } from '@mui/material'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 const ProductDetail = () => {
+    const router = useRouter()
     const { sku } = useParams()
     const { categories: categoriesData, product, getDetail, handleInput } = useProductContext()
 
@@ -23,6 +24,7 @@ const ProductDetail = () => {
 
     // Handle BU change
     const handleBUChange = (event: any) => {
+        handleInput('bu', event.target.value as string)
         setSelectedBU(event.target.value as string)
         setSelectedCategory('')
         setSelectedBrand('')
@@ -30,12 +32,14 @@ const ProductDetail = () => {
 
     // Handle Category change
     const handleCategoryChange = (event: any) => {
+        handleInput('cat', event.target.value as string)
         setSelectedCategory(event.target.value as string)
         setSelectedBrand('')
     }
 
     // Handle Brand change
     const handleBrandChange = (event: any) => {
+        handleInput('brand', event.target.value as string)
         setSelectedBrand(event.target.value as string)
     }
 
@@ -60,9 +64,9 @@ const ProductDetail = () => {
         setBrands(_brands)
 
         if (product) {
-            if (categoriesData) setSelectedBU(product?.bu || '')
-            if (categories) setSelectedCategory(product?.cat || '')
-            if (brands) setSelectedBrand(product?.brand || '')
+            setSelectedBU(product?.bu || '')
+            setSelectedCategory(product?.cat || '')
+            setSelectedBrand(product?.brand || '')
             setImages(product.imageList)
         }
     }, [categoriesData, product])
@@ -151,10 +155,11 @@ const ProductDetail = () => {
                                     label='Publisher'
                                     select
                                     value={product?.publisher}
+                                    defaultValue={product?.publisher}
                                     fullWidth
                                     id='custom-select-category'
                                     onChange={e => {
-                                        // setProductListType(Number(e.target.value))
+                                        handleInput('publisher', e.target.value)
                                     }}
                                 >
                                     <MenuItem value='lazada'>Lazada</MenuItem>
@@ -219,7 +224,10 @@ const ProductDetail = () => {
 
                             <Grid item sm={12} spacing={4}>
                                 <EditorBasic
-                                    onContentChange={() => {}}
+                                    onContentChange={e => {
+                                        handleInput('description', e)
+                                    }}
+                                    content={product?.description}
                                     label='Description'
                                     placeholder='Enter description'
                                 />
@@ -320,13 +328,19 @@ const ProductDetail = () => {
                                 <p className='text-lg font-medium'>Pricing</p>
                             </Grid>
                             <Grid item sm={12}>
-                                <CustomTextField label='Price' fullWidth value={product?.price}></CustomTextField>
+                                <CustomTextField
+                                    label='Price'
+                                    fullWidth
+                                    onChange={e => handleInput('price', e.target.value)}
+                                    value={product?.price}
+                                ></CustomTextField>
                             </Grid>
                             <Grid item sm={12}>
                                 <CustomTextField
                                     label='Discount price'
                                     fullWidth
                                     value={product?.discountPrice}
+                                    onChange={e => handleInput('discountPrice', e.target.value)}
                                 ></CustomTextField>
                             </Grid>
 
@@ -334,7 +348,9 @@ const ProductDetail = () => {
                                 <CustomTextField
                                     label='Commission'
                                     fullWidth
+                                    type='number'
                                     value={(product?.commission || 0) * 100}
+                                    onChange={e => handleInput('commission', Number(e.target.value) / 100)}
                                 ></CustomTextField>
                             </Grid>
                         </Grid>
@@ -354,6 +370,7 @@ const ProductDetail = () => {
                                     fullWidth
                                     type='url'
                                     value={product?.affiliateLink}
+                                    onChange={e => handleInput('affiliateLink', e.target.value)}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position='start'>
@@ -388,6 +405,7 @@ const ProductDetail = () => {
                                     fullWidth
                                     type='url'
                                     value={product?.productLink}
+                                    onChange={e => handleInput('productLink', e.target.value)}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position='start'>
@@ -403,6 +421,7 @@ const ProductDetail = () => {
                                     fullWidth
                                     type='url'
                                     value={product?.productGiftLink}
+                                    onChange={e => handleInput('productGiftLink', e.target.value)}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position='start'>
@@ -416,6 +435,7 @@ const ProductDetail = () => {
                                 <CustomTextField
                                     label='Gift name'
                                     value={product?.productGift}
+                                    onChange={e => handleInput('productGift', e.target.value)}
                                     fullWidth
                                 ></CustomTextField>
                             </Grid>

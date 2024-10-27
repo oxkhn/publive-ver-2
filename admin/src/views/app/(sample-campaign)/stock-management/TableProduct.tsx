@@ -41,7 +41,14 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 export const TableProduct = (props: Props) => {
-    const { products } = useProductContext()
+    const { products, updateDetail } = useProductContext()
+
+    const handleUpdateStock = (product: ProductType, status: boolean) => {
+        let newProduct = product
+        newProduct.isActive = status
+        updateDetail(newProduct)
+    }
+
     const columns = useMemo<ColumnDef<ProductWithActionsType, any>[]>(
         () => [
             {
@@ -70,45 +77,114 @@ export const TableProduct = (props: Props) => {
                 header: 'SKU',
                 cell: ({ row }) => <Typography>{row.original.sku}</Typography>
             }),
+            columnHelper.accessor('brand', {
+                header: 'Ngành hàng',
+                cell: ({ row }) => <Typography>{row.original.bu}</Typography>
+            }),
+            columnHelper.accessor('brand', {
+                header: 'Phân loại',
+                cell: ({ row }) => <Typography>{row.original.cat}</Typography>
+            }),
+            columnHelper.accessor('brand', {
+                header: 'Thương hiệu',
+                cell: ({ row }) => <Typography>{row.original.brand}</Typography>
+            }),
             columnHelper.accessor('productName', {
                 header: 'Tên sản phẩm',
                 cell: ({ row }) => (
-                    <div className='flex gap-2 items-center'>
-                        <img width={38} height={38} src={row.original.imageList[0]} alt='' className='rounded' />
-                        <Typography className='truncate max-w-[400px] text-sm' color='text.primary'>
+                    <div className='flex items-center gap-2'>
+                        <img
+                            width={38}
+                            height={38}
+                            src={row.original.imageList[0]}
+                            alt=''
+                            className='rounded backdrop-blur-md'
+                        />
+                        <p className='text-primary'>+{row.original.imageList.length - 1}</p>
+                        <Typography className='truncate max-w-[200px] text-sm line-clamp-2  ml-2' color='text.primary'>
                             {row.original.productName}
                         </Typography>
                     </div>
                 )
             }),
+            columnHelper.accessor('publisher', {
+                header: 'Publisher',
+                cell: ({ row }) => {
+                    return (
+                        <Chip
+                            variant='tonal'
+                            label={
+                                row.original.publisher === 'lazada'
+                                    ? 'Lazada'
+                                    : row.original.publisher === 'shopee'
+                                      ? 'Shopee'
+                                      : 'None'
+                            }
+                            color={
+                                row.original.publisher === 'lazada'
+                                    ? 'primary'
+                                    : row.original.publisher === 'shopee'
+                                      ? 'primary'
+                                      : 'secondary'
+                            }
+                        ></Chip>
+                    )
+                }
+            }),
+            columnHelper.accessor('isActive', {
+                header: 'Stock',
+                cell: ({ row }) => (
+                    <Switch
+                        defaultChecked={row.original.isActive}
+                        onChange={e => {
+                            handleUpdateStock(row.original, e.target.checked)
+                        }}
+                    />
+                )
+            }),
             columnHelper.accessor('availableStock', {
-                header: 'Tồn kho',
+                header: 'QTy',
                 cell: ({ row }) => <Typography>{row.original.availableStock}</Typography>
+            }),
+            columnHelper.accessor('actions', {
+                header: 'Actions',
+                cell: ({ row }) => (
+                    <></>
+                    // <div className='flex items-center'>
+                    //     <IconButton
+                    //         color='success'
+                    //         onClick={() => {
+                    //             router.push('/deal-management/product/' + row.original.sku)
+                    //         }}
+                    //     >
+                    //         <i className='tabler-pencil-minus' />
+                    //     </IconButton>
+
+                    //     <IconButton
+                    //         color='secondary'
+                    //         onClick={async () => {
+                    //             const isConfirmed = await confirm(
+                    //                 'Are you sure you want to delete this product? This action cannot be undone.'
+                    //             )
+                    //             if (!isConfirmed) return
+
+                    //             try {
+                    //                 await toast.promise(deleteProduct(row.original.sku), {
+                    //                     pending: 'Deleting...',
+                    //                     success: 'Product deleted successfully 👌',
+                    //                     error: 'Delete product rejected 🤯'
+                    //                 })
+
+                    //                 onReload()
+                    //             } catch (error) {}
+                    //         }}
+                    //     >
+                    //         <i className='tabler-trash' />
+                    //     </IconButton>
+                    // </div>
+                ),
+                enableSorting: false
             })
-            // columnHelper.accessor('actions', {
-            //     header: 'Actions',
-            //     cell: ({ row }) => (
-            //         <div className='flex items-center'>
-            //             {/* <IconButton>
-            //       <i className='tabler-edit text-textSecondary' />
-            //     </IconButton> */}
-            //             <OptionMenu
-            //                 iconButtonProps={{ size: 'medium' }}
-            //                 iconClassName='text-textSecondary'
-            //                 options={[
-            //                     // { text: 'Download', icon: 'tabler-download' },
-            //                     {
-            //                         text: 'Delete',
-            //                         icon: 'tabler-trash'
-            //                         // menuItemProps: { onClick: () => deleteProduct(row.original.sku) }
-            //                     }
-            //                     // { text: 'Edit', icon: 'tabler-edit' }
-            //                 ]}
-            //             />
-            //         </div>
-            //     ),
-            //     enableSorting: false
-            // })
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [products]

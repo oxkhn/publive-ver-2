@@ -20,7 +20,9 @@ const CampaignProvider = (props: Props) => {
     const [campaigns, setCampaigns] = useState<CampaignTypeWithId[]>([])
     const [filterValue, setFilterValue] = useState({
         name: '',
-        type: 0
+        type: 0,
+        bu: '',
+        cat: ''
     })
 
     const handleFilterChange = (value: any, name: keyof CampaignTypeWithId) => {

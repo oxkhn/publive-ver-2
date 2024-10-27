@@ -6,13 +6,17 @@ import { CampaignType, CampaignTypeWithId } from '@/types/campaign.type'
 import { ProductType } from '@/types/product.type'
 import { isValidURL } from '@/utils/string'
 import { addDays } from 'date-fns'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { BU } from './ProductProvider'
+import { useGetCategories } from '../api/product/useGetCategories'
 
 type CampaignDetailContextProps = {
     campaignData: CampaignTypeWithId
     setupStep: number
     products: ProductType[]
+    categories: any
+
     nextStep: () => void
     prevStep: () => void
     setBannerFile: any
@@ -34,6 +38,8 @@ const getDateBeforeDays = (days: number): Date => {
 export const CampaignDetailProvider = (props: Props) => {
     const [setupStep, setSetupStep] = useState(1)
     const [bannerFile, setBannerFile] = useState<File | undefined>(undefined)
+    const [categories, setCategories] = useState<BU[]>([])
+
     const [campaignData, setCampaignData] = useState<CampaignTypeWithId>({
         name: '',
         description: '',
@@ -44,10 +50,13 @@ export const CampaignDetailProvider = (props: Props) => {
         registerStartDate: getDateBeforeDays(30),
         registerEndDate: addDays(new Date(), 1000),
         status: 'active',
-        tags: [],
+        tags: '',
         productSKUs: [],
         type: 1,
-        _id: ''
+        _id: '',
+        bu: '',
+        cat: '',
+        brand: ''
     })
     const [products, setProducts] = useState<ProductType[]>([])
 
@@ -132,16 +141,6 @@ export const CampaignDetailProvider = (props: Props) => {
             return false
         }
 
-        if (!isStringValid(registerLink)) {
-            toast.error('Registration link is required')
-            return false
-        }
-
-        if (!isValidURL(registerLink)) {
-            toast.error('Registration link is not a valid URL')
-            return false
-        }
-
         return true
     }
 
@@ -170,10 +169,23 @@ export const CampaignDetailProvider = (props: Props) => {
         setSetupStep(1)
     }
 
+    const _getCategories = useGetCategories()
+    const getCategories = async () => {
+        try {
+            const res = await _getCategories.mutateAsync()
+            setCategories(res.data)
+        } catch (error) {}
+    }
+
+    useEffect(() => {
+        getCategories()
+    }, [])
+
     const value = {
         campaignData,
         setupStep,
         products,
+        categories,
         nextStep,
         prevStep,
         handleInputChange,

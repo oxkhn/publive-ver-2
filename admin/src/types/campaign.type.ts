@@ -11,7 +11,10 @@ export type CampaignType = {
     registerStartDate: Date
     registerEndDate: Date
     type: number
-    tags: string[]
+    tags: string
+    bu: string
+    cat: string
+    brand: string
 }
 
 export type CampaignTypeWithId = CampaignType & { _id: string }

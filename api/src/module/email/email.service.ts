@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId, Types } from 'mongoose';
 import { EmailCreateDto } from 'src/common/dto/EmailCreate.dto';
@@ -11,6 +16,8 @@ import { join } from 'path';
 import { EmailUpdateConfigDto } from 'src/common/dto/EmailUpdateConfig.dto';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
+import { EmailCampaignCreate } from 'src/common/dto/EmailCampaignCreate';
+import { readFileSync } from 'fs';
 
 @Injectable()
 export class EmailService {
@@ -24,13 +31,28 @@ export class EmailService {
     @InjectQueue('emailQueue') private readonly emailQueue: Queue,
   ) {}
 
-  async createCampaign(name: string, note: string) {
+  async createOrUpdateCampaign(campaign: EmailCampaignCreate) {
     try {
-      const data = {
-        name: name,
-        note: note,
-      };
-      const newCampaign = new this.campaignEmailModel(data);
+      let data = campaign;
+
+      if (campaign._id && campaign._id != '') {
+        delete data['_id'];
+        const oldCampaign = await this.campaignEmailModel.findOneAndUpdate(
+          { _id: campaign._id },
+          data,
+          { new: true },
+        );
+
+        return oldCampaign;
+      }
+
+      delete data['_id'];
+      delete data['host'];
+      delete data['port'];
+      delete data['username'];
+      delete data['password'];
+
+      const newCampaign = new this.campaignEmailModel(campaign);
       newCampaign.save();
       return newCampaign;
     } catch (error) {
@@ -160,6 +182,27 @@ export class EmailService {
       }));
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  getTemplateContent(filename: string) {
+    try {
+      console.log(filename);
+      const templateDir = join(__dirname, '../src/common/template');
+      const filePath = join(templateDir, filename);
+
+      // Read the file content as a string
+      const content = readFileSync(filePath, 'utf-8');
+
+      return {
+        filename,
+        content, // HTML content of the template
+      };
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        throw new NotFoundException(`Template file not found: ${filename}`);
+      }
+      throw new BadRequestException(`Error reading template: ${error.message}`);
     }
   }
 

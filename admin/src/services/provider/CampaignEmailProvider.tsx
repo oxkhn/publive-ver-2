@@ -15,13 +15,14 @@ import { usePostTemplate } from '../api/email/usePostTemplate'
 import { useGetTemplate } from '../api/email/useGetTemplate'
 import { usePostConfig } from '../api/email/usePostConfig'
 import { usePostSendMail } from '../api/email/usePostSendMail'
+import { useGetTemplateContent } from '../api/email/useGetTemplateContent'
 
 type CampaignEmailContextProps = {
     campaigns: CampaignEmailType[]
     emails: PartnerType[]
     campaignDetail: CampaignEmailType | undefined
     templates: any[]
-    createCampaign: (name: string, note: string) => void
+    createCampaign: () => void
     reloadData: () => void
     deleteCampaign: (id: string) => Promise<void>
     createEmailFromCSV: (file: any, id: string) => void
@@ -33,14 +34,34 @@ type CampaignEmailContextProps = {
     initCampaign: (id: string) => void
     handleInputCampaignChange: (value: any, name: keyof CampaignEmailType) => void
     postConfig: () => void
+    getTemplateContent: (filename: string) => Promise<any>
     sendMail: (emails: string[], id: string) => Promise<void>
 }
 const CampaignEmailContext = createContext<CampaignEmailContextProps | undefined>(undefined)
 
+const defaultConfig = {
+    name: '',
+    note: '',
+    subject: '',
+    templatePath: '',
+    createBy: '',
+    host: '',
+    port: 0,
+    secure: false,
+    username: '',
+    password: '',
+    startDate: new Date(),
+    endDate: new Date(),
+    pushlishTime: new Date(),
+    publisher: '',
+    status: 'edit',
+    _id: ''
+}
+
 export const CampaignEmailProvider = (props: PropsWithChildren) => {
     const [campaigns, setCampaigns] = useState<CampaignEmailType[]>([])
     const [emails, setEmails] = useState<PartnerType[]>([])
-    const [campaignDetail, setCampaignDetail] = useState<CampaignEmailType>()
+    const [campaignDetail, setCampaignDetail] = useState<CampaignEmailType>(defaultConfig)
     const [templates, setTemplates] = useState([])
 
     const [filterEmail, setFilterEmail] = useState({
@@ -61,11 +82,10 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
     }
 
     const _postCreateCampaign = usePostCreateCampaignEmail()
-    const createCampaign = async (name: string, note: string) => {
+    const createCampaign = async () => {
         try {
-            const data = { name, note }
             toast
-                .promise(_postCreateCampaign.mutateAsync(data), {
+                .promise(_postCreateCampaign.mutateAsync(campaignDetail), {
                     pending: 'Khởi tạo campaign ...',
                     success: 'Tạo campaign thành công.',
                     error: 'Tạo campaign thất bai.'
@@ -232,6 +252,14 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
         } catch (error) {}
     }
 
+    const _getTemplateContent = useGetTemplateContent()
+    const getTemplateContent = async (fileName: string) => {
+        try {
+            const res = await _getTemplateContent.mutateAsync(fileName)
+            return res.data
+        } catch (error) {}
+    }
+
     useEffect(() => {
         getCampaigns()
         getTemplate()
@@ -254,7 +282,8 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
         handleInputCampaignChange,
         uploadTemplate,
         postConfig,
-        sendMail
+        sendMail,
+        getTemplateContent
     }
     return <CampaignEmailContext.Provider value={value}>{props.children}</CampaignEmailContext.Provider>
 }

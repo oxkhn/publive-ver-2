@@ -48,11 +48,11 @@ const CreateStep2 = () => {
                     <MenuItem value='2'>Chiến thần đu đơn</MenuItem>
                 </CustomTextField>
 
-                <CustomAutocomplete
+                {/* <CustomAutocomplete
                     multiple
                     limitTags={2}
                     options={optionExample}
-                    id='autocomplete-limit-tags'
+                    // id='autocomplete-limit-tags'
                     getOptionLabel={option => option.title || ''}
                     defaultValue={optionExample.filter(i => campaignData.tags.includes(i.value))}
                     renderInput={params => (
@@ -66,6 +66,15 @@ const CreateStep2 = () => {
                     onChange={(event, newValue) => {
                         const newTags = newValue.map(i => i.value)
                         handleInputChange(newTags, 'tags')
+                    }}
+                /> */}
+
+                <CustomTextField
+                    label='Hashtag'
+                    value={campaignData.tags}
+                    placeholder='Enter tags'
+                    onChange={event => {
+                        handleInputChange(event.target.value, 'tags')
                     }}
                 />
 
@@ -95,7 +104,7 @@ const CreateStep2 = () => {
                 />
 
                 <div className='flex flex-col gap-4'>
-                    <label className='text-sm'>Banner</label>
+                    <label className='text-sm'>Banner (Ratio: 10:3)</label>
                     {fileReview && (
                         <div className='relative h-[150px] w-full bg-gray-400'>
                             <div className='absolute top-0 right-0'>
@@ -114,7 +123,7 @@ const CreateStep2 = () => {
                         </div>
                     )}
                     <Button component='label' variant='tonal' startIcon={<i className='tabler-plus' />}>
-                        Add file
+                        Upload image
                         <input
                             type='file'
                             accept='image/png, image/jpeg, image/jpg'

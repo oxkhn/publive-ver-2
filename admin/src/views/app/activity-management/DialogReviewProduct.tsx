@@ -6,6 +6,8 @@ import { useModal } from '@/hooks/useModal'
 import DialogSelectProduct from './DialogSelectProduct'
 import { useCampaignDetailContext } from '@/services/provider/CampaignDetailProvider'
 import ProductCard from './ProductCard'
+import DialogCreateCampaign from './DialogCreateCampaing'
+import DialogSelectAddOption from './DialogSelectAddOption'
 
 type Props = {
     open: boolean
@@ -14,15 +16,33 @@ type Props = {
 
 const DialogReviewProduct = (props: Props) => {
     const { open, handleClose } = props
+    const { isOpenModal, openModal, closeModal } = useModal()
+
     const { products } = useCampaignDetailContext()
     return (
         <>
+            <DialogSelectAddOption open={isOpenModal} handleClose={closeModal} />
+
             <Dialog open={open} fullWidth maxWidth={'lg'}>
                 <DialogTitle className='flex  justify-between items-center'>
                     <p className='font-semibold'>Review Product</p>
-                    <IconButton color='primary' onClick={handleClose}>
-                        <i className='tabler-x' />
-                    </IconButton>
+
+                    <div className='flex gap-4 items-center'>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            startIcon={<i className='tabler-plus' />}
+                            onClick={() => {
+                                openModal()
+                                handleClose()
+                            }}
+                        >
+                            Add Product
+                        </Button>
+                        <IconButton color='primary' onClick={handleClose}>
+                            <i className='tabler-x' />
+                        </IconButton>
+                    </div>
                 </DialogTitle>
 
                 <DialogContent>

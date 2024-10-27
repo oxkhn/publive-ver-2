@@ -44,8 +44,17 @@ export class Campaign {
   @Prop({ type: Number, default: 1 })
   type: number;
 
-  @Prop({ type: [String], default: [] })
-  tags: string[];
+  @Prop({ type: String, default: '' })
+  tags: string;
+
+  @Prop({ type: String, default: '' })
+  bu: string;
+
+  @Prop({ type: String, default: '' })
+  cat: string;
+
+  @Prop({ type: String, default: '' })
+  brand: string;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);

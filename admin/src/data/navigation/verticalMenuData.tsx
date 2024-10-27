@@ -42,7 +42,8 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     //             label: 'Training Content Gallery'
     //         },
     //         {
-    //             label: 'Brand Footage & Stock'
+    //             label: 'Brand Footage & Stock',
+    //             href: '/content-library/brand-footage'
     //         }
     //     ]
     // },

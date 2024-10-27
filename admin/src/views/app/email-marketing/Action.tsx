@@ -12,11 +12,11 @@ const Action = () => {
                 <CardContent className='flex justify-end'>
                     <Button
                         variant='contained'
-                        color='success'
+                        color='primary'
                         startIcon={<i className='tabler-plus' />}
                         onClick={openModal}
                     >
-                        Add Email Campaign
+                        Create Email Campaign
                     </Button>
                 </CardContent>
             </Card>

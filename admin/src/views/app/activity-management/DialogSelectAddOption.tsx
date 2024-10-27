@@ -37,12 +37,12 @@ const DialogSelectAddOption = (props: Props) => {
                         >
                             Select product from system
                         </Button>
-                        <Button variant='text' disabled>
+                        {/* <Button variant='text' disabled>
                             Upload via CSV file
                         </Button>
                         <Button variant='text' disabled>
                             Upload Array SKU
-                        </Button>
+                        </Button> */}
                     </div>
                 </DialogContent>
             </Dialog>

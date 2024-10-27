@@ -16,6 +16,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { FormRegisterModule } from './module/form-register/form-register.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FootageModule } from './module/footage/footage.module';
 
 @Module({
   imports: [
@@ -37,8 +38,9 @@ import { join } from 'path';
     EmailModule,
     FormRegisterModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),  // Path to your static files directory
+      rootPath: join(__dirname, '..', 'public'),
     }),
+    FootageModule,
   ],
   controllers: [],
   providers: [

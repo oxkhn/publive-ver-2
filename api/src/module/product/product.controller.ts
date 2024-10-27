@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -88,11 +90,45 @@ export class ProductController {
     }
   }
 
+  @Get(':sku')
+  async getDetail(@Param('sku') sku: string) {
+    try {
+      const res = await this.productService.getProduct(sku);
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
   @Post('create-or-update')
   async postProductDetail(@Body() product: CreateProductDto) {
     try {
       const res = await this.productService.createOrUpdate(product);
       return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Post(':sku/stock/:status')
+  async postIsActiveStock(
+    @Param('sku') sku: string,
+    @Param('status') status: boolean,
+  ) {
+    try {
+      await this.productService.postIsActiveStock(sku, status);
+      return new ResponseSuccess('Update successfully');
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Delete('/:sku')
+  async deleteProduct(@Param('sku') sku: string) {
+    try {
+      await this.productService.deleteProduct(sku);
+
+      return new ResponseSuccess('');
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

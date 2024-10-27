@@ -35,6 +35,25 @@ export class CampaignEmail {
 
   @Prop({ type: String, default: 'tibv sawa gytg nrvd' })
   password: string;
+
+  @Prop({ type: Date, required: true })
+  startDate: Date;
+
+  @Prop({ type: Date, required: true })
+  endDate: Date;
+
+  @Prop({ type: Date, required: true })
+  pushlishTime: Date;
+
+  @Prop({ type: String, enum: ['shopee', 'lazada', ''], default: '' })
+  publisher: string;
+
+  @Prop({
+    type: String,
+    enum: ['edit', 'ready_to_send', 'completed', 'cancel'],
+    default: 'edit',
+  })
+  status: string;
 }
 
 export const CampaignEmailSchema = SchemaFactory.createForClass(CampaignEmail);

@@ -10,7 +10,10 @@ const ProductCard = (props: Props) => {
     const { product } = props
 
     return (
-        <div className='flex flex-col gap-2 rounded-md bg-white shadow-sm p-3 border border-gray-200'>
+        <div className='flex flex-col relative gap-2 rounded-md bg-white shadow-sm p-3 border border-gray-200'>
+            <div className='absolute'>
+
+            </div>
             <Image
                 className='w-full h-fit rounded  aspect-square'
                 src={product.imageList[0]}
@@ -20,12 +23,12 @@ const ProductCard = (props: Props) => {
             />
             <p className='text-sm font-semibold line-clamp-2'>{product.productName}</p>
             <div className='flex gap-2 items-center'>
-                <div className='bg-orange-400 h-full rounded flex-1 flex flex-col items-center p-1'>
+                <div className='bg-green-500 h-full rounded flex-1 flex flex-col items-center p-1'>
                     <p className='text-xs'>HC</p>
                 </div>
-                <div className='bg-blue-400 h-full rounded flex-1 flex flex-col items-center p-1'>
+                <div className='bg-orange-400 h-full rounded flex-1 flex flex-col items-center p-1'>
                     <p className='text-xs'>Coms</p>
-                    <p>{product.commission}</p>
+                    <p className='text-sm'>{product.commission * 100}%</p>
                 </div>
             </div>
         </div>

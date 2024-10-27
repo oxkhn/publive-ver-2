@@ -26,6 +26,9 @@ import { useMemo } from 'react'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import classNames from 'classnames'
 import { useProductContext } from '@/services/provider/ProductProvider'
+import { useRouter } from 'next/navigation'
+import { useConfirm } from '@/services/provider/ConfirmProvider'
+import { toast } from 'react-toastify'
 
 type Props = {}
 type ProductWithActionsType = ProductType & {
@@ -41,7 +44,16 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 export const TableProduct = (props: Props) => {
-    const { products } = useProductContext()
+    const router = useRouter()
+    const { products, updateDetail, deleteProduct, onReload } = useProductContext()
+    const { confirm } = useConfirm()
+
+    const handleUpdateStock = (product: ProductType, status: boolean) => {
+        let newProduct = product
+        newProduct.isActive = status
+        updateDetail(newProduct)
+    }
+
     const columns = useMemo<ColumnDef<ProductWithActionsType, any>[]>(
         () => [
             {
@@ -105,12 +117,35 @@ export const TableProduct = (props: Props) => {
                 cell: ({ row }) => {
                     return (
                         <Chip
-                            variant='outlined'
-                            label={row.original.publisher == 'SP' ? 'Shopee' : 'Lazada'}
-                            color={row.original.publisher == 'SP' ? 'primary' : 'secondary'}
+                            variant='tonal'
+                            label={
+                                row.original.publisher === 'lazada'
+                                    ? 'Lazada'
+                                    : row.original.publisher === 'shopee'
+                                      ? 'Shopee'
+                                      : 'None'
+                            }
+                            color={
+                                row.original.publisher === 'lazada'
+                                    ? 'primary'
+                                    : row.original.publisher === 'shopee'
+                                      ? 'primary'
+                                      : 'secondary'
+                            }
                         ></Chip>
                     )
                 }
+            }),
+            columnHelper.accessor('isActive', {
+                header: 'Stock',
+                cell: ({ row }) => (
+                    <Switch
+                        defaultChecked={row.original.isActive}
+                        onChange={e => {
+                            handleUpdateStock(row.original, e.target.checked)
+                        }}
+                    />
+                )
             }),
             columnHelper.accessor('commission', {
                 header: 'Chiết khấu',
@@ -120,22 +155,36 @@ export const TableProduct = (props: Props) => {
                 header: 'Actions',
                 cell: ({ row }) => (
                     <div className='flex items-center'>
-                        {/* <IconButton>
-                  <i className='tabler-edit text-textSecondary' />
-                </IconButton> */}
-                        <OptionMenu
-                            iconButtonProps={{ size: 'medium' }}
-                            iconClassName='text-textSecondary'
-                            options={[
-                                // { text: 'Download', icon: 'tabler-download' },
-                                {
-                                    text: 'Delete',
-                                    icon: 'tabler-trash'
-                                    // menuItemProps: { onClick: () => deleteProduct(row.original.sku) }
-                                }
-                                // { text: 'Edit', icon: 'tabler-edit' }
-                            ]}
-                        />
+                        <IconButton
+                            color='success'
+                            onClick={() => {
+                                router.push('/deal-management/product/' + row.original.sku)
+                            }}
+                        >
+                            <i className='tabler-pencil-minus' />
+                        </IconButton>
+
+                        <IconButton
+                            color='secondary'
+                            onClick={async () => {
+                                const isConfirmed = await confirm(
+                                    'Are you sure you want to delete this product? This action cannot be undone.'
+                                )
+                                if (!isConfirmed) return
+                                
+                                try {
+                                    await toast.promise(deleteProduct(row.original.sku), {
+                                        pending: 'Deleting...',
+                                        success: 'Product deleted successfully 👌',
+                                        error: 'Delete product rejected 🤯'
+                                    })
+                                
+                                    onReload()
+                                } catch (error) {}
+                            }}
+                        >
+                            <i className='tabler-trash' />
+                        </IconButton>
                     </div>
                 ),
                 enableSorting: false

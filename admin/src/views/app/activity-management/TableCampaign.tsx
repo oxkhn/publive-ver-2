@@ -1,6 +1,6 @@
 'use client'
 import { ProductType } from '@/types/product.type'
-import { Button, Card, CardContent, Divider } from '@mui/material'
+import { Button, Card, CardContent, Divider, MenuItem } from '@mui/material'
 import {
     ColumnDef,
     createColumnHelper,
@@ -36,6 +36,8 @@ import { useCampaignDetailContext } from '../../../services/provider/CampaignDet
 import DialogSelectAddOption from './DialogSelectAddOption'
 import { useRouter } from 'next/navigation'
 import DialogReviewProduct from './DialogReviewProduct'
+import CustomTextField from '@/@core/components/mui/TextField'
+import Image from 'next/image'
 
 type Props = {}
 type CampaignWithActionsType = CampaignTypeWithId & {
@@ -65,7 +67,7 @@ export const TableCampaign = (props: Props) => {
                 header: 'Thông tin',
                 maxSize: 100,
                 cell: ({ row }) => (
-                    <div className='flex flex-col gap-1 overflow-hidden'>
+                    <div className='flex relative flex-col gap-1 overflow-hidden'>
                         <div className='flex gap-2 items-center'>
                             <p className='font-bold truncate max-w-[300px]'>{row.original.name}</p>
                         </div>
@@ -107,6 +109,13 @@ export const TableCampaign = (props: Props) => {
                                 </div>
                             )}
                         </div>
+                        <Image
+                            src={row.original.banner || ''}
+                            alt=''
+                            width={200}
+                            height={100}
+                            className='w-full mt-2'
+                        />
                     </div>
                 )
             }),
@@ -128,33 +137,32 @@ export const TableCampaign = (props: Props) => {
                             >
                                 Review
                             </Button>
-                            <Button
-                                className='w-fit'
-                                variant='text'
-                                onClick={() => {
-                                    initCampaign(row.original)
-                                    openModalSelect()
-                                }}
-                            >
-                                Edit
-                            </Button>
                         </div>
                     </div>
+                )
+            }),
+            columnHelper.accessor('status', {
+                header: 'Product',
+                cell: ({ row }) => (
+                    <CustomTextField
+                        select
+                        fullWidth
+                        value={row.original.status}
+                        id='custom-select-category'
+                        onChange={e => {
+                            // handleInputChange(e.target.value, 'status')
+                        }}
+                    >
+                        <MenuItem value='active'>Active</MenuItem>
+                        <MenuItem value='inactive'>Inactive</MenuItem>
+                        <MenuItem value='completed'>Completed</MenuItem>
+                    </CustomTextField>
                 )
             }),
             columnHelper.accessor('actions', {
                 header: 'Action',
                 cell: ({ row }) => (
                     <div className='gap-2 flex'>
-                        <IconButton
-                            color='error'
-                            onClick={() => {
-                                router.push('/activity-management/kol-register/' + row.original._id)
-                            }}
-                        >
-                            <i className='tabler-crown' />
-                        </IconButton>
-
                         <IconButton
                             color='success'
                             onClick={() => {
@@ -187,6 +195,19 @@ export const TableCampaign = (props: Props) => {
                             <i className='tabler-trash' />
                         </IconButton>
                     </div>
+                )
+            }),
+            columnHelper.accessor('registerLink', {
+                header: 'Winner list',
+                cell: ({ row }) => (
+                    <IconButton
+                        color='error'
+                        onClick={() => {
+                            router.push('/activity-management/kol-register/' + row.original._id)
+                        }}
+                    >
+                        <i className='tabler-crown' />
+                    </IconButton>
                 )
             })
         ],

@@ -234,7 +234,6 @@ export class ProductService {
     try {
       const { sku } = createProductDto;
       const existingProduct = await this.productModel.findOne({ sku }).exec();
-      console.log(existingProduct);
       if (existingProduct) {
         await this.productModel.updateOne({ sku }, createProductDto).exec();
         return this.productModel.findOne({ sku }).exec();
@@ -246,4 +245,31 @@ export class ProductService {
       throw new BadRequestException(error.message);
     }
   }
+
+  async postIsActiveStock(sku: string, status: boolean) {
+    try {
+      const product = await this.productModel.find({ sku });
+      if (!product) throw new BadRequestException('Product not found!');
+
+      await this.productModel
+        .findOneAndUpdate({ sku }, { isActive: status })
+        .exec();
+
+      return;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async deleteProduct(sku: string) {
+    try {
+      const res = await this.productModel.findOneAndDelete({ sku: sku });
+
+      return res;
+    } catch (error) {
+      throw new BadRequestException();
+    }
+  }
+
+  
 }

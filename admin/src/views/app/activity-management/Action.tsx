@@ -31,7 +31,8 @@ const Action = () => {
 
                     <CustomTextField
                         label='Campaign name'
-                        placeholder='Enter campaign name'
+                        fullWidth
+                        placeholder=''
                         onChange={e => {
                             handleFilterChange(e.target.value, 'name')
                         }}
@@ -40,11 +41,11 @@ const Action = () => {
 
                 <Button
                     variant='contained'
-                    color='success'
+                    color='primary'
                     startIcon={<i className='tabler-plus' />}
                     onClick={openModal}
                 >
-                    Add Campaign
+                    Create Campaing
                 </Button>
             </CardContent>
         </Card>

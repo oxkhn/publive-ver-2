@@ -9,5 +9,10 @@ export type CampaignEmailType = {
     secure: boolean
     username: string
     password: string
+    startDate: Date
+    endDate: Date
+    pushlishTime: Date
+    publisher: string
+    status: string
     _id: string
 }

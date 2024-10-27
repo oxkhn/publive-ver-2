@@ -36,9 +36,9 @@ const DialogCreateCampaign = (props: Props) => {
     const handleSubmit = async () => {
         toast
             .promise(onSubmit(), {
-                pending: 'Đang khởi tạo campaign.',
-                success: 'Tạo campaign thành công.',
-                error: 'Tạo campaign thất bại.'
+                pending: 'Initializing campaign...',
+                success: 'Campaign initialized successfully.',
+                error: 'Campaign creation failed.'
             })
             .then(() => {
                 onReload()

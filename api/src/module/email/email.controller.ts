@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   HttpException,
+  HttpStatus,
   Param,
   Post,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,6 +23,7 @@ import { EmailGetAllDto } from 'src/common/dto/EmailGetAll.dto';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { EmailUpdateConfigDto } from 'src/common/dto/EmailUpdateConfig.dto';
+import { EmailCampaignCreate } from 'src/common/dto/EmailCampaignCreate';
 
 @Controller('email')
 export class EmailController {
@@ -46,9 +49,9 @@ export class EmailController {
   }
 
   @Post('campaign')
-  async createCampaign(@Body() body: { name: string; note: string }) {
+  async createOrUpdateCampaign(@Body() body: EmailCampaignCreate) {
     try {
-      const res = await this.emailService.createCampaign(body.name, body.note);
+      const res = await this.emailService.createOrUpdateCampaign(body);
       return new ResponseSuccess(res);
     } catch (error) {
       throw new HttpException(error.message, error.status);
@@ -133,6 +136,17 @@ export class EmailController {
   async uploadTemplate(@UploadedFile() file: Express.Multer.File) {
     try {
       return new ResponseSuccess('Success');
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Get('/template/:filename')
+  async getTemplateContent(@Param('filename') filename: string) {
+    try {
+      console.log(filename);
+      const template = this.emailService.getTemplateContent(filename);
+      return new ResponseSuccess(template);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

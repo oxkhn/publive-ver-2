@@ -21,8 +21,8 @@ import { rankItem } from '@tanstack/match-sorter-utils'
 
 import tableStyles from '@core/styles/table.module.css'
 import OptionMenu from '@/@core/components/option-menu'
-import { formatVND } from '@/utils/string'
-import { useMemo } from 'react'
+import { formatDateToDDMMYYYY, formatVND } from '@/utils/string'
+import { useMemo, useState } from 'react'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import classNames from 'classnames'
 import { useProductContext } from '@/services/provider/ProductProvider'
@@ -31,6 +31,8 @@ import { useCampaignEmailContext } from '@/services/provider/CampaignEmailProvid
 import { toast } from 'react-toastify'
 import { useConfirm } from '@/services/provider/ConfirmProvider'
 import { useRouter } from 'next/navigation'
+import DialogReviewEmail from './DialogReviewEmail'
+import { useModal } from '@/hooks/useModal'
 
 type Props = {}
 type CampaignEmailWithActionsType = CampaignEmailType & {
@@ -50,6 +52,8 @@ export const TableCampaignEmail = (props: Props) => {
     const router = useRouter()
     const { campaigns, deleteCampaign } = useCampaignEmailContext()
     const { confirm } = useConfirm()
+    const { isOpenModal, openModal, closeModal } = useModal()
+    const [filename, setFilename] = useState('')
 
     const columns = useMemo<ColumnDef<CampaignEmailWithActionsType, any>[]>(
         () => [
@@ -76,21 +80,76 @@ export const TableCampaignEmail = (props: Props) => {
             //     )
             // },
             columnHelper.accessor('name', {
-                header: 'Campaign Name',
+                header: 'Campaign Email Name',
                 cell: ({ row }) => <Typography>{row.original.name}</Typography>
+            }),
+            columnHelper.accessor('status', {
+                header: 'Status',
+                cell: ({ row }) => <Chip variant='tonal' label={row.original.status} />
+            }),
+            columnHelper.accessor('publisher', {
+                header: 'Publisher',
+                cell: ({ row }) => {
+                    return (
+                        <Chip
+                            variant='tonal'
+                            label={
+                                row.original.publisher === 'lazada'
+                                    ? 'Lazada'
+                                    : row.original.publisher === 'shopee'
+                                      ? 'Shopee'
+                                      : 'None'
+                            }
+                            color={
+                                row.original.publisher === 'lazada'
+                                    ? 'primary'
+                                    : row.original.publisher === 'shopee'
+                                      ? 'primary'
+                                      : 'secondary'
+                            }
+                        ></Chip>
+                    )
+                }
+            }),
+
+            columnHelper.accessor('startDate', {
+                header: 'Time',
+                cell: ({ row }) => (
+                    <Typography>
+                        {formatDateToDDMMYYYY(row.original.startDate?.toString())} -{' '}
+                        {formatDateToDDMMYYYY(row.original.endDate?.toString())}
+                    </Typography>
+                )
+            }),
+            columnHelper.accessor('templatePath', {
+                header: 'Template',
+                cell: ({ row }) => (
+                    <div className='flex gap-2 items-center'>
+                        <p className='max-w-[100px] truncate'>{row.original.templatePath}</p>
+                        <IconButton
+                            color='primary'
+                            onClick={() => {
+                                setFilename(row.original.templatePath)
+                                openModal()
+                            }}
+                        >
+                            <i className='tabler-eye' />
+                        </IconButton>
+                    </div>
+                )
             }),
             columnHelper.accessor('actions', {
                 header: 'Actions',
                 cell: ({ row }) => (
                     <div className='flex items-center'>
-                        {/* <IconButton
+                        <IconButton
                             color='success'
-                            onClick={e => {
-                                e.stopPropagation()
+                            onClick={() => {
+                                router.push('/email-marketing/email/' + row.original._id)
                             }}
                         >
-                            <i className='tabler-article' />
-                        </IconButton> */}
+                            <i className='tabler-pencil-minus' />
+                        </IconButton>
 
                         <IconButton
                             color='default'
@@ -151,6 +210,7 @@ export const TableCampaignEmail = (props: Props) => {
 
     return (
         <Card>
+            <DialogReviewEmail open={isOpenModal} handleClose={closeModal} filename={filename} />
             <CardContent>
                 <table className={tableStyles.table}>
                     <thead className='bg-gray-200 font-bold'>
@@ -201,9 +261,6 @@ export const TableCampaignEmail = (props: Props) => {
                                                 (classNames({ selected: row.getIsSelected() }),
                                                 'cursor-pointer hover:bg-gray-200')
                                             }
-                                            onClick={e => {
-                                                router.push('/email-marketing/email/' + row.original._id)
-                                            }}
                                         >
                                             {row.getVisibleCells().map(cell => (
                                                 <td key={cell.id}>

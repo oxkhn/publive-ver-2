@@ -303,11 +303,11 @@ const DialogSelectProduct = (props: Props) => {
                             Apply
                         </Button>
 
-                        <p>
+                        {/* <p>
                             Selected: <span>{campaignData?.productSKUs?.length}</span>
-                        </p>
+                        </p> */}
                     </div>
-                    <Button variant='contained' color='success' onClick={handleSubmit}>
+                    <Button variant='contained' color='primary' onClick={handleSubmit}>
                         Add Product
                     </Button>
                 </DialogActions>

@@ -9,6 +9,7 @@ import { usePostProductStock } from '../api/product/usePostProductStock'
 import { useGetCategories } from '../api/product/useGetCategories'
 import { useGetDetailProduct } from '../api/product/useGetDetailProduct'
 import { usePostProductDetail } from '../api/product/usePostProductDetail'
+import { useDeleteProduct } from '../api/product/useDeleteProduct'
 
 export enum ProductListEnum {
     TOP_COMMISSION = 1,
@@ -36,11 +37,14 @@ type ProductContextProps = {
     setListType: any
     categories: any
     getDetail: (sku: string) => void
+    deleteProduct: (sku: string) => Promise<void>
     getProductFilter: (body: any) => void
     createProductViaCsv: (file: File, type: ProductListType) => void
     updateStock: (file: File) => void
     handleInput: (field: keyof ProductType, value: any) => void
     createOrUpdateProduct: () => void
+    updateDetail: (product: ProductType) => void
+    onReload: () => void
 }
 
 const ProductContext = createContext<ProductContextProps | undefined>(undefined)
@@ -114,15 +118,12 @@ export const ProductProvider = (props: Props) => {
         })
     }
 
+    const _getDetail = useGetDetailProduct()
     const getDetail = async (sku: string) => {
         try {
-            const body = {
-                sku: sku
-            }
-
-            const res = await _getAllProduct.mutateAsync(body)
-            if (res.data && res.data.length) {
-                setProduct(res.data[0])
+            const res = await _getDetail.mutateAsync(sku)
+            if (res.data) {
+                setProduct(res.data)
             }
         } catch (error) {}
     }
@@ -141,13 +142,36 @@ export const ProductProvider = (props: Props) => {
             await _createOrUpdate.mutateAsync(product)
             toast.success(`Product updated successfully!`)
         } catch (error) {
-            toast.error('Upload product fail.')
+            toast.error('Update product fail.')
+        }
+    }
+
+    const _deleteProduct = useDeleteProduct()
+    const deleteProduct = async (sku: string) => {
+        try {
+            await _deleteProduct.mutateAsync(sku)
+            // toast.success(`Product updated successfully!`)
+        } catch (error) {
+            toast.error('Delete product fail.')
+        }
+    }
+
+    const updateDetail = async (product: ProductType) => {
+        try {
+            await _createOrUpdate.mutateAsync(product)
+            toast.success(`Product updated successfully!`)
+        } catch (error) {
+            toast.error('Update product fail.')
         }
     }
 
     useEffect(() => {
         getAllProduct()
     }, [listType])
+
+    const onReload = () => {
+        getAllProduct()
+    }
 
     const value = {
         products,
@@ -160,7 +184,10 @@ export const ProductProvider = (props: Props) => {
         getProductFilter,
         getDetail,
         handleInput,
-        createOrUpdateProduct
+        createOrUpdateProduct,
+        updateDetail,
+        deleteProduct,
+        onReload
     }
 
     return <ProductContext.Provider value={value}>{props.children}</ProductContext.Provider>

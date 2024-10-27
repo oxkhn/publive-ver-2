@@ -35,11 +35,9 @@ const DialogConfigEmail = (props: Props) => {
     const { open, handleClose } = props
     const { campaignDetail, templates, handleInputCampaignChange, postConfig } = useCampaignEmailContext()
 
-    const { isOpenModal, openModal, closeModal } = useModal()
 
     return (
         <>
-            <DialogSelectCreateMail open={isOpenModal} handleClose={closeModal} />
             <Dialog open={open} fullWidth maxWidth='xs'>
                 <DialogTitle className='flex  justify-between items-center'>
                     <p className='font-semibold'>Config a email</p>
@@ -80,33 +78,11 @@ const DialogConfigEmail = (props: Props) => {
                         type='password'
                         onChange={e => handleInputCampaignChange(e.target.value, 'password')}
                     />
-                    <CustomTextField
-                        select
-                        fullWidth
-                        label='Email template'
-                        id='custom-select-category'
-                        value={campaignDetail?.templatePath}
-                        onChange={e => {
-                            handleInputCampaignChange(e.target.value, 'templatePath')
-                        }}
-                    >
-                        {templates.map((item, index) => (
-                            <MenuItem value={item.path}>{item.filename}</MenuItem>
-                        ))}
-                    </CustomTextField>
+                    
                 </DialogContent>
 
                 <DialogActions className='flex items-center justify-between'>
-                    <Button
-                        variant='text'
-                        color='primary'
-                        onClick={() => {
-                            handleClose()
-                            openModal()
-                        }}
-                    >
-                        Create template
-                    </Button>
+                   
                     <Button
                         variant='contained'
                         color='success'

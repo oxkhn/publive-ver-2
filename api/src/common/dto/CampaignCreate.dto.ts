@@ -61,8 +61,19 @@ export class CreateCampaignDto {
   @IsOptional()
   type: number;
 
-  @IsArray()
-  @IsString({ each: true })
+  @IsString()
   @IsOptional()
-  tags: string[];
+  tags: string;
+
+  @IsString()
+  @IsOptional()
+  bu?: string;
+
+  @IsString()
+  @IsOptional()
+  cat?: string;
+
+  @IsString()
+  @IsOptional()
+  brand?: string;
 }

@@ -1,6 +1,6 @@
 'use client'
 import { useModal } from '@/hooks/useModal'
-import { Button, Card, CardContent } from '@mui/material'
+import { Button, Card, CardContent, IconButton } from '@mui/material'
 import DialogSelectAddOption from './DialogSelectAddOption'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { useCampaignEmailContext } from '@/services/provider/CampaignEmailProvider'
@@ -40,9 +40,7 @@ const Action = (props: Props) => {
                         <Button variant='contained' color='primary' onClick={props.sendMailSelect}>
                             Send Mail Selected
                         </Button>
-                        <Button variant='contained' color='primary' onClick={openConfig}>
-                            Config Mail
-                        </Button>
+
                         <Button
                             variant='contained'
                             color='success'
@@ -51,6 +49,9 @@ const Action = (props: Props) => {
                         >
                             Add Email
                         </Button>
+                        <IconButton color='secondary' onClick={openConfig}>
+                            <i className='tabler-settings' />
+                        </IconButton>
                     </div>
                 </CardContent>
             </Card>

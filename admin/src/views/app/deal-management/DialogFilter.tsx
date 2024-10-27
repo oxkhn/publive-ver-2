@@ -32,9 +32,9 @@ const DialogFilter = (props: Props) => {
     const [selectedCategory, setSelectedCategory] = useState<string>('')
     const [selectedBrand, setSelectedBrand] = useState<string>('')
     const [publiser, setPubliser] = useState('')
-    const [commission, setCommission] = useState(20)
     const [name, setName] = useState('')
     const [sku, setSku] = useState('')
+    const [commission, setCommission] = useState(20)
 
     // Get categories based on selected BU
     const categories: BrandCategory[] = selectedBU
@@ -103,7 +103,12 @@ const DialogFilter = (props: Props) => {
                 <DialogContent>
                     <Grid container spacing={6}>
                         <Grid item sm={12}>
-                            <CustomTextField fullWidth label='SKU' value={sku} onChange={e => setSku(e.target.value)} />
+                            <CustomTextField
+                                fullWidth
+                                label='SKU ID'
+                                value={sku}
+                                onChange={e => setSku(e.target.value)}
+                            />
                         </Grid>
                         <Grid item sm={12}>
                             <CustomTextField
@@ -167,6 +172,7 @@ const DialogFilter = (props: Props) => {
                                 ))}{' '}
                             </CustomTextField>
                         </Grid>
+
                         <Grid item sm={12} className='flex flex-col gap-2'>
                             <Typography className='font-medium text-sm'>Commission</Typography>
                             <Slider

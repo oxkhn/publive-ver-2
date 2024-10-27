@@ -255,8 +255,10 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
     const _getTemplateContent = useGetTemplateContent()
     const getTemplateContent = async (fileName: string) => {
         try {
-            const res = await _getTemplateContent.mutateAsync(fileName)
-            return res.data
+            if (fileName != '') {
+                const res = await _getTemplateContent.mutateAsync(fileName)
+                return res.data
+            }
         } catch (error) {}
     }
 

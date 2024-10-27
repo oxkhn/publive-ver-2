@@ -44,7 +44,8 @@ export const LeaderboardProvider = ({
         shopee: chanelFilter == 1,
         youtube: chanelFilter == 2,
       };
-      const res = await _getAllAffiliate.mutateAsync(body);
+
+      const res = await _getAllAffiliate.mutateAsync("671d4f88b8cbba007a8a2c5b");
       const arr = res.data;
 
       setAffiliates(arr);

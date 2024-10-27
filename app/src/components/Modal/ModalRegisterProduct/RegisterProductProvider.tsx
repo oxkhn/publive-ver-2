@@ -129,6 +129,8 @@ const RegisterProductProvider = ({
       const productSKUs = chooseListProduct.map((_, i) => _.sku);
 
       const res = _postForm.mutateAsync(formData);
+      toast.success("Đăng ký thành công.");
+
     } catch (error) {
       toast.error("Đăng ký không thành công.");
     }

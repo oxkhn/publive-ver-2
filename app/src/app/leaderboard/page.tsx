@@ -92,11 +92,7 @@ const LeaderBoardPage = () => {
 
   const handleGetData = async () => {
     try {
-      const body = {
-        limit: 100,
-        page: 1,
-      };
-      const res = await _getAffiliate.mutateAsync(body);
+      const res = await _getAffiliate.mutateAsync("671d4f88b8cbba007a8a2c5b");
 
       console.log(res.data);
     } catch (error) {}

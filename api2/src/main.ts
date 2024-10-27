@@ -23,7 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const tiktokService = await app.resolve(TiktokService);
-  // tiktokService.fetchTikTokSearch({ keyword: 'SuaTamNuocHoa', pages: 5 });
+  // tiktokService.fetchTikTokSearch({ keyword: 'Unilever', pages: 5 });
 
   app.use(helmet());
   app.useGlobalFilters(new AllExceptionsFilter());

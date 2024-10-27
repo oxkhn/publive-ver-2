@@ -54,10 +54,6 @@ WORKDIR /usr/src/app
 # Copy the built app and node_modules from the builder stage
 COPY --from=builder /usr/src/app .
 # COPY --from=build /usr/src/app/public ./public 
-# 
-# Ensure that the template directory is copied to the final stage
-COPY ./src/common/template ./dist/module/src/common/template
-COPY ./public/ ./dist/module/public
 
 
 # Expose the port the app will run on

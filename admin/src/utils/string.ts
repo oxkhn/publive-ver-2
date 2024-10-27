@@ -6,23 +6,28 @@ export const withoutPrefix = (str: string, prefix: string) => (str.startsWith(pr
 export const formatVND = (amount: number) => {
     return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
 }
-
 export function formatDateToDDMMYYYY(input: string): string {
-    // Convert the input string to a Date object
-    const date = new Date(input)
+    // Ensure input is a non-empty string
+    if (!input || typeof input !== 'string') {
+        throw new Error('Invalid date format: input should be a non-empty string')
+    }
 
-    // Ensure that the input string is converted into a valid Date object
+    // Convert the input string to a Date object
+    const date = new Date(input.trim())
+
+    // Check if the Date object is valid
     if (isNaN(date.getTime())) {
         throw new Error('Invalid date format')
     }
 
     // Extract day, month, and year
-    const day = String(date.getDate()).padStart(2, '0') // Get the day
-    const month = String(date.getMonth() + 1).padStart(2, '0') // Get the month (0-based, so add 1)
-    const year = date.getFullYear() // Get the full year
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
 
     return `${day}/${month}/${year}`
 }
+
 
 export const isStringValid = (value: string) => {
     return value && value.trim().length > 0 // Checks if string is not empty or only whitespace

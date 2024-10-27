@@ -9,4 +9,7 @@ export class UserCreateDto {
 
   @IsString()
   name: string;
+
+  @IsString()
+  phoneNumber: string;
 }

@@ -7,6 +7,7 @@ import { GetCampaignDto } from 'src/common/dto/CampaignGetAll.dto';
 import { Campaign } from 'src/common/models/campaign.model';
 import { readExcelFileAffiliate } from 'src/common/utils/FormatCsvUtils';
 import { ProductService } from '../product/product.service';
+import { Product } from 'src/common/models/product.model';
 
 @Injectable()
 export class CampaignService {
@@ -73,6 +74,33 @@ export class CampaignService {
       return;
     } catch (error) {
       throw new BadRequestException('Delete campaign fail.');
+    }
+  }
+
+  async detailCampaign(id: string) {
+    try {
+      let campaign = await this.campaignModel.findOne({
+        _id: new Types.ObjectId(id),
+      });
+      if (!campaign) throw new BadRequestException('Cannot find campaign.');
+
+      let sdks = campaign.productSKUs;
+      const products = [];
+      for (let i = 0; i < sdks.length; i++) {
+        const product = await this.productService.getProduct(sdks[i]);
+        products.push(product);
+      }
+
+      // Create a plain object and assign products to it
+      const campaignObject: Campaign & { products: Product[] } = {
+        ...campaign.toObject(),
+        products,
+      };
+
+      return campaignObject;
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException('Get campaign fail.');
     }
   }
 

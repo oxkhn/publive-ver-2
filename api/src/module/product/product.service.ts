@@ -270,6 +270,22 @@ export class ProductService {
       throw new BadRequestException();
     }
   }
+  async getCategoriesWithBrands() {
+    const products = await this.productModel.find().exec();
 
-  
+    const groupedData = products.reduce((acc, curr) => {
+      const buIndex = acc.findIndex((item) => item.bu === curr.bu);
+      if (buIndex !== -1) {
+        // Chỉ thêm brand nếu chưa có trong danh sách brand của BU đó
+        if (!acc[buIndex].brand.includes(curr.brand)) {
+          acc[buIndex].brand.push(curr.brand);
+        }
+      } else {
+        acc.push({ bu: curr.bu, brand: [curr.brand] });
+      }
+      return acc;
+    }, []);
+
+    return groupedData;
+  }
 }

@@ -61,7 +61,11 @@ export class AuthService {
       throw new UnauthorizedException('Email or password is incorrect');
     }
 
-    const payload: JwtPayload = { email, sub: user._id.toString(), roles: user.roles };
+    const payload: JwtPayload = {
+      email,
+      sub: user._id.toString(),
+      roles: user.roles,
+    };
     return {
       accessToken: this.jwtService.sign(payload),
     };
@@ -74,4 +78,34 @@ export class AuthService {
     }
     return null;
   }
+
+  async getProfile(email: string): Promise<any> {
+    try {
+      const user = await this.userModel
+        .findOne({ email })
+        .select('-password -__v -createdAt -updatedAt');
+
+      if (!user) {
+        throw new BadRequestException('User not found');
+      }
+
+      return user;
+    } catch (error) {
+      throw new UnauthorizedException('Email or password is incorrect');
+    }
+  }
+
+  // async updateUser(updateUserDTO: UpdateUserDTO) {
+  //   try {
+  //     const updateUser = await this.userModel.findOneAndUpdate(
+  //       { email: updateUserDTO.email },
+  //       { $set: updateUserDTO },
+  //       { new: true, upsert: false },
+  //     );
+
+  //     return updateUser;
+  //   } catch (error) {
+  //     throw new BadRequestException('');
+  //   }
+  // }
 }

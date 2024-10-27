@@ -62,9 +62,9 @@ export const ProductsProvider = ({
   const [products, setProducts] = useState<ProductType[]>([]);
   const [allBrands, setAllBrands] = useState([]);
   const [brands, setBrands] = useState<string[]>([]);
-  const [filterBrand, setFilterBrand] = useState("all");
+  const [filterBrand, setFilterBrand] = useState("");
   const [categorys, setCategorys] = useState<string[]>([]);
-  const [filterBu, setFilterBu] = useState("all");
+  const [filterBu, setFilterBu] = useState("");
   const [filterCommission, setFilterCommission] = useState(30);
   const [filterName, setFilterName] = useState("");
   const [publisher, setPublisher] = useState("");
@@ -85,8 +85,7 @@ export const ProductsProvider = ({
       name: filterName,
       bu: filterBu,
       brand: filterBrand,
-      startDate: startDate,
-      endDate: endDate,
+
       publisher: publisher,
       sku: sku,
       filterType: Number(type),
@@ -101,12 +100,12 @@ export const ProductsProvider = ({
   const sortProductsByPublisher = (products) => {
     // Lọc 12 sản phẩm có publisher là 'sp'
     const spProducts = products
-      .filter((product) => product.publisher === "SP")
+      .filter((product) => product.publisher === "shopee")
       .slice(0, 12);
 
     // Lọc 6 sản phẩm có publisher là 'LZ'
     const lzProducts = products
-      .filter((product) => product.publisher === "LZ")
+      .filter((product) => product.publisher === "lazada")
       .slice(0, 6);
 
     // Các sản phẩm còn lại, bao gồm cả SP và LZ, không phân biệt
@@ -130,13 +129,13 @@ export const ProductsProvider = ({
   };
 
   useEffect(() => {
-    if (filterBu != "all") {
+    if (filterBu != "") {
       const arr: any = allBrands.filter((_: any) => _.bu == filterBu);
 
       if (arr.length > 0) setBrands(arr[0].brand);
     }
 
-    setFilterBrand("all");
+    setFilterBrand("");
   }, [filterBu]);
 
   useEffect(() => {
@@ -165,8 +164,8 @@ export const ProductsProvider = ({
   const resetFilters = useCallback(() => {
     setFilterCommission(100);
     setFilterName("");
-    setFilterBu("all");
-    setFilterBrand("all");
+    setFilterBu("");
+    setFilterBrand("");
     setStartDate(getDateBeforeDays(10));
     setEndDate(addDays(new Date(), 20));
     // Có thể thêm các bộ lọc khác nếu có

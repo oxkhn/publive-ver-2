@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -87,6 +88,16 @@ export class ProductController {
       return new ResponseSuccess(res);
     } catch (error) {
       throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Get('/brand')
+  async getBrand() {
+    try {
+      const res = await this.productService.getCategoriesWithBrands();
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new BadRequestException();
     }
   }
 

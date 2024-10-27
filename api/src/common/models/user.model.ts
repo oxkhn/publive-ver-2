@@ -21,6 +21,9 @@ export class User {
   @Prop({ type: String })
   name: string;
 
+  @Prop({ type: String })
+  phoneNumber: string;
+
   @Prop({ type: [String], default: Role.KOL })
   roles: Role[];
 

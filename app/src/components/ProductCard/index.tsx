@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
   const [isShowButton, setIsShowButton] = useState(false);
 
   const navigateProductDetail = () => {
-    router.push("/product/" + product?._id);
+    router.push("/product/" + product?.sku);
   };
 
   function copyTextToClipboard(text: string): void {
@@ -72,7 +72,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
         <div className="absolute left-2 top-4 z-10 grid h-6 w-6 place-items-center rounded-full bg-white">
           <ImageKit
             src={
-              product?.publisher == "SP"
+              product?.publisher == "shopee"
                 ? "logoSocials/shopee_1.svg"
                 : "logoSocials/lazada.png"
             }

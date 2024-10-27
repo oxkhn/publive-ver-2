@@ -13,19 +13,32 @@ import Button from "@/packages/@ui-kit/Button";
 import BannerDemo from "@/assets/images/banner.svg";
 import BannerDemo1 from "@/assets/images/banner-campaign-demo.webp";
 import { useRouter } from "next/navigation";
-import { mockDataCampaign } from "@/mock/campaign";
 import { useEffect, useState } from "react";
+import { useGetAllCampaign } from "@/services/api/campaign/useGetAllCampaign";
+import { CampaignType, CampaignTypeWithId } from "@/types/campaign.type";
 
 const TopCampaign = () => {
   const router = useRouter();
   const [filterType, setFilterType] = useState(1);
-
+  const [campaigns, setCampaigns] = useState<CampaignTypeWithId[]>([]);
   const [showArr, setShowArr] = useState([]);
 
   useEffect(() => {
-    if (filterType != 1 && filterType != 2) setShowArr(mockDataCampaign);
-    else setShowArr(mockDataCampaign.filter((i: any) => i.type == filterType));
-  }, [filterType]);
+    if (filterType != 1 && filterType != 2) setShowArr(campaigns);
+    else setShowArr(campaigns.filter((i: any) => i.type == filterType));
+  }, [filterType, campaigns]);
+
+  const _getAllCampaign = useGetAllCampaign();
+  const handleGetCampaign = async () => {
+    try {
+      const res = await _getAllCampaign.mutateAsync({});
+      setCampaigns(res.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    handleGetCampaign();
+  }, []);
 
   return (
     <div className="mt-[100px] flex w-full gap-8 max-md:mt-20 max-md:flex-col max-md:gap-2">
@@ -72,7 +85,7 @@ const TopCampaign = () => {
             className="h-[297px] w-full cursor-pointer rounded-lg shadow-card max-md:h-auto"
             src={_.banner}
             onClick={() => {
-              router.push("/campaign/" + _.id);
+              router.push("/campaign/" + _._id);
             }}
           />
         ))}

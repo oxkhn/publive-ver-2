@@ -14,16 +14,31 @@ import Link from "next/link";
 import { mockDataCampaign } from "@/mock/campaign";
 import { useEffect, useMemo, useState } from "react";
 import Line from "@/packages/@ui-kit/Line";
+import { useGetAllCampaign } from "@/services/api/campaign/useGetAllCampaign";
+import { CampaignTypeWithId } from "@/types/campaign.type";
+import { formatDateToDDMMYYYY } from "@/utils/string";
 
 const CampaignPage = () => {
-  const [filterType, setFilterType] = useState(0);
-
+  const [filterType, setFilterType] = useState(1);
+  const [campaigns, setCampaigns] = useState<CampaignTypeWithId[]>([]);
   const [showArr, setShowArr] = useState([]);
 
   useEffect(() => {
-    if (filterType != 1 && filterType != 2) setShowArr(mockDataCampaign);
-    else setShowArr(mockDataCampaign.filter((i: any) => i.type == filterType));
-  }, [filterType]);
+    if (filterType != 1 && filterType != 2) setShowArr(campaigns);
+    else setShowArr(campaigns.filter((i: any) => i.type == filterType));
+  }, [filterType, campaigns]);
+
+  const _getAllCampaign = useGetAllCampaign();
+  const handleGetCampaign = async () => {
+    try {
+      const res = await _getAllCampaign.mutateAsync({});
+      setCampaigns(res.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    handleGetCampaign();
+  }, []);
 
   // Hàm lấy ngày bắt đầu từ timeline
   const getStartDate = (timeline) => {
@@ -33,17 +48,11 @@ const CampaignPage = () => {
     return startDate.trim();
   };
 
-  // Thêm thuộc tính startDate vào mỗi campaign
-  const campaigns = mockDataCampaign.map((campaign) => ({
-    ...campaign,
-    startDate: getStartDate(campaign.timeline),
-  }));
-
   // Hàm nhóm campaign theo ngày
-  const groupCampaignsByDate = (campaigns) => {
+  const groupCampaignsByDate = (campaigns: CampaignTypeWithId[]) => {
     const grouped = {};
     campaigns.forEach((campaign) => {
-      const date = getStartDate(campaign.timeline);
+      const date = getStartDate(campaign.startDate);
       if (!grouped[date]) {
         grouped[date] = [];
       }
@@ -100,11 +109,13 @@ const CampaignPage = () => {
           {Object.keys(groupedCampaigns).map((date, idx) => (
             <div key={idx} className="mb-10">
               {/* Hiển thị ngày */}
-              <h2 className="mb-1 ml-auto text-primary">{date}</h2>
+              <h2 className="mb-1 ml-auto text-primary">
+                {formatDateToDDMMYYYY(date)}
+              </h2>
               {/* Hiển thị các campaign của ngày đó */}
               <div className="mt-1 flex flex-wrap gap-4">
                 {groupedCampaigns[date].map((campaign, i) => (
-                  <Link href={"/campaign/" + campaign.id} key={i}>
+                  <Link href={"/campaign/" + campaign._id} key={i}>
                     <ImageKit
                       className="h-[297px] w-full cursor-pointer rounded-md shadow-lg"
                       src={campaign.banner}

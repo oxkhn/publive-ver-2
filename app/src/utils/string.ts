@@ -44,3 +44,25 @@ export function convertTimestampToDateString(
     second: "2-digit",
   });
 }
+
+export function formatDateToDDMMYYYY(input: string): string {
+  // Ensure input is a non-empty string
+  if (!input || typeof input !== 'string') {
+      throw new Error('Invalid date format: input should be a non-empty string')
+  }
+
+  // Convert the input string to a Date object
+  const date = new Date(input.trim())
+
+  // Check if the Date object is valid
+  if (isNaN(date.getTime())) {
+      throw new Error('Invalid date format')
+  }
+
+  // Extract day, month, and year
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+
+  return `${day}/${month}/${year}`
+}

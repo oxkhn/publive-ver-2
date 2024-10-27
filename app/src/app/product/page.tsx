@@ -87,10 +87,10 @@ const ProductPage = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
 
   const [categorys, setCategorys] = useState([]);
-  const [activedCategory, setActivedCategory] = useState("all");
+  const [activedCategory, setActivedCategory] = useState("");
 
   const [brands, setBrands] = useState([]);
-  const [activedBrand, setActivedBrand] = useState("all");
+  const [activedBrand, setActivedBrand] = useState("");
 
   const [filterType, setFilterType] = useState(1);
   const [searchName, setSearchName] = useState("");
@@ -128,11 +128,11 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
-    if (activedCategory != "all") {
+    if (activedCategory != "") {
       const arr: any = categorys.filter((_: any) => _.bu == activedCategory);
       if (arr.length > 0) setBrands(arr[0].brand);
     }
-    setActivedBrand("all");
+    setActivedBrand("");
   }, [activedCategory]);
 
   const _getProduct = useGetAllProduct();
@@ -240,9 +240,9 @@ const ProductPage = () => {
             <div className="flex items-center gap-4">
               <p className="w-[110px] text-sm font-bold">Ngành hàng</p>
               <div
-                className={`h-fit cursor-pointer rounded-[124px] border px-3 py-1 text-sm leading-4 ${"all" == activedCategory ? "border-primary text-primary" : "border-grays/15 text-grays/15"}`}
+                className={`h-fit cursor-pointer rounded-[124px] border px-3 py-1 text-sm leading-4 ${"" == activedCategory ? "border-primary text-primary" : "border-grays/15 text-grays/15"}`}
                 onClick={() => {
-                  setActivedCategory("all");
+                  setActivedCategory("");
                 }}
               >
                 Tất cả

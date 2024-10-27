@@ -33,9 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <header>
+      {/* <header>
         <link rel="icon" href="/logo_ico.png" sizes="any" />
-      </header>
+      </header> */}
       <AppProvider>
         <body className={ProductFont.className}>
           <ToastContainer autoClose={1000} />

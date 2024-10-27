@@ -135,8 +135,8 @@ const TopProduct = () => {
           <div className="flex items-center gap-4">
             <p className="text-sm font-bold max-sm:text-xs">Ngành hàng</p>
             <div
-              className={`h-fit cursor-pointer rounded-[124px] border px-3 py-1 text-sm leading-4 max-sm:text-xs ${filterBu == "all" ? "border-primary text-primary" : "border-grays/15 text-grays/15"}`}
-              onClick={() => setFilterBu("all")}
+              className={`h-fit cursor-pointer rounded-[124px] border px-3 py-1 text-sm leading-4 max-sm:text-xs ${filterBu == "" ? "border-primary text-primary" : "border-grays/15 text-grays/15"}`}
+              onClick={() => setFilterBu("")}
             >
               Tất cả
             </div>

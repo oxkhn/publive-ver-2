@@ -21,7 +21,7 @@ const SameProduct: React.FC<SameProductProps> = (props) => {
       cat: "",
       commission: 30,
       bu: product?.bu,
-      brand: "all",
+      brand: "",
       filterType: 1,
     };
 

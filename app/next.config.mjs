@@ -27,11 +27,18 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: process.env.NEXT_PUBLIC_API_HOST + "/:path*", // Proxy to Backend
+        destination: process.env.NEXT_PUBLIC_API_HOST + "/:path*",
       },
     ];
   },
-
+  async rewrites() {
+    return [
+      {
+        source: "/api2/:path*",
+        destination: process.env.NEXT_PUBLIC_API_HOST_2 + "/:path*",
+      },
+    ];
+  },
   swcMinify: true,
 };
 

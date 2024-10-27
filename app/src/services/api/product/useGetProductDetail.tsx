@@ -4,8 +4,8 @@ import axios from "axios";
 export const useGetProductDetail = () => {
   return useMutation({
     mutationKey: ["product"],
-    mutationFn: async (productId: string) => {
-      const res = await axios.get(`/api/product/${productId}`);
+    mutationFn: async (sku: string) => {
+      const res = await axios.get(`/api2/product/${sku}`);
       return res.data;
     },
     retry: 0,

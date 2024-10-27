@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpException,
   Param,
   Post,
@@ -104,13 +105,22 @@ export class CampaignController {
   }
 
   @Post('/:id/product')
-  async getProductOfCampaign(@Param() id: string){
+  async getProductOfCampaign(@Param() id: string) {
     try {
-      const products = await this.campaignService.getProductOfCampaign(id)
-      return new ResponseSuccess(products)
+      const products = await this.campaignService.getProductOfCampaign(id);
+      return new ResponseSuccess(products);
     } catch (error) {
       throw new HttpException(error.message, error.status);
+    }
+  }
 
+  @Get(':id')
+  async getCampaignDetail(@Param() id: string) {
+    try {
+      const campaign = await this.campaignService.detailCampaign(id);
+      return new ResponseSuccess(campaign);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
     }
   }
 }

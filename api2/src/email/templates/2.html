@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+        }
+
+        .banner img {
+            width: 100%;
+            height: auto;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Banner Section -->
+        <div class="banner">
+            <img src="{{bannerUrl}}" alt="Banner" />
+        </div>
+
+        <!-- Content Section -->
+        <div class="content">
+            <h1>Welcome to Our Service</h1>
+            <p>{{content}}</p> <!-- Chèn nội dung email -->
+        </div>
+    </div>
+</body>
+
+</html>

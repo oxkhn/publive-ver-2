@@ -202,9 +202,8 @@ export class TiktokService {
     try {
       const query: any = {};
 
-      // Add name to the query if it's not empty or undefined
       if (name && name.trim() !== '') {
-        query.desc = { $regex: name, $options: 'i' }; // Case-insensitive matching
+        query.desc = { $regex: name, $options: 'i' };
       }
 
       if (createAt) {

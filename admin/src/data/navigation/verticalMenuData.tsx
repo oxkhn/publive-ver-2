@@ -30,7 +30,8 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
                 href: '/stock-management'
             }
         ]
-    }
+    },
+
     // {
     //     label: 'Content Library',
     //     icon: 'tabler-smart-home',
@@ -58,10 +59,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     //         { label: 'Campaign Winner Management' }
     //     ]
     // },
-    // {
-    //     label: 'CRM',
-    //     icon: 'tabler-smart-home'
-    // }
+    {
+        label: 'CRM',
+        icon: 'tabler-smart-home',
+        href: '/user'
+    }
 ]
 
 export default verticalMenuData

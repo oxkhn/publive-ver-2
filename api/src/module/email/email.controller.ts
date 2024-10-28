@@ -83,6 +83,21 @@ export class EmailController {
     }
   }
 
+  @Post('template')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './src/common/template',
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+          cb(null, filename);
+        },
+      }),
+    }),
+  )
   @Post(':id/all-email/')
   async getAllEmail(@Body() body: EmailGetAllDto, @Param('id') id: string) {
     try {
@@ -157,21 +172,6 @@ export class EmailController {
     }
   }
 
-  @Post('template')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './src/common/template',
-        filename: (req, file, cb) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
-          cb(null, filename);
-        },
-      }),
-    }),
-  )
   async uploadTemplate(@UploadedFile() file: Express.Multer.File) {
     try {
       return new ResponseSuccess('Success');

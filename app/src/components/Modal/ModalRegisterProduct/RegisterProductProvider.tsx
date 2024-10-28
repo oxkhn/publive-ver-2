@@ -66,8 +66,8 @@ const RegisterProductProvider = ({
       name: debouncedSearchTerm,
       cat: "",
       commission: 1,
-      BU: "all",
-      brand: "all",
+      BU: "",
+      brand: "",
       filterType: 1,
     };
 
@@ -119,18 +119,13 @@ const RegisterProductProvider = ({
 
   const onRegister = () => {
     try {
-      const _formData = new FormData();
-
-      // Iterate over the state and append each key-value pair to the FormData object
-      for (const key in formData) {
-        _formData.append(key, formData[key]);
-      }
+      let body = formData;
 
       const productSKUs = chooseListProduct.map((_, i) => _.sku);
+      body["productSKUs"] = productSKUs;
 
-      const res = _postForm.mutateAsync(formData);
+      const res = _postForm.mutateAsync(body);
       toast.success("Đăng ký thành công.");
-
     } catch (error) {
       toast.error("Đăng ký không thành công.");
     }

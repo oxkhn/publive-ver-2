@@ -14,8 +14,9 @@ export class FormRegisterController {
   constructor(private readonly formRegisterService: FormRegisterService) {}
 
   @Post()
-  async addForm(@Body() createFormDto: CreateFormDto) {
+  async addForm(@Body() createFormDto: any) {
     try {
+      console.log(createFormDto);
       await this.formRegisterService.addForm(createFormDto);
 
       return new ResponseSuccess('');

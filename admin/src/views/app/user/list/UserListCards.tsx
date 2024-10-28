@@ -9,7 +9,7 @@ import HorizontalWithSubtitle, { UserDataType } from '@/components/HorizontalWit
 // Vars
 const data: UserDataType[] = [
     {
-        title: 'Session',
+        title: 'Total KOC Volume',
         stats: '21,459',
         avatarIcon: 'tabler-users',
         avatarColor: 'primary',
@@ -18,7 +18,7 @@ const data: UserDataType[] = [
         subtitle: 'Total User'
     },
     {
-        title: 'Paid Users',
+        title: 'High Retention KOC',
         stats: '4,567',
         avatarIcon: 'tabler-user-plus',
         avatarColor: 'error',
@@ -27,7 +27,7 @@ const data: UserDataType[] = [
         subtitle: 'Last week analytics'
     },
     {
-        title: 'Active Users',
+        title: 'Active KOC',
         stats: '19,860',
         avatarIcon: 'tabler-user-check',
         avatarColor: 'success',
@@ -36,7 +36,7 @@ const data: UserDataType[] = [
         subtitle: 'Last week analytics'
     },
     {
-        title: 'Pending Users',
+        title: 'Inactive KOC',
         stats: '237',
         avatarIcon: 'tabler-user-search',
         avatarColor: 'warning',

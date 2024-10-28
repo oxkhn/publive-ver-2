@@ -32,7 +32,7 @@
 # Stage 1: Build
 FROM node:18-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app2
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -49,10 +49,10 @@ RUN npm run build
 # Stage 2: Run
 FROM node:18-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app2
 
 # Copy the built app and node_modules from the builder stage
-COPY --from=builder /usr/src/app .
+COPY --from=builder /usr/src/app2 .
 # COPY --from=build /usr/src/app/public ./public 
 
 

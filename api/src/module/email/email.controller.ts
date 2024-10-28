@@ -98,16 +98,6 @@ export class EmailController {
       }),
     }),
   )
-  @Post(':id/all-email/')
-  async getAllEmail(@Body() body: EmailGetAllDto, @Param('id') id: string) {
-    try {
-      const emails = await this.emailService.getEmails(body, id);
-      return new ResponseSuccess(emails);
-    } catch (error) {
-      throw new HttpException(error.message, error.status);
-    }
-  }
-
   @Delete('campaign/:id')
   async deleteCampaign(@Param('id') id: string) {
     try {
@@ -167,6 +157,16 @@ export class EmailController {
     try {
       const res = await this.emailService.getCampaign(id);
       return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Post(':id/all-email/')
+  async getAllEmail(@Body() body: EmailGetAllDto, @Param('id') id: string) {
+    try {
+      const emails = await this.emailService.getEmails(body, id);
+      return new ResponseSuccess(emails);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

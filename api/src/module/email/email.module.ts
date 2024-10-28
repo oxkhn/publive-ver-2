@@ -21,8 +21,8 @@ import { MailLog, MailLogSchema } from 'src/common/models/mailLog.model';
   imports: [
     BullModule.forRoot({
       redis: {
-        host: 'localhost',
-        port: 6079,
+        host: process.env.REDIS_HOST || 'localhost',
+        port: parseInt(process.env.REDIS_PORT, 10) || 6379,
       },
     }),
     BullModule.registerQueue({

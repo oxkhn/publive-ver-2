@@ -34,7 +34,8 @@ services:
       - redis
     environment:
       - DATABASE_URI=mongodb://root:examplepassword@mongodb:27017/publive-dev?authSource=admin
-      - REDIS_URL=redis://redis_container:6379
+      - REDIS_HOST=redis_container
+      - REDIS_PORT=6379
     volumes:
       - ../api:/usr/src/api
       - ../api/src/common/template:/usr/src/app/templates

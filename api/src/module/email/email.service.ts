@@ -249,7 +249,6 @@ export class EmailService {
 
   getTemplateContent(filename: string) {
     try {
-      console.log(filename);
       const templateDir = join(__dirname, '../src/common/template');
       const filePath = join(templateDir, filename);
 

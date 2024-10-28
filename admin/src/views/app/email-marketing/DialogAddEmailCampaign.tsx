@@ -122,7 +122,7 @@ const DialogAddEmailCampaign = (props: Props) => {
                             customInput={<CustomTextField label='Pushlish email' fullWidth />}
                         />
                     </Grid>
-                    <Grid item sm={12}>
+                    {/* <Grid item sm={12}>
                         <CustomTextField
                             select
                             fullWidth
@@ -137,12 +137,12 @@ const DialogAddEmailCampaign = (props: Props) => {
                                 <MenuItem value={item.path}>{item.filename}</MenuItem>
                             ))}
                         </CustomTextField>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </DialogContent>
 
             <DialogActions className='flex justify-between'>
-                <Button
+                {/* <Button
                     variant='text'
                     color='primary'
                     onClick={() => {
@@ -151,7 +151,7 @@ const DialogAddEmailCampaign = (props: Props) => {
                     }}
                 >
                     Create template
-                </Button>
+                </Button> */}
                 <Button
                     variant='contained'
                     color='success'

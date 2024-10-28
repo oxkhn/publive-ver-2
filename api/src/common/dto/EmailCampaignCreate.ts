@@ -27,12 +27,5 @@ export class EmailCampaignCreate {
   templatePath: string;
 
   @IsString()
-  banner: string;
-
-  @IsString()
-  content: string;
-  
-
-  @IsString()
   _id: string;
 }

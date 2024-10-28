@@ -54,7 +54,7 @@ services:
       - DATABASE_URI=mongodb://root:examplepassword@mongodb:27017/publive-dev-2?authSource=admin
       - REDIS_URL=redis://redis_container:6379
     volumes:
-      - ../api2:/usr/src/api2
+      - ../api2:/usr/src/app2
 
 volumes:
   mongodb_data:

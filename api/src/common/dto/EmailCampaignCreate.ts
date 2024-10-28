@@ -27,5 +27,8 @@ export class EmailCampaignCreate {
   templatePath: string;
 
   @IsString()
+  bu: string;
+
+  @IsString()
   _id: string;
 }

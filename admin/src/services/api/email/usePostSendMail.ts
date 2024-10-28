@@ -6,7 +6,7 @@ export const usePostSendMail = () => {
     return useMutation({
         mutationKey: ['SEND_EMAIL'],
         mutationFn: async (body: any) => {
-            const path = '/api/email/' + body.id + '/send-mail'
+            const path = '/api/email/send-mail/' + body.id
             const res = await axios.post(path, body.data)
 
             return res.data as ResponseType<string>

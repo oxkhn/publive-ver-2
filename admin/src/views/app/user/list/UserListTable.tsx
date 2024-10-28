@@ -55,6 +55,9 @@ import { getInitials } from '@/utils/getInitials'
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
 import { UsersType } from '@/types/userTypes'
+import { ICRMData } from '@/types/crmData.type'
+import { useCrmContext } from '@/services/provider/CrmProvider'
+import Image from 'next/image'
 
 declare module '@tanstack/table-core' {
     interface FilterFns {
@@ -65,7 +68,7 @@ declare module '@tanstack/table-core' {
     }
 }
 
-type UsersTypeWithAction = UsersType & {
+type ICRMDataTypeWithAction = ICRMData & {
     action?: string
 }
 
@@ -132,26 +135,29 @@ const userRoleObj: UserRoleType = {
 }
 
 const userStatusObj: UserStatusType = {
-    active: 'success',
-    pending: 'warning',
-    inactive: 'secondary'
+    'PC Contributor': 'success',
+    'Mass 1UL': 'warning',
+    'HC Contributor': 'secondary'
 }
 
 // Column Definitions
-const columnHelper = createColumnHelper<UsersTypeWithAction>()
+const columnHelper = createColumnHelper<ICRMDataTypeWithAction>()
 
-const UserListTable = ({ tableData }: { tableData?: UsersType[] }) => {
+const UserListTable = () => {
+    const { affiliates } = useCrmContext()
     // States
     const [addUserOpen, setAddUserOpen] = useState(false)
     const [rowSelection, setRowSelection] = useState({})
-    const [data, setData] = useState(...[tableData])
+    const [data, setData] = useState(...[affiliates])
     const [filteredData, setFilteredData] = useState(data)
     const [globalFilter, setGlobalFilter] = useState('')
 
-    // Hooks
-    const { lang: locale } = useParams()
+    useEffect(() => {
+        setData(affiliates)
+        setFilteredData(affiliates)
+    }, [affiliates])
 
-    const columns = useMemo<ColumnDef<UsersTypeWithAction, any>[]>(
+    const columns = useMemo<ColumnDef<ICRMDataTypeWithAction, any>[]>(
         () => [
             {
                 id: 'select',
@@ -175,91 +181,101 @@ const UserListTable = ({ tableData }: { tableData?: UsersType[] }) => {
                     />
                 )
             },
-            columnHelper.accessor('fullName', {
+            columnHelper.accessor('affiliateName', {
                 header: 'User',
                 cell: ({ row }) => (
                     <div className='flex items-center gap-4'>
-                        {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })}
+                        {/* {getAvatar({ avatar: '', fullName: row.original.affiliateName })} */}
                         <div className='flex flex-col'>
                             <Typography color='text.primary' className='font-medium'>
-                                {row.original.fullName}
+                                {row.original.affiliateName}
                             </Typography>
-                            <Typography variant='body2'>{row.original.username}</Typography>
+                            <Typography variant='body2'>{row.original.userName}</Typography>
                         </div>
                     </div>
                 )
             }),
-            columnHelper.accessor('role', {
-                header: 'Role',
+            columnHelper.accessor('kolType', {
+                header: 'Kol Type',
                 cell: ({ row }) => (
-                    <div className='flex items-center gap-2'>
-                        <Icon
-                            className={userRoleObj[row.original.role].icon}
-                            sx={{ color: `var(--mui-palette-${userRoleObj[row.original.role].color}-main)` }}
-                        />
-                        <Typography className='capitalize' color='text.primary'>
-                            {row.original.role}
-                        </Typography>
-                    </div>
-                )
-            }),
-            columnHelper.accessor('currentPlan', {
-                header: 'Plan',
-                cell: ({ row }) => (
-                    <Typography className='capitalize' color='text.primary'>
-                        {row.original.currentPlan}
-                    </Typography>
-                )
-            }),
-            columnHelper.accessor('billing', {
-                header: 'Billing',
-                cell: ({ row }) => <Typography>{row.original.billing}</Typography>
-            }),
-            columnHelper.accessor('status', {
-                header: 'Status',
-                cell: ({ row }) => (
-                    <div className='flex items-center gap-3'>
+                    <div className='flex items-center gap-4'>
                         <Chip
                             variant='tonal'
-                            label={row.original.status}
+                            label={row.original.kolType}
                             size='small'
-                            color={userStatusObj[row.original.status]}
+                            color={userStatusObj[row.original.kolType]}
                             className='capitalize'
                         />
                     </div>
                 )
             }),
-            columnHelper.accessor('action', {
-                header: 'Action',
+            columnHelper.accessor('retention', {
+                header: 'Retention',
                 cell: ({ row }) => (
-                    <div className='flex items-center'>
-                        <IconButton onClick={() => setData(data?.filter(product => product.id !== row.original.id))}>
-                            <i className='tabler-trash text-textSecondary' />
-                        </IconButton>
-                        <IconButton>
-                            {/* <Link href={getLocalizedUrl('/apps/user/view', locale as Locale)} className='flex'>
-                <i className='tabler-eye text-textSecondary' />
-              </Link> */}
-                        </IconButton>
-                        <OptionMenu
-                            iconButtonProps={{ size: 'medium' }}
-                            iconClassName='text-textSecondary'
-                            options={[
-                                {
-                                    text: 'Download',
-                                    icon: 'tabler-download',
-                                    menuItemProps: { className: 'flex items-center gap-2 text-textSecondary' }
-                                },
-                                {
-                                    text: 'Edit',
-                                    icon: 'tabler-edit',
-                                    menuItemProps: { className: 'flex items-center gap-2 text-textSecondary' }
-                                }
-                            ]}
-                        />
+                    <div className='flex items-center gap-4'>
+                        <Chip variant='tonal' label={row.original.retention} size='small' className='capitalize' />
                     </div>
-                ),
-                enableSorting: false
+                )
+            }),
+            columnHelper.accessor('followers', {
+                header: 'Followers',
+                cell: ({ row }) => (
+                    <div className='flex items-center gap-4'>
+                        <p className='capitalize'>{row.original.followers}</p>
+                    </div>
+                )
+            }),
+            columnHelper.accessor('facebook', {
+                header: 'Social',
+                cell: ({ row }) => (
+                    <div className='mt-2.5 flex items-center gap-3'>
+                        {row.original.tiktokLink && (
+                            <Link href={row.original.tiktokLink} target='_blank'>
+                                <Image
+                                    alt=''
+                                    src='/logoSocials/tiktok_1.svg'
+                                    className='h-4 w-4 hover:bg-grays/10'
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
+                        )}
+
+                        {row.original.facebookLink && (
+                            <Link
+                                target='_blank'
+                                href={row.original.facebookLink}
+                                className='cursor-pointer rounded-full p-1 hover:bg-grays/15'
+                            >
+                                <Image alt='' src='/logoSocials/fb_1.svg' className='h-4 w-4' width={20} height={20} />
+                            </Link>
+                        )}
+                        {row.original.youtubeLink && (
+                            <Link
+                                target='_blank'
+                                href={row.original.youtubeLink}
+                                className='cursor-pointer rounded-full p-1 hover:bg-grays/15'
+                            >
+                                <Image alt='' src='/logoSocials/yt_1.svg' className='h-4 w-4' width={20} height={20} />
+                            </Link>
+                        )}
+                        {row.original.shopeeLSLink && (
+                            <Link
+                                target='_blank'
+                                href={row.original.shopeeLSLink}
+                                className='cursor-pointer rounded-full p-1 hover:bg-grays/15'
+                            >
+                                <Image
+                                    alt=''
+                                    src='/logoSocials/shopee_1.svg'
+                                    className='h-4 w-4'
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
+                        )}
+                    </div>
+                )
             })
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -267,7 +283,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersType[] }) => {
     )
 
     const table = useReactTable({
-        data: filteredData as UsersType[],
+        data: filteredData as ICRMData[],
         columns,
         filterFns: {
             fuzzy: fuzzyFilter
@@ -309,7 +325,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersType[] }) => {
         <>
             <Card>
                 <CardHeader title='Filters' className='pbe-4' />
-                <TableFilters setData={setFilteredData} tableData={data} />
+                {/* <TableFilters setData={setFilteredData} tableData={data} /> */}
                 <div className='flex justify-between flex-col items-start md:flex-row md:items-center p-6 border-bs gap-4'>
                     <CustomTextField
                         select
@@ -328,22 +344,6 @@ const UserListTable = ({ tableData }: { tableData?: UsersType[] }) => {
                             placeholder='Search User'
                             className='max-sm:is-full'
                         />
-                        <Button
-                            color='secondary'
-                            variant='tonal'
-                            startIcon={<i className='tabler-upload' />}
-                            className='max-sm:is-full'
-                        >
-                            Export
-                        </Button>
-                        <Button
-                            variant='contained'
-                            startIcon={<i className='tabler-plus' />}
-                            onClick={() => setAddUserOpen(!addUserOpen)}
-                            className='max-sm:is-full'
-                        >
-                            Add New User
-                        </Button>
                     </div>
                 </div>
                 <div className='overflow-x-auto'>
@@ -416,12 +416,6 @@ const UserListTable = ({ tableData }: { tableData?: UsersType[] }) => {
                     }}
                 />
             </Card>
-            <AddUserDrawer
-                open={addUserOpen}
-                handleClose={() => setAddUserOpen(!addUserOpen)}
-                userData={data}
-                setData={setData}
-            />
         </>
     )
 }

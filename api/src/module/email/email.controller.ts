@@ -83,21 +83,6 @@ export class EmailController {
     }
   }
 
-  @Post('template')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './src/common/template',
-        filename: (req, file, cb) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
-          cb(null, filename);
-        },
-      }),
-    }),
-  )
   @Delete('campaign/:id')
   async deleteCampaign(@Param('id') id: string) {
     try {
@@ -140,7 +125,6 @@ export class EmailController {
           bannerFile.originalname,
           bannerFile.buffer,
         );
-        console.log(url);
 
         body.banner = url;
       }
@@ -162,16 +146,22 @@ export class EmailController {
     }
   }
 
-  @Post(':id/all-email/')
-  async getAllEmail(@Body() body: EmailGetAllDto, @Param('id') id: string) {
-    try {
-      const emails = await this.emailService.getEmails(body, id);
-      return new ResponseSuccess(emails);
-    } catch (error) {
-      throw new HttpException(error.message, error.status);
-    }
-  }
-
+  @Post('template')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        // Use the absolute path for Docker
+        destination: process.env.TEMPLATE_PATH || './src/common/template',
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+          cb(null, filename);
+        },
+      }),
+    }),
+  )
   async uploadTemplate(@UploadedFile() file: Express.Multer.File) {
     try {
       return new ResponseSuccess('Success');
@@ -183,7 +173,6 @@ export class EmailController {
   @Get('/template/:filename')
   async getTemplateContent(@Param('filename') filename: string) {
     try {
-      console.log(filename);
       const template = this.emailService.getTemplateContent(filename);
       return new ResponseSuccess(template);
     } catch (error) {
@@ -204,18 +193,28 @@ export class EmailController {
   @Post('config')
   async updateConfig(@Body() config: EmailUpdateConfigDto) {
     try {
-      const res = this.emailService.updateConfig(config);
+      const res = await this.emailService.updateConfig(config);
       return new ResponseSuccess(res);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
   }
 
-  @Post(':id/send-mail')
+  @Post('send-mail/:id')
   async sendMail(@Body() body: any, @Param('id') id: string) {
     try {
       const res = await this.emailService.sendMail(body, id);
       return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Post(':id/all-email/')
+  async getAllEmail(@Body() body: EmailGetAllDto, @Param('id') id: string) {
+    try {
+      const emails = await this.emailService.getEmails(body, id);
+      return new ResponseSuccess(emails);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

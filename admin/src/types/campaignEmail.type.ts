@@ -14,5 +14,6 @@ export type CampaignEmailType = {
     pushlishTime: Date
     publisher: string
     status: string
+    bu: string
     _id: string
 }

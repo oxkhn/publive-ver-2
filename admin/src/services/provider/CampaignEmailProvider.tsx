@@ -36,6 +36,7 @@ type CampaignEmailContextProps = {
     handleInputCampaignChange: (value: any, name: keyof CampaignEmailType) => void
     postConfig: () => void
     getTemplateContent: (filename: string) => Promise<any>
+    getTemplate: () => void
     sendMail: (emails: string[], id: string) => Promise<void>
     createTemplateCustom: (banner: any, content: string, name: string) => Promise<any>
 }
@@ -57,6 +58,7 @@ const defaultConfig = {
     pushlishTime: new Date(),
     publisher: '',
     status: 'edit',
+    bu: '',
     _id: ''
 }
 
@@ -222,7 +224,8 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
         try {
             await _updateConfig
                 .mutateAsync(campaignDetail)
-                .then(() => {
+                .then(res => {
+                    setCampaignDetail(res.data)
                     toast.success('Upload config thành công.')
                     return true
                 })
@@ -303,7 +306,8 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
         postConfig,
         sendMail,
         getTemplateContent,
-        createTemplateCustom
+        createTemplateCustom,
+        getTemplate
     }
     return <CampaignEmailContext.Provider value={value}>{props.children}</CampaignEmailContext.Provider>
 }

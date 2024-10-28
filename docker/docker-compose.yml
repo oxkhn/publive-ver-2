@@ -36,6 +36,7 @@ services:
       - DATABASE_URI=mongodb://root:examplepassword@mongodb:27017/publive-dev?authSource=admin
       - REDIS_HOST=redis_container
       - REDIS_PORT=6379
+      - TEMPLATE_DIR=/usr/src/app/src/common/template
     volumes:
       - ../api:/usr/src/api
       - ../api/src/common/template:/usr/src/app/templates

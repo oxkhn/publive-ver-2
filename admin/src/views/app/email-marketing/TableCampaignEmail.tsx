@@ -87,28 +87,10 @@ export const TableCampaignEmail = (props: Props) => {
                 header: 'Status',
                 cell: ({ row }) => <Chip variant='tonal' label={row.original.status} />
             }),
-            columnHelper.accessor('publisher', {
-                header: 'Publisher',
+            columnHelper.accessor('bu', {
+                header: 'Business unit',
                 cell: ({ row }) => {
-                    return (
-                        <Chip
-                            variant='tonal'
-                            label={
-                                row.original.publisher === 'lazada'
-                                    ? 'Lazada'
-                                    : row.original.publisher === 'shopee'
-                                      ? 'Shopee'
-                                      : 'None'
-                            }
-                            color={
-                                row.original.publisher === 'lazada'
-                                    ? 'primary'
-                                    : row.original.publisher === 'shopee'
-                                      ? 'primary'
-                                      : 'secondary'
-                            }
-                        ></Chip>
-                    )
+                    return <Chip variant='tonal' label={row.original.bu} color='primary'></Chip>
                 }
             }),
 

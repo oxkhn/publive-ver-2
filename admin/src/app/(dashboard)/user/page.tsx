@@ -1,9 +1,14 @@
 'use server'
 
-import UserList from "@/views/app/user/list"
+import { CrmProvider } from '@/services/provider/CrmProvider'
+import UserList from '@/views/app/user/list'
 
 const UserPage = async () => {
-    return <UserList />
+    return (
+        <CrmProvider>
+            <UserList />
+        </CrmProvider>
+    )
 }
 
 export default UserPage

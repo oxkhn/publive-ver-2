@@ -71,19 +71,20 @@ const DialogAddEmailCampaign = (props: Props) => {
                     </Grid>
                     <Grid item sm={12}>
                         <CustomTextField
-                            label='Publisher'
+                            label='Business unit'
                             className='z-19'
                             select
-                            value={campaignDetail?.publisher}
-                            defaultValue={campaignDetail?.publisher}
+                            value={campaignDetail?.bu}
+                            defaultValue={campaignDetail?.bu}
                             fullWidth
                             id='custom-select-category'
                             onChange={e => {
-                                handleInputCampaignChange(e.target.value, 'publisher')
+                                handleInputCampaignChange(e.target.value, 'bu')
                             }}
                         >
-                            <MenuItem value='lazada'>Lazada</MenuItem>
-                            <MenuItem value='shopee'>Shopee</MenuItem>
+                            <MenuItem value='PC'>PC</MenuItem>
+                            <MenuItem value='HC'>HC</MenuItem>
+                            <MenuItem value='BW'>BW</MenuItem>
                         </CustomTextField>
                     </Grid>
                     <Grid item sm={12}>

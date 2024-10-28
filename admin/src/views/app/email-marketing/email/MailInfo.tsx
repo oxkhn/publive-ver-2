@@ -48,19 +48,20 @@ const MailInfo = () => {
                         </Grid>
                         <Grid item sm={4}>
                             <CustomTextField
-                                label='Publisher'
+                                label='Business unit'
                                 className='z-19'
                                 select
-                                value={campaignDetail?.publisher}
-                                defaultValue={campaignDetail?.publisher}
+                                value={campaignDetail?.bu}
+                                defaultValue={campaignDetail?.bu}
                                 fullWidth
                                 id='custom-select-category'
                                 onChange={e => {
-                                    handleInputCampaignChange(e.target.value, 'publisher')
+                                    handleInputCampaignChange(e.target.value, 'bu')
                                 }}
                             >
-                                <MenuItem value='lazada'>Lazada</MenuItem>
-                                <MenuItem value='shopee'>Shopee</MenuItem>
+                                <MenuItem value='PC'>PC</MenuItem>
+                                <MenuItem value='HC'>HC</MenuItem>
+                                <MenuItem value='BW'>BW</MenuItem>
                             </CustomTextField>
                         </Grid>
                         <Grid item sm={4}>
@@ -99,7 +100,7 @@ const MailInfo = () => {
                                 customInput={<CustomTextField label='Pushlish time' fullWidth />}
                             />
                         </Grid>
-                        <Grid item sm={4}>
+                        {/* <Grid item sm={4}>
                             <CustomTextField
                                 label='Status'
                                 className='z-19'
@@ -117,7 +118,7 @@ const MailInfo = () => {
                                 <MenuItem value='completed'>Completed</MenuItem>
                                 <MenuItem value='cancel'>Cancel</MenuItem>
                             </CustomTextField>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
 
                     <Grid container spacing={4}>
@@ -144,8 +145,16 @@ const MailInfo = () => {
                         </Grid>
                     </Grid>
 
-                    <div className='flex justify-end' onClick={postConfig}>
-                        <Button variant='contained'>Save edit</Button>
+                    <div className='flex justify-end items-center gap-4'>
+                        <p className='text-xs '>** Fill in the information to send email</p>
+                        <Button
+                            variant='contained'
+                            onClick={() => {
+                                postConfig()
+                            }}
+                        >
+                            Save edit
+                        </Button>
                     </div>
                 </CardContent>
             </Card>

@@ -17,6 +17,7 @@ import { FormRegisterModule } from './module/form-register/form-register.module'
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { FootageModule } from './module/footage/footage.module';
+import { CrmModule } from './module/crm/crm.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { FootageModule } from './module/footage/footage.module';
       rootPath: join(__dirname, '..', 'public'),
     }),
     FootageModule,
+    CrmModule,
   ],
   controllers: [],
   providers: [

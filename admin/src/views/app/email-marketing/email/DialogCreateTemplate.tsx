@@ -35,7 +35,7 @@ type Props = {
 
 const DialogCreateTemplate = (props: Props) => {
     const { open, handleClose } = props
-    const { createTemplateCustom } = useCampaignEmailContext()
+    const { createTemplateCustom, getTemplate } = useCampaignEmailContext()
     const { isOpenModal, openModal, closeModal } = useModal()
     const [content, setContent] = useState('')
     const [templateName, setTemplateName] = useState('')
@@ -59,6 +59,7 @@ const DialogCreateTemplate = (props: Props) => {
                 error: 'Failed to create email template. Please try again. 🚫'
             })
             .then(() => {
+                getTemplate()
                 handleClose()
             })
     }

@@ -28,5 +28,8 @@ export class EmailUpdateConfigDto {
   templatePath: string;
 
   @IsString()
+  bu: string;
+
+  @IsString()
   _id: string;
 }

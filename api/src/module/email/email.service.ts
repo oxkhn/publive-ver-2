@@ -134,6 +134,7 @@ export class EmailService {
       const campaign = await this.campaignEmailModel.findById(
         new Types.ObjectId(id),
       );
+
       if (!campaign) throw new BadRequestException('Cannot find campaign.');
 
       const processData = readExcelFile(file.path);
@@ -209,7 +210,7 @@ export class EmailService {
         'template',
         fileName,
       );
-      
+
       const dirPath = path.dirname(filePath);
       if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
@@ -236,7 +237,8 @@ export class EmailService {
 
   getTemplateFiles() {
     try {
-      const templateDir = join(__dirname, '../src/common/template');
+      const templateDir =
+        process.env.TEMPLATE_DIR || join(__dirname, '../src/common/template');
       const files = readdirSync(templateDir);
 
       return files.map((file) => ({
@@ -250,7 +252,9 @@ export class EmailService {
 
   getTemplateContent(filename: string) {
     try {
-      const templateDir = join(__dirname, '../src/common/template');
+      const templateDir =
+        process.env.TEMPLATE_DIR || join(__dirname, '../src/common/template');
+
       const filePath = join(templateDir, filename);
 
       // Read the file content as a string
@@ -276,11 +280,27 @@ export class EmailService {
 
       if (!campaign) throw new BadRequestException('Cannot find campaign.');
 
-      const newCampaign = await this.campaignEmailModel.findOneAndUpdate(
+      const updatedCampaign = await this.campaignEmailModel.findOneAndUpdate(
         { _id: config._id },
         config,
+        { new: true }, // Return the updated document
       );
-      return newCampaign;
+
+      const isFullData =
+        updatedCampaign &&
+        updatedCampaign.name &&
+        updatedCampaign.subject &&
+        updatedCampaign.templatePath &&
+        updatedCampaign.startDate &&
+        updatedCampaign.endDate &&
+        updatedCampaign.pushlishTime;
+
+      if (isFullData && updatedCampaign.status === 'edit') {
+        updatedCampaign.status = 'ready_to_send';
+        await updatedCampaign.save();
+      }
+
+      return updatedCampaign;
     } catch (error) {
       throw new BadRequestException(error.message);
     }

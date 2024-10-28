@@ -9,6 +9,7 @@ import {
   CampaignEmailWithId,
 } from 'src/common/models/campaignEmail.model';
 import { EmailService } from './email.service';
+import { join } from 'path';
 
 @Processor('emailQueue')
 export class EmailProcessor {
@@ -29,14 +30,18 @@ export class EmailProcessor {
     try {
       // Hàm để đọc template và thay thế URL banner và content
       const createEmailContent = async (templateName: string) => {
-        const templatePath = path.join(
-          __dirname,
-          '..',
-          'src',
-          'common',
-          'template',
-          templateName,
-        );
+        // const templatePath = path.join(
+        //   __dirname,
+        //   '..',
+        //   'src',
+        //   'common',
+        //   'template',
+        //   templateName,
+        // );
+
+        const templateDir =
+          process.env.TEMPLATE_DIR || join(__dirname, '../src/common/template');
+        const templatePath = join(templateDir, templateName);
 
         if (!fs.existsSync(templatePath)) {
           this.logger.error(`Template file does not exist: ${templatePath}`);

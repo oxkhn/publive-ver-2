@@ -25,7 +25,7 @@ type Props = {
 
 const DialogUploadTemplate = (props: Props) => {
     const { open, handleClose } = props
-    const { uploadTemplate, getEmails } = useCampaignEmailContext()
+    const { uploadTemplate, getEmails, getTemplate } = useCampaignEmailContext()
     const { campaignEmailId } = useParams()
     const [fileList, setFileList] = useState<File[]>([])
 
@@ -41,6 +41,7 @@ const DialogUploadTemplate = (props: Props) => {
 
     const handleSubmitFile = async () => {
         await uploadTemplate(fileList[0])
+        getTemplate()
         handleClose()
     }
 

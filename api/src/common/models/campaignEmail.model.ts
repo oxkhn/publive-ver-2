@@ -48,6 +48,9 @@ export class CampaignEmail {
   @Prop({ type: String, enum: ['shopee', 'lazada', ''], default: '' })
   publisher: string;
 
+  @Prop({ type: String, default: '' })
+  bu: string;
+
   @Prop({
     type: String,
     enum: ['edit', 'ready_to_send', 'completed', 'cancel'],

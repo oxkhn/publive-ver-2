@@ -57,3 +57,4 @@ export class CampaignEmail {
 }
 
 export const CampaignEmailSchema = SchemaFactory.createForClass(CampaignEmail);
+export type CampaignEmailWithId = CampaignEmail & { _id: string };

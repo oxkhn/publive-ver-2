@@ -16,6 +16,7 @@ import { useGetTemplate } from '../api/email/useGetTemplate'
 import { usePostConfig } from '../api/email/usePostConfig'
 import { usePostSendMail } from '../api/email/usePostSendMail'
 import { useGetTemplateContent } from '../api/email/useGetTemplateContent'
+import { usePostTemplateCustom } from '../api/email/usePostTemplateCustom'
 
 type CampaignEmailContextProps = {
     campaigns: CampaignEmailType[]
@@ -36,6 +37,7 @@ type CampaignEmailContextProps = {
     postConfig: () => void
     getTemplateContent: (filename: string) => Promise<any>
     sendMail: (emails: string[], id: string) => Promise<void>
+    createTemplateCustom: (banner: any, content: string, name: string) => Promise<any>
 }
 const CampaignEmailContext = createContext<CampaignEmailContextProps | undefined>(undefined)
 
@@ -262,6 +264,21 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
         } catch (error) {}
     }
 
+    const _postTemplateCustom = usePostTemplateCustom()
+    const createTemplateCustom = async (banner: any, content: string, name: string) => {
+        try {
+            const formData = new FormData()
+            formData.append('banner', banner)
+            formData.append('content', content)
+            formData.append('name', name)
+
+            await _postTemplateCustom.mutateAsync(formData)
+            getTemplate()
+        } catch (error) {
+            toast.error('Create fail.')
+        }
+    }
+
     useEffect(() => {
         getCampaigns()
         getTemplate()
@@ -285,7 +302,8 @@ export const CampaignEmailProvider = (props: PropsWithChildren) => {
         uploadTemplate,
         postConfig,
         sendMail,
-        getTemplateContent
+        getTemplateContent,
+        createTemplateCustom
     }
     return <CampaignEmailContext.Provider value={value}>{props.children}</CampaignEmailContext.Provider>
 }

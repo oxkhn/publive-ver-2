@@ -24,10 +24,15 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { EmailUpdateConfigDto } from 'src/common/dto/EmailUpdateConfig.dto';
 import { EmailCampaignCreate } from 'src/common/dto/EmailCampaignCreate';
+import { EmailCreateCustomDto } from 'src/common/dto/EmailCreateCustom.dto';
+import { UploadS3Service } from '../upload-s3/upload-s3.service';
 
 @Controller('email')
 export class EmailController {
-  constructor(private readonly emailService: EmailService) {}
+  constructor(
+    private readonly emailService: EmailService,
+    private readonly uploadS3Service: UploadS3Service,
+  ) {}
 
   @Post('create/csv/:id')
   @UseInterceptors(FileInterceptor('file', multerOptions))
@@ -68,6 +73,16 @@ export class EmailController {
     }
   }
 
+  @Get('mail-log/:campaignId')
+  async getMailLog(@Param('campaignId') campaignId: string) {
+    try {
+      const res = await this.emailService.getMailLog(campaignId);
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
   @Post(':id/all-email/')
   async getAllEmail(@Body() body: EmailGetAllDto, @Param('id') id: string) {
     try {
@@ -102,6 +117,30 @@ export class EmailController {
   async createEmail(@Body() body: EmailCreateDto) {
     try {
       const res = await this.emailService.createEmail(body);
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Post('/create-email-custom')
+  @UseInterceptors(FileInterceptor('banner'))
+  async createEmailCustom(
+    @Body() body: EmailCreateCustomDto,
+    @UploadedFile() bannerFile: Express.Multer.File,
+  ) {
+    try {
+      if (bannerFile) {
+        const url = await this.uploadS3Service.uploadFile(
+          bannerFile.originalname,
+          bannerFile.buffer,
+        );
+        console.log(url);
+
+        body.banner = url;
+      }
+
+      const res = await this.emailService.createEmailTemplateCustom(body);
       return new ResponseSuccess(res);
     } catch (error) {
       throw new HttpException(error.message, error.status);

@@ -28,7 +28,6 @@ export function formatDateToDDMMYYYY(input: string): string {
     return `${day}/${month}/${year}`
 }
 
-
 export const isStringValid = (value: string) => {
     return value && value.trim().length > 0 // Checks if string is not empty or only whitespace
 }
@@ -44,4 +43,36 @@ export const isValidURL = (value: string) => {
         'i'
     ) // fragment locator
     return !!urlPattern.test(value)
+}
+
+export function calculateTimePassed(startDate: string | Date): string | null {
+    if (!startDate) {
+        console.log('Invalid start date.')
+        return null
+    }
+
+    const start = new Date(startDate)
+    if (isNaN(start.getTime())) {
+        console.log('Invalid start date.')
+        return null
+    }
+
+    const now = new Date()
+    const diffInMs = now.getTime() - start.getTime()
+
+    // If more than 1 day has passed, calculate in days
+    const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+    if (daysPassed >= 1) {
+        return `${daysPassed} day(s) ago`
+    }
+
+    // If less than 1 day but more than 1 hour has passed, calculate in hours
+    const hoursPassed = Math.floor(diffInMs / (1000 * 60 * 60))
+    if (hoursPassed >= 1) {
+        return `${hoursPassed} hour(s) ago`
+    }
+
+    // If less than 1 hour, calculate in minutes
+    const minutesPassed = Math.floor(diffInMs / (1000 * 60))
+    return `${minutesPassed} minute(s) ago`
 }

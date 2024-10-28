@@ -41,7 +41,6 @@ export class EmailProcessor {
         );
         let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
-        // Thay thế placeholder trong HTML với banner URL và content từ database
         htmlContent = htmlContent.replace('{{bannerUrl}}', bannerUrl);
         htmlContent = htmlContent.replace('{{content}}', content);
 

@@ -1,6 +1,6 @@
 'use client'
 import { ProductType } from '@/types/product.type'
-import { Card, CardContent, Grid } from '@mui/material'
+import { Breadcrumbs, Card, CardContent, Grid, Link } from '@mui/material'
 import {
     ColumnDef,
     createColumnHelper,
@@ -33,6 +33,7 @@ import { useConfirm } from '@/services/provider/ConfirmProvider'
 import { useParams, useRouter } from 'next/navigation'
 import { PartnerType, PartnerTypeWithId } from '@/types/partner.type'
 import Action from './Action'
+import MailInfo from './MailInfo'
 
 type Props = {}
 type EmailWithActionsType = PartnerTypeWithId & {
@@ -174,7 +175,11 @@ export const TableEmail = (props: Props) => {
             <Grid item sm={12} alignItems='end'>
                 <Action sendMailSelect={sendMailSelection} />
             </Grid>
+            <Grid item sm={12} alignItems='end'>
+                <MailInfo />
+            </Grid>
             <Grid item sm={12}>
+                <p className='font-semibold '>Email List</p>
                 <Card>
                     <CardContent>
                         <table className={tableStyles.table}>

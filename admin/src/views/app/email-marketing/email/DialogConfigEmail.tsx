@@ -35,7 +35,6 @@ const DialogConfigEmail = (props: Props) => {
     const { open, handleClose } = props
     const { campaignDetail, templates, handleInputCampaignChange, postConfig } = useCampaignEmailContext()
 
-
     return (
         <>
             <Dialog open={open} fullWidth maxWidth='xs'>
@@ -47,12 +46,6 @@ const DialogConfigEmail = (props: Props) => {
                 </DialogTitle>
 
                 <DialogContent className='flex flex-col gap-4'>
-                    <CustomTextField
-                        label='Name'
-                        fullWidth
-                        value={campaignDetail?.name}
-                        onChange={e => handleInputCampaignChange(e.target.value, 'name')}
-                    />
                     <CustomTextField
                         label='Host'
                         fullWidth
@@ -78,11 +71,9 @@ const DialogConfigEmail = (props: Props) => {
                         type='password'
                         onChange={e => handleInputCampaignChange(e.target.value, 'password')}
                     />
-                    
                 </DialogContent>
 
-                <DialogActions className='flex items-center justify-between'>
-                   
+                <DialogActions className='flex items-center justify-end'>
                     <Button
                         variant='contained'
                         color='success'

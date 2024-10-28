@@ -18,6 +18,11 @@ import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { EmailCampaignCreate } from 'src/common/dto/EmailCampaignCreate';
 import { readFileSync } from 'fs';
+import { EmailCreateCustomDto } from 'src/common/dto/EmailCreateCustom.dto';
+import { EmailCustom } from 'src/common/models/emailCustom.model';
+import * as fs from 'fs';
+import * as path from 'path';
+import { MailLog, MailLogDocument } from 'src/common/models/mailLog.model';
 
 @Injectable()
 export class EmailService {
@@ -28,6 +33,9 @@ export class EmailService {
     private readonly campaignEmailModel: Model<CampaignEmail>,
     @InjectModel(Partner.name)
     private readonly partnerModel: Model<Partner>,
+    @InjectModel(EmailCustom.name)
+    private readonly emailCustomModel: Model<EmailCustom>,
+    @InjectModel(MailLog.name) private mailLogModel: Model<MailLogDocument>,
     @InjectQueue('emailQueue') private readonly emailQueue: Queue,
   ) {}
 
@@ -160,6 +168,60 @@ export class EmailService {
     }
   }
 
+  createEmailContent = async (bannerUrl, content) => {
+    const templatePath = path.join(
+      __dirname,
+      '..',
+      'src',
+      'common',
+      'template',
+      '1.html',
+    );
+
+    if (!fs.existsSync(templatePath)) {
+      this.logger.error(`Template file does not exist: ${templatePath}`);
+      throw new Error(`Template file not found: ${templatePath}`);
+    }
+
+    let htmlContent = fs.readFileSync(templatePath, 'utf-8');
+
+    htmlContent = htmlContent.replace('{{bannerUrl}}', bannerUrl);
+    htmlContent = htmlContent.replace('{{content}}', content);
+
+    return htmlContent;
+  };
+
+  async createEmailTemplateCustom(email: EmailCreateCustomDto) {
+    try {
+      // Step 1: Generate HTML content
+      const htmlContent = await this.createEmailContent(
+        email.banner,
+        email.content,
+      );
+
+      // Step 2: Define the file path and name
+      const fileName = `${email.name}_custom_${Date.now()}.html`;
+      const filePath = path.join(
+        __dirname,
+        '..',
+        'src',
+        'common',
+        'template',
+        fileName,
+      );
+      const dirPath = path.dirname(filePath);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+
+      fs.writeFileSync(filePath, htmlContent, 'utf-8');
+
+      return { message: 'Email template saved successfully', filePath };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
   async getCampaign(id: string) {
     try {
       const campaign = await this.campaignEmailModel.findById(
@@ -238,10 +300,38 @@ export class EmailService {
           email,
           campaign,
         });
+
         this.logger.log(`Add ${email} to Job success.`);
       }
 
       return;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async logEmail(
+    recipient: string,
+    subject: string,
+    status: string,
+    campaignId: string,
+    error: string = null,
+  ) {
+    const mailLog = new this.mailLogModel({
+      recipient,
+      subject,
+      campaignId,
+      status,
+      error,
+      sentAt: status === 'sent' ? new Date() : null,
+    });
+    return mailLog.save();
+  }
+
+  async getMailLog(id: string) {
+    try {
+      const mailLogs = await this.mailLogModel.find({ campaignId: id });
+      return mailLogs;
     } catch (error) {
       throw new BadRequestException(error.message);
     }

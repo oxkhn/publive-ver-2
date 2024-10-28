@@ -4,28 +4,29 @@ import { MailerService } from '@nestjs-modules/mailer';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Logger } from '@nestjs/common';
-import { CampaignEmail } from 'src/common/models/campaignEmail.model';
+import {
+  CampaignEmail,
+  CampaignEmailWithId,
+} from 'src/common/models/campaignEmail.model';
+import { EmailService } from './email.service';
 
 @Processor('emailQueue')
 export class EmailProcessor {
   private readonly logger = new Logger(EmailProcessor.name);
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Process('sendEmailJob')
-  async handleSendEmail(job: Job<{ email: string; campaign: CampaignEmail }>) {
+  async handleSendEmail(
+    job: Job<{ email: string; campaign: CampaignEmailWithId }>,
+  ) {
     const { email, campaign } = job.data;
 
     this.logger.log(`Sending email to ${email}`);
 
     try {
-      // const filePath = path.join(
-      //   process.cwd(),
-      //   'src',
-      //   'common',
-      //   'templates',
-      //   campaign.templatePath,
-      // );
-
       // Hàm để đọc template và thay thế URL banner và content
       const createEmailContent = async (templateName: string) => {
         const templatePath = path.join(
@@ -69,16 +70,33 @@ export class EmailProcessor {
           html: htmlContent,
         })
         .then(() => {
-          // this.mailService.createMailLog(email, campaign, true);
           this.logger.log(`Send mail ${email} success.`);
+          this.emailService.logEmail(
+            email,
+            campaign.subject,
+            'sent',
+            campaign._id,
+          );
         })
         .catch((error) => {
           this.logger.error(`Failed to send email to ${email}`, error.stack);
-
-          // this.mailService.createMailLog(email, campaign, false);
+          this.emailService.logEmail(
+            email,
+            campaign.subject,
+            'failed',
+            campaign._id,
+            error.message,
+          );
         });
     } catch (error) {
       this.logger.error(`Failed to send email to ${email}`, error.stack);
+      this.emailService.logEmail(
+        email,
+        campaign.subject,
+        'failed',
+        campaign._id,
+        error.message,
+      );
     }
   }
 }

@@ -80,6 +80,17 @@ export class CampaignController {
     }
   }
 
+  @Post('/affiliate/all')
+  async getAffiliatePreformanceAll() {
+    try {
+      const res = await this.campaignService.getAffiliateAll();
+
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('banner'))
   async createOrUpdateCampaign(

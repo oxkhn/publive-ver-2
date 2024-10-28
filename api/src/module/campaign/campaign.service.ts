@@ -143,6 +143,16 @@ export class CampaignService {
     }
   }
 
+  async getAffiliateAll() {
+    try {
+      const affiliates = await this.affiliateModel.find();
+
+      return affiliates;
+    } catch (error) {
+      throw new BadRequestException('Get Affiliate error');
+    }
+  }
+
   async getProductOfCampaign(id: string) {
     try {
       const campaign = await this.campaignModel.findById(

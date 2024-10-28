@@ -280,7 +280,7 @@ const Filter = () => {
           </DropdownV2>
 
           <div className="h-6 w-[1px] bg-grays/15"></div>
-          <p className="text-sm">Category</p>
+          <p className="text-sm">Hashtag Suggestion</p>
 
           <DropdownV2
             defaultValue={category}

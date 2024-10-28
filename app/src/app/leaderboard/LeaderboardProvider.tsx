@@ -1,5 +1,6 @@
 "use client";
 import { useGetAllAffiliate } from "@/services/api/affiliate/useGetAllAffiliate";
+import { useGetAllAffiliate2 } from "@/services/api/affiliate/useGetAllAffiliate2";
 import { useGetAllVideo } from "@/services/api/video/useGetAllVideo";
 import { AffiliateType } from "@/types/affiliate.type";
 import {
@@ -29,7 +30,7 @@ export const LeaderboardProvider = ({
   children: React.ReactNode;
 }) => {
   const [affiliates, setAffiliates] = useState<AffiliateType[]>([]);
-  const _getAllAffiliate = useGetAllAffiliate();
+  const _getAllAffiliate = useGetAllAffiliate2();
   const [chanelFilter, setChanelFilter] = useState();
 
   const [name, setName] = useState("");
@@ -45,7 +46,7 @@ export const LeaderboardProvider = ({
         youtube: chanelFilter == 2,
       };
 
-      const res = await _getAllAffiliate.mutateAsync("671d4f88b8cbba007a8a2c5b");
+      const res = await _getAllAffiliate.mutateAsync();
       const arr = res.data;
 
       setAffiliates(arr);

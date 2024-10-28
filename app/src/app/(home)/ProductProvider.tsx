@@ -41,6 +41,11 @@ interface ProductsContextProps {
 
   type: number;
   setType: (type: number) => void;
+
+  isFilterLazada: any;
+  setIsFilterLazada: any;
+  isFilterShopee: any;
+  setIsFilterShopee: any;
 }
 
 const ProductsContext = createContext<ProductsContextProps | undefined>(
@@ -71,6 +76,9 @@ export const ProductsProvider = ({
   const [sku, setSku] = useState("");
   const [type, setType] = useState(1);
 
+  const [isFilterLazada, setIsFilterLazada] = useState(false);
+  const [isFilterShopee, setIsFilterShopee] = useState(false);
+
   const [startDate, setStartDate] = useState<Date | any>(getDateBeforeDays(10));
   const [endDate, setEndDate] = useState<Date | any>(addDays(new Date(), 20));
 
@@ -85,7 +93,6 @@ export const ProductsProvider = ({
       name: filterName,
       bu: filterBu,
       brand: filterBrand,
-
       publisher: publisher,
       sku: sku,
       filterType: Number(type),
@@ -98,28 +105,48 @@ export const ProductsProvider = ({
 
   // Hàm sắp xếp sản phẩm theo publisher
   const sortProductsByPublisher = (products) => {
-    // Lọc 12 sản phẩm có publisher là 'sp'
-    const spProducts = products
+    let spProducts = [];
+    let lzProducts = [];
+
+    if (isFilterShopee) {
+      // If only Shopee is filtered, select up to 18 Shopee products
+      spProducts = products
+        .filter((product) => product.publisher === "shopee")
+        .slice(0, 18);
+      return spProducts;
+    }
+
+    if (isFilterLazada) {
+      // If only Lazada is filtered, select up to 18 Lazada products
+      lzProducts = products
+        .filter((product) => product.publisher === "lazada")
+        .slice(0, 18);
+      return lzProducts;
+    }
+
+    // If no specific filter or Lazada filter with no Shopee filter
+    spProducts = products
       .filter((product) => product.publisher === "shopee")
       .slice(0, 12);
 
-    // Lọc 6 sản phẩm có publisher là 'LZ'
-    const lzProducts = products
+    lzProducts = products
       .filter((product) => product.publisher === "lazada")
       .slice(0, 6);
 
-    // Các sản phẩm còn lại, bao gồm cả SP và LZ, không phân biệt
     const remainingProducts = products.filter(
       (product) =>
         !spProducts.includes(product) && !lzProducts.includes(product),
     );
 
-    // Ghép lại thành một mảng sắp xếp hoàn chỉnh
+    // Return the combined sorted array
     return [...spProducts, ...lzProducts, ...remainingProducts];
   };
 
-  const _getCategory = useGetProductBrand();
+  useEffect(() => {
+    handleGetData();
+  }, [isFilterLazada, isFilterShopee]);
 
+  const _getCategory = useGetProductBrand();
   const handleGetCategory = async () => {
     try {
       const res = await _getCategory.mutateAsync();
@@ -168,6 +195,8 @@ export const ProductsProvider = ({
     setFilterBrand("");
     setStartDate(getDateBeforeDays(10));
     setEndDate(addDays(new Date(), 20));
+    setIsFilterLazada(false);
+    setIsFilterShopee(false);
     // Có thể thêm các bộ lọc khác nếu có
   }, []);
 
@@ -198,6 +227,10 @@ export const ProductsProvider = ({
       resetFilters,
       type,
       setType,
+      isFilterLazada,
+      setIsFilterLazada,
+      isFilterShopee,
+      setIsFilterShopee,
     }),
     [
       products,

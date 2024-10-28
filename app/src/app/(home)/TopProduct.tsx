@@ -52,6 +52,10 @@ const TopProduct = () => {
     resetFilters,
     type,
     setType,
+    isFilterLazada,
+    setIsFilterLazada,
+    isFilterShopee,
+    setIsFilterShopee,
   } = useProductsContext();
 
   const [commisionValue, setCommisionValue] = useState(25);
@@ -154,6 +158,7 @@ const TopProduct = () => {
               ))}
             </div>
           </div>
+
           <div className="flex w-full items-center gap-4">
             <div className="flex items-center gap-4">
               <p className="text-sm font-bold max-sm:text-xs">Thương hiệu</p>
@@ -188,6 +193,31 @@ const TopProduct = () => {
                 </DropdownV2>
               </div>
             </div>
+
+            <div className="ml-10 flex gap-4">
+              <p className="text-sm font-bold max-sm:text-xs">Sàn</p>
+
+              <div
+                className={`z-10 grid h-6 w-6 cursor-pointer place-items-center rounded-full bg-gray-200 ${isFilterShopee && "border-2 border-primary"}`}
+                onClick={() => setIsFilterShopee((prev) => !prev)}
+              >
+                <ImageKit
+                  src={"logoSocials/shopee_1.svg"}
+                  className="h-4 w-4 rounded-full"
+                />
+              </div>
+
+              <div
+                className={`z-10 grid h-6 w-6 cursor-pointer place-items-center rounded-full bg-gray-200 ${isFilterLazada && "border-2 border-primary"}`}
+                onClick={() => setIsFilterLazada((prev) => !prev)}
+              >
+                <ImageKit
+                  src={"logoSocials/lazada.png"}
+                  className="h-4 w-4 rounded-full"
+                />
+              </div>
+            </div>
+
             <div className="flex flex-1 items-center justify-end gap-4">
               <p className="text-sm font-bold max-sm:text-xs">%Commission</p>
               <div className="max-w-[200px] flex-1">

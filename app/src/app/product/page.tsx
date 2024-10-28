@@ -95,6 +95,9 @@ const ProductPage = () => {
   const [filterType, setFilterType] = useState(1);
   const [searchName, setSearchName] = useState("");
 
+  const [isFilterLazada, setIsFilterLazada] = useState(false);
+  const [isFilterShopee, setIsFilterShopee] = useState(false);
+
   useEffect(() => {
     const calculateProductCount = () => {
       if (gridContainer.current) {
@@ -152,8 +155,19 @@ const ProductPage = () => {
     const res = await _getProduct.mutateAsync(body);
     if (res) {
       const _products = res.data;
+      // Filter products based on the selected publisher filter
+      const filteredProducts = _products.filter((product) => {
+        if (isFilterShopee && product.publisher === "shopee") {
+          return true;
+        }
+        if (isFilterLazada && product.publisher === "lazada") {
+          return true;
+        }
+        // If no filters are active, return all products
+        return !isFilterShopee && !isFilterLazada;
+      });
 
-      setProducts(_products);
+      setProducts(filteredProducts);
     }
   };
 
@@ -188,7 +202,14 @@ const ProductPage = () => {
 
   useEffect(() => {
     handleGetData();
-  }, [activedBrand, activedCategory, searchName, commisionValue]);
+  }, [
+    activedBrand,
+    activedCategory,
+    searchName,
+    commisionValue,
+    isFilterShopee,
+    isFilterLazada,
+  ]);
 
   useEffect(() => {
     handleGetCategory();
@@ -304,33 +325,59 @@ const ProductPage = () => {
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex flex-1 gap-10">
-                <p className="min-w-[100px] text-sm font-bold">%Commission</p>
+              <div className="flex w-full flex-1 gap-4">
+                <div className="flex gap-4">
+                  <p className="text-sm font-bold max-sm:text-xs">Sàn</p>
 
-                <div className="max-w-[200px] flex-1">
-                  <ConfigProvider
-                    theme={{
-                      components: {
-                        Slider: {
-                          colorPrimary: "#3067F2",
-                        },
-                      },
-                    }}
+                  <div
+                    className={`z-10 grid h-6 w-6 cursor-pointer place-items-center rounded-full bg-gray-200 ${isFilterShopee && "border-2 border-primary"}`}
+                    onClick={() => setIsFilterShopee((prev) => !prev)}
                   >
-                    <Slider
-                      value={commisionValue}
-                      onChange={(e) => setCommisionValue(e)}
-                      min={minMaxCommision[0]}
-                      max={minMaxCommision[1]}
-                      marks={{
-                        [minMaxCommision[0]]: `${minMaxCommision[0]}%`,
-                        [minMaxCommision[1]]: `${minMaxCommision[1]}%`,
-                      }}
-                      className="mt-1.5 w-full max-w-[95%]"
+                    <ImageKit
+                      src={"logoSocials/shopee_1.svg"}
+                      className="h-4 w-4 rounded-full"
                     />
-                  </ConfigProvider>
+                  </div>
+
+                  <div
+                    className={`z-10 grid h-6 w-6 cursor-pointer place-items-center rounded-full bg-gray-200 ${isFilterLazada && "border-2 border-primary"}`}
+                    onClick={() => setIsFilterLazada((prev) => !prev)}
+                  >
+                    <ImageKit
+                      src={"logoSocials/lazada.png"}
+                      className="h-4 w-4 rounded-full"
+                    />
+                  </div>
+                </div>
+                <div className="ml-4 flex flex-1 gap-10">
+                  <p className="min-w-[100px] text-sm font-bold">%Commission</p>
+
+                  <div className="max-w-[200px] flex-1">
+                    <ConfigProvider
+                      theme={{
+                        components: {
+                          Slider: {
+                            colorPrimary: "#3067F2",
+                          },
+                        },
+                      }}
+                    >
+                      <Slider
+                        value={commisionValue}
+                        onChange={(e) => setCommisionValue(e)}
+                        min={minMaxCommision[0]}
+                        max={minMaxCommision[1]}
+                        marks={{
+                          [minMaxCommision[0]]: `${minMaxCommision[0]}%`,
+                          [minMaxCommision[1]]: `${minMaxCommision[1]}%`,
+                        }}
+                        className="mt-1.5 w-full max-w-[95%]"
+                      />
+                    </ConfigProvider>
+                  </div>
                 </div>
               </div>
+
               <Input
                 placeholder="Tìm kiếm sản phẩm"
                 classContainer="flex-1 rounded-[124px] max-w-[300px]"

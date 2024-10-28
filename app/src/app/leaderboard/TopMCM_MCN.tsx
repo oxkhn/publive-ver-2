@@ -9,6 +9,7 @@ const mockupData = [
     rank: 1,
     medal: "MCMRanking/1.png", // Replace with actual image link
     rankColor: "#FFD700", // Gold color for 1st place
+    avata: "MCMRanking/2/1.jpeg",
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const mockupData = [
     rank: 2,
     medal: "https://example.com/medal2.png", // Replace with actual image link
     rankColor: "#C0C0C0", // Silver color for 2nd place
+    avata: "MCMRanking/2/2.jpeg",
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ const mockupData = [
     rank: 3,
     medal: "https://example.com/medal3.png", // Replace with actual image link
     rankColor: "#CD7F32", // Bronze color for 3rd place
+    avata: "MCMRanking/2/3.jpeg",
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ const mockupData = [
     rank: 4,
     medal: null, // No medal for this rank
     rankColor: "#4B0082", // Custom color for 4th place
+    avata: "MCMRanking/2/4.png",
   },
   {
     id: 5,
@@ -45,6 +49,7 @@ const mockupData = [
     rank: 5,
     medal: null, // No medal for this rank
     rankColor: "#1E90FF", // Custom color for 5th place
+    avata: "MCMRanking/2/5.png",
   },
 ];
 const TopMCM_MCN = () => {

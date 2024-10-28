@@ -109,7 +109,7 @@ const MCNCardRanking: React.FC<MCNCardProps> = ({
     >
       {/* {metal && <ImageKit src={metal} className="absolute inset-0" />} */}
       {/* <RankingTag rank={rank} /> */}
-      <ImageKit src="" className="mt-4 h-[92px] w-[92px] rounded-full" />
+      <ImageKit src={data.avata} className="mt-4 h-[92px] w-[92px] rounded-full" />
 
       <div className="flex w-full flex-1 flex-col justify-between">
         <div className="flex items-center justify-center">

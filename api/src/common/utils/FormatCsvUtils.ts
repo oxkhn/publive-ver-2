@@ -22,6 +22,10 @@ export const readExcelFileWithImage = (filePath: string): any[] => {
     return row;
   });
 
+  data.forEach((row: any) => {
+    row.publisher = Math.random() < 0.5 ? 'lazada' : 'shopee';
+  });
+
   return processedData;
 };
 

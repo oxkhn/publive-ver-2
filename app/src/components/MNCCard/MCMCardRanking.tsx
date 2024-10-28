@@ -1,6 +1,7 @@
 "use client";
 import Button from "@/packages/@ui-kit/Button";
 import ImageKit from "@/packages/@ui-kit/Image";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const RankingTag = ({ rank }: { rank: number }) => {
@@ -61,7 +62,7 @@ const MCNCardRanking: React.FC<MCNCardProps> = (props) => {
     <div className="relative flex min-w-[250px] gap-4 rounded-lg p-4 shadow-card max-sm:items-center">
       {/* <RankingTag rank={rank} /> */}
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300">
-        <span className="text-lg font-bold text-white">P</span>
+        <ImageKit src={data.avata} className="h-10 w-10 rounded-full" />
       </div>
 
       <div className="flex flex-1 flex-col justify-between">

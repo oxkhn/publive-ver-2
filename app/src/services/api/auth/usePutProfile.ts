@@ -6,7 +6,7 @@ export const usePutProfile = () => {
   return useMutation({
     mutationKey: ["PUT_PROFILE"],
     mutationFn: async (body: { token: string; data: any }) => {
-      const response = await axios.put("/api/user", body.data, {
+      const response = await axios.put("/api/auth", body.data, {
         headers: {
           Authorization: `Bearer ${body.token}`,
         },

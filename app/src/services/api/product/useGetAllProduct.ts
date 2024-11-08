@@ -6,7 +6,7 @@ export const useGetAllProduct = () => {
     mutationKey: ["ALL_PRODUCT"],
     mutationFn: async (body: any) => {
       try {
-        const res = await axios.post("/api2/product", body);
+        const res = await axios.post("/api/product", body);
 
         return res.data;
       } catch (error) {}

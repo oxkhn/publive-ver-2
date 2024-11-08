@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { UserLoginDto } from 'src/common/dto/UserLogin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/common/interfaces/jwt-payload.interface';
+import { UpdateUserDTO } from 'src/common/dto/UpdateUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -68,6 +69,7 @@ export class AuthService {
     };
     return {
       accessToken: this.jwtService.sign(payload),
+      user: user,
     };
   }
 
@@ -95,17 +97,17 @@ export class AuthService {
     }
   }
 
-  // async updateUser(updateUserDTO: UpdateUserDTO) {
-  //   try {
-  //     const updateUser = await this.userModel.findOneAndUpdate(
-  //       { email: updateUserDTO.email },
-  //       { $set: updateUserDTO },
-  //       { new: true, upsert: false },
-  //     );
+  async updateUser(updateUserDTO: UpdateUserDTO) {
+    try {
+      const updateUser = await this.userModel.findOneAndUpdate(
+        { email: updateUserDTO.email },
+        { $set: updateUserDTO },
+        { new: true, upsert: false },
+      );
 
-  //     return updateUser;
-  //   } catch (error) {
-  //     throw new BadRequestException('');
-  //   }
-  // }
+      return updateUser;
+    } catch (error) {
+      throw new BadRequestException('');
+    }
+  }
 }

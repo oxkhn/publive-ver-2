@@ -6,8 +6,8 @@ import { Breadcrumbs, Grid, Link, Typography } from '@mui/material'
 const EmailPage = () => {
     return (
         <CampaignEmailProvider>
-            <Breadcrumbs aria-label='breadcrumb'>
-                <Link underline='hover' color='inherit' href='/'>
+            <Breadcrumbs aria-label='breadcrumb' className='mb-2'>
+            <Link underline='hover' color='inherit' href='/'>
                     Home
                 </Link>
                 <Link underline='hover' color='inherit' href='/email-marketing/'>

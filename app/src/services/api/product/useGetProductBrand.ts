@@ -6,7 +6,7 @@ export const useGetProductBrand = () => {
     mutationKey: ["GET_BRAND"],
     mutationFn: async () => {
       try {
-        const res = await axios.get("/api2/product/brand");
+        const res = await axios.get("/api/product/brand");
         return res.data;
       } catch (error) {
         console.log(error);

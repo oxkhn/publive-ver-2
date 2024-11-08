@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { TiktokService } from './module/tiktok/tiktok.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -23,7 +24,10 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(5678);
+  const tiktokService = await app.resolve(TiktokService);
+  // tiktokService.fetchTikTokSearch({ keyword: 'Taytebaochet', pages: 10 });
+
+  await app.listen(7654);
 
   if (module.hot) {
     module.hot.accept();

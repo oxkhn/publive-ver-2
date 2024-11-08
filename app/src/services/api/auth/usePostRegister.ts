@@ -6,7 +6,7 @@ export const usePostRegister = () => {
   return useMutation({
     mutationKey: ["POST_REGISTER"],
     mutationFn: async (registerDTO: RegisterDTO) => {
-      const response = await axios.post("/api/user/register", registerDTO);
+      const response = await axios.post("/api/auth/register", registerDTO);
       return response.data;
     },
   });

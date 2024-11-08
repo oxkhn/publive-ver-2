@@ -2,12 +2,18 @@ import { ProductProvider } from '@/services/provider/ProductProvider'
 import Action from '@/views/app/(sample-campaign)/stock-management/Action'
 import ProductCard from '@/views/app/(sample-campaign)/stock-management/ProductCard'
 import { TableProduct } from '@/views/app/(sample-campaign)/stock-management/TableProduct'
-import { Grid } from '@mui/material'
+import { Breadcrumbs, Grid, Link, Typography } from '@mui/material'
 
 const StockManagementPage = () => {
     return (
         <ProductProvider>
-            <Grid container spacing={6}>
+            <Breadcrumbs aria-label='breadcrumb'>
+                <Link underline='hover' color='inherit' href='/'>
+                    Home
+                </Link>
+                <Typography sx={{ color: 'text.primary' }}>Stock Management</Typography>
+            </Breadcrumbs>
+            <Grid container spacing={6} className='mt-2'>
                 <Grid item sm={12}>
                     <ProductCard />
                 </Grid>

@@ -5,7 +5,7 @@ export const useGetProductDetail = () => {
   return useMutation({
     mutationKey: ["product"],
     mutationFn: async (sku: string) => {
-      const res = await axios.get(`/api2/product/${sku}`);
+      const res = await axios.get(`/api/product/${sku}`);
       return res.data;
     },
     retry: 0,

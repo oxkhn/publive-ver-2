@@ -1,3 +1,4 @@
+import { Role, Social } from "../models/user.model";
 
 export class UpdateUserDTO {
   name: string;
@@ -8,4 +9,7 @@ export class UpdateUserDTO {
   phoneNumber: string;
   verify: boolean;
   avatar: string;
+  role: Role;
+  tag: string;
+  social: Social;
 }

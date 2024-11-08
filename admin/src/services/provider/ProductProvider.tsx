@@ -36,6 +36,7 @@ type ProductContextProps = {
     listType: ProductListEnum
     setListType: any
     categories: any
+    productLength: number
     getDetail: (sku: string) => void
     deleteProduct: (sku: string) => Promise<void>
     getProductFilter: (body: any) => void
@@ -57,6 +58,7 @@ export const ProductProvider = (props: Props) => {
     const [product, setProduct] = useState<ProductType | undefined>(undefined)
     const [listType, setListType] = useState<ProductListEnum>(ProductListEnum.TOP_COMMISSION)
     const [categories, setCategories] = useState<BU[]>([])
+    const [productLength, setProductLength] = useState(0)
 
     const _getCategories = useGetCategories()
     const getCategories = async () => {
@@ -71,6 +73,7 @@ export const ProductProvider = (props: Props) => {
         const body = {
             filterType: listType
         }
+        
         await _getAllProduct.mutateAsync(body).then(res => {
             setProducts(res.data)
         })
@@ -178,6 +181,7 @@ export const ProductProvider = (props: Props) => {
         product,
         listType,
         categories,
+        productLength,
         createProductViaCsv,
         updateStock,
         setListType,

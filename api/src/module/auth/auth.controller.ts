@@ -4,12 +4,16 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UserCreateDto } from 'src/common/dto/UserCreate.dto';
 import { AuthService } from './auth.service';
 import { UserLoginDto } from 'src/common/dto/UserLogin.dto';
 import { ResponseSuccess } from 'src/common/interfaces/response.interface';
+import { UpdateUserDTO } from 'src/common/dto/UpdateUser.dto';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -36,6 +40,7 @@ export class AuthController {
   }
 
   @Get('/profile')
+  @UseGuards(RolesGuard)
   async getProFile(@Request() req) {
     try {
       const payload = req.user;
@@ -43,6 +48,17 @@ export class AuthController {
       return new ResponseSuccess(res);
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  @Put()
+  async updateProfile(@Body() updateUserDTO: UpdateUserDTO) {
+    try {
+      const resData = await this.authService.updateUser(updateUserDTO);
+
+      return new ResponseSuccess(resData);
+    } catch (error) {
+      throw new BadRequestException('');
     }
   }
 }

@@ -68,6 +68,7 @@ import { FormModule } from './form/form.module';
     TiktokModule,
     AffiliateModule,
     FormModule,
+    
   ],
   controllers: [],
   providers: [MailService, EmailGateway, EmailProcessor],

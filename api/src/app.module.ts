@@ -18,6 +18,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { FootageModule } from './module/footage/footage.module';
 import { CrmModule } from './module/crm/crm.module';
+import { TiktokModule } from './module/tiktok/tiktok.module';
 
 @Module({
   imports: [
@@ -28,6 +29,11 @@ import { CrmModule } from './module/crm/crm.module';
         uri: configService.get<string>('DATABASE_URI'),
       }),
       inject: [ConfigService],
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
     }),
     AuthModule,
     TestModule,
@@ -43,6 +49,7 @@ import { CrmModule } from './module/crm/crm.module';
     }),
     FootageModule,
     CrmModule,
+    TiktokModule,
   ],
   controllers: [],
   providers: [

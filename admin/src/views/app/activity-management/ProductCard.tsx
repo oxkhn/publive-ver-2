@@ -1,6 +1,9 @@
+'use client'
+import CustomTextField from '@/@core/components/mui/TextField'
 import { ProductType } from '@/types/product.type'
-import { Card, CardContent } from '@mui/material'
+import { Button, Card, CardContent, IconButton } from '@mui/material'
 import Image from 'next/image'
+import { useState } from 'react'
 
 type Props = {
     product: ProductType
@@ -8,12 +11,47 @@ type Props = {
 
 const ProductCard = (props: Props) => {
     const { product } = props
+    const [isEdit, setIsEdit] = useState(false)
 
     return (
         <div className='flex flex-col relative gap-2 rounded-md bg-white shadow-sm p-3 border border-gray-200'>
-            <div className='absolute'>
-
+            <div
+                className='absolute top-2 right-4 h-10 w-10 rounded-full grid place-items-center bg-gray-300/50 hover:bg-gray-300 cursor-pointer'
+                onClick={() => {
+                    setIsEdit(true)
+                }}
+            >
+                <i className='tabler-pencil-minus text-primary' />
             </div>
+            {isEdit && (
+                <div className='flex flex-col gap-4 items-center p-4 absolute inset-0 bg-white z-10 rounded-md'>
+                    <div className='flex justify-between items-center w-full'>
+                        <p className='font-medium'>Edit</p>
+                        <IconButton
+                            color='primary'
+                            onClick={() => {
+                                setIsEdit(false)
+                            }}
+                        >
+                            <i className='tabler-x' />
+                        </IconButton>
+                    </div>
+
+                    <CustomTextField label='HC' />
+                    <CustomTextField label='Commission' />
+
+                    <Button
+                        variant='contained'
+                        className='mt-auto w-full'
+                        onClick={() => {
+                            setIsEdit(false)
+                        }}
+                    >
+                        Save
+                    </Button>
+                </div>
+            )}
+
             <Image
                 className='w-full h-fit rounded  aspect-square'
                 src={product.imageList[0]}

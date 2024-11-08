@@ -5,7 +5,7 @@ export const useGetCampaignDetail = () => {
   return useMutation({
     mutationKey: ["GET_CAMPAIGN"],
     mutationFn: async (id: string) => {
-      const response = await axios.get("/api2/campaign/" + id);
+      const response = await axios.get("/api/campaign/" + id);
       return response.data;
     },
   });

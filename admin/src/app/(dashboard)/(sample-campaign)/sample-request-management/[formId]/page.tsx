@@ -2,13 +2,13 @@
 import { redirect } from 'next/navigation'
 
 // Type Imports
-import type { InvoiceType } from '@/types/apps/invoiceTypes'
+// import type { InvoiceType } from '@/types/apps/invoiceTypes'
 
-// Component Imports
-import Preview from '@views/apps/invoice/preview'
+// // Component Imports
+// import Preview from '@views/apps/invoice/preview'
 
-// Data Imports
-import { getInvoiceData } from '@/app/server/actions'
+// // Data Imports
+// import { getInvoiceData } from '@/app/server/actions'
 
 /**
  * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the
@@ -29,16 +29,17 @@ import { getInvoiceData } from '@/app/server/actions'
 } */
 
 const PreviewPage = async ({ params }: { params: { id: string } }) => {
-  // Vars
-  const data = await getInvoiceData()
+    // Vars
+    // const data = await getInvoiceData()
 
-  const filteredData = data?.filter((invoice: InvoiceType) => invoice.id === params.id)[0]
+    // const filteredData = data?.filter((invoice: InvoiceType) => invoice.id === params.id)[0]
 
-  if (!filteredData) {
-    redirect('/not-found')
-  }
+    // if (!filteredData) {
+    //   redirect('/not-found')
+    // }
 
-  return filteredData ? <Preview invoiceData={filteredData} id={params.id} /> : null
+    // return filteredData ? <Preview invoiceData={filteredData} id={params.id} /> : null
+    return <></>
 }
 
 export default PreviewPage

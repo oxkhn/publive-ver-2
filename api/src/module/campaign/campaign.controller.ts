@@ -19,6 +19,7 @@ import {
   multerOptions,
   SUPPORTED_FILES_EXCEL,
 } from 'src/common/utils/UploadUtils';
+import { CampaignUpdateProductDTO } from 'src/common/dto/CampaignUpdateProduct.dto';
 
 @Controller('campaign')
 export class CampaignController {
@@ -130,6 +131,22 @@ export class CampaignController {
     try {
       const campaign = await this.campaignService.detailCampaign(id);
       return new ResponseSuccess(campaign);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Post('/:id/update-product')
+  async updateProductCampaign(
+    @Param() id: string,
+    @Body() productCampaign: CampaignUpdateProductDTO,
+  ) {
+    try {
+      const products = await this.campaignService.updateProductCampaign(
+        productCampaign,
+        id,
+      );
+      return new ResponseSuccess(products);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

@@ -62,7 +62,16 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     {
         label: 'CRM',
         icon: 'tabler-smart-home',
-        href: '/user'
+        children: [
+            {
+                label: 'Dashboard',
+                href: '/crm/dashboard'
+            },
+            {
+                label: 'User List',
+                href: '/crm'
+            }
+        ]
     }
 ]
 

@@ -19,6 +19,7 @@ const DialogReviewProduct = (props: Props) => {
     const { isOpenModal, openModal, closeModal } = useModal()
 
     const { products } = useCampaignDetailContext()
+    
     return (
         <>
             <DialogSelectAddOption open={isOpenModal} handleClose={closeModal} />

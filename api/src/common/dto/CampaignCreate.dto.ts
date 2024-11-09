@@ -40,7 +40,7 @@ export class CreateCampaignDto {
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  productSKUs: string[];
+  productSKUs: any[];
 
   @IsString()
   @IsOptional()

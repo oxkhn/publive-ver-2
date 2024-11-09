@@ -8,6 +8,7 @@ import { Campaign } from 'src/common/models/campaign.model';
 import { readExcelFileAffiliate } from 'src/common/utils/FormatCsvUtils';
 import { ProductService } from '../product/product.service';
 import { Product } from 'src/common/models/product.model';
+import { CampaignUpdateProductDTO } from 'src/common/dto/CampaignUpdateProduct.dto';
 
 @Injectable()
 export class CampaignService {
@@ -28,6 +29,18 @@ export class CampaignService {
         );
 
         if (oldCampaign) {
+          const newProductSku = [];
+          if (
+            createCampaignDto.productSKUs &&
+            createCampaignDto.productSKUs.length > 0
+          ) {
+            for (let i = 0; i < createCampaignDto.productSKUs.length; i++) {
+              newProductSku.push(JSON.parse(createCampaignDto.productSKUs[i]));
+            }
+
+            createCampaignDto.productSKUs = newProductSku;
+          }
+
           const newCampaign = await this.campaignModel.findByIdAndUpdate(
             createCampaignDto._id,
             createCampaignDto,
@@ -87,12 +100,16 @@ export class CampaignService {
       let sdks = campaign.productSKUs;
       const products = [];
       for (let i = 0; i < sdks.length; i++) {
-        const product = await this.productService.getProduct(sdks[i]);
+        let product = (
+          await this.productService.getProduct(sdks[i].sku)
+        ).toObject();
+        product['hc'] = sdks[i].hc;
+        product['coms'] = sdks[i].coms;
         products.push(product);
       }
 
       // Create a plain object and assign products to it
-      const campaignObject: Campaign & { products: Product[] } = {
+      const campaignObject: Campaign & { products: any[] } = {
         ...campaign.toObject(),
         products,
       };
@@ -163,14 +180,55 @@ export class CampaignService {
       let sdks = campaign.productSKUs;
       const products = [];
       for (let i = 0; i < sdks.length; i++) {
-        const product = await this.productService.getProduct(sdks[i]);
-        products.push(product);
+        let product = (
+          await this.productService.getProduct(sdks[i].sku)
+        ).toObject();
+
+        const productWithAdditionalData = {
+          ...product, // Copy all properties from the original product
+          hc: sdks[i].hc, // Add hc
+          coms: sdks[i].coms, // Add coms
+        };
+        products.push(productWithAdditionalData);
       }
 
       return products;
     } catch (error) {
       this.logger.error(error.message);
       throw new BadRequestException('Get Product error');
+    }
+  }
+
+  async updateProductCampaign(
+    productCampaign: CampaignUpdateProductDTO,
+    campaignId: string,
+  ) {
+    try {
+      const campaign = await this.campaignModel.findOne({
+        _id: new Types.ObjectId(campaignId),
+      });
+      if (!campaign) throw new BadRequestException('Cannot find campaign.');
+
+      const updatedCampaign = await this.campaignModel.findOneAndUpdate(
+        {
+          _id: new Types.ObjectId(campaignId),
+          'productSKUs.sku': productCampaign.sku,
+        },
+        {
+          $set: {
+            'productSKUs.$[elem].hc': productCampaign.hc,
+            'productSKUs.$[elem].coms': productCampaign.coms,
+          },
+        },
+        {
+          new: true,
+          arrayFilters: [{ 'elem.sku': productCampaign.sku }],
+        },
+      );
+
+      return productCampaign;
+    } catch (error) {
+      throw new BadRequestException(error);
     }
   }
 }

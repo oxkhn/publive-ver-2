@@ -16,8 +16,10 @@ export type ProductType = {
     imageList: string[]
     availableStock: number
     tags: string[]
+    hc: number
+    coms: number
     description: string
-    affiliateLink: string 
+    affiliateLink: string
     publisher: string
     isActive: boolean
     typeShort: string
@@ -26,5 +28,3 @@ export type ProductType = {
     unitsSold: number
     isAuthentic: boolean
 }
-
-

@@ -4,9 +4,12 @@ import { ChildrenType } from '@/@core/types'
 import { ICRMDataWithId } from '@/types/crmData.type'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useGetCRM } from '../api/crm/useGetCRM'
+import { usePostCRMCsv } from '../api/crm/usePostCRMCsv'
+import { toast } from 'react-toastify'
 
 export type CrmContextProps = {
     affiliates: ICRMDataWithId[]
+    handleUploadCSV: (file: any) => Promise<any>
 }
 
 export const CrmContext = createContext<CrmContextProps | undefined>(undefined)
@@ -25,11 +28,28 @@ export const CrmProvider = (props: Props) => {
         } catch (error) {}
     }
 
+    const _createViaCsv = usePostCRMCsv()
+    const handleUploadCSV = async (file: any) => {
+        const form = new FormData()
+        form.append('file', file)
+
+        await _createViaCsv
+            .mutateAsync(form)
+            .then(() => {
+                toast.success('Upload file thành công.')
+                return true
+            })
+            .catch(() => {
+                toast.error('Upload file thất bại.')
+                return false
+            })
+    }
+
     useEffect(() => {
         handleGetData()
     }, [])
 
-    const value = { affiliates }
+    const value = { affiliates, handleUploadCSV }
 
     return <CrmContext.Provider value={value}>{props.children}</CrmContext.Provider>
 }

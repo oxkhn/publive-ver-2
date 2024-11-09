@@ -133,6 +133,10 @@ const DialogSelectProduct = (props: Props) => {
                         </Typography>
                     </div>
                 )
+            }),
+            columnHelper.accessor('availableStock', {
+                header: 'Stock',
+                cell: ({ row }) => <Typography className='w-fit'>{row.original.availableStock}</Typography>
             })
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,8 +147,8 @@ const DialogSelectProduct = (props: Props) => {
     const initialRowSelection = () => {
         const selection: Record<string, boolean> = {}
         if (campaignData.productSKUs && campaignData.productSKUs.length > 0) {
-            campaignData.productSKUs.forEach(sku => {
-                selection[sku] = true
+            campaignData.productSKUs.forEach(item => {
+                selection[item.sku] = true
             })
         }
 
@@ -186,7 +190,14 @@ const DialogSelectProduct = (props: Props) => {
 
     const handleSubmit = () => {
         const selectedRows = table.getSelectedRowModel().rows
-        const skus = selectedRows.map(row => row.original.sku)
+        const skus = selectedRows.map(row => {
+            return {
+                sku: row.original.sku,
+                hc: 0,
+                coms: row.original.commission
+            }
+        })
+
         handleInputChange(skus, 'productSKUs')
 
         const updatedData = {

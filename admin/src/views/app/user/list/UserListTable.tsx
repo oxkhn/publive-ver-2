@@ -58,6 +58,9 @@ import { UsersType } from '@/types/userTypes'
 import { ICRMData } from '@/types/crmData.type'
 import { useCrmContext } from '@/services/provider/CrmProvider'
 import Image from 'next/image'
+import { CardContent } from '@mui/material'
+import DialogUploadCSV from './DialogUploadCSV'
+import { useModal } from '@/hooks/useModal'
 
 declare module '@tanstack/table-core' {
     interface FilterFns {
@@ -311,21 +314,22 @@ const UserListTable = () => {
         getFacetedMinMaxValues: getFacetedMinMaxValues()
     })
 
-    const getAvatar = (params: Pick<UsersType, 'avatar' | 'fullName'>) => {
-        const { avatar, fullName } = params
-
-        if (avatar) {
-            return <CustomAvatar src={avatar} size={34} />
-        } else {
-            return <CustomAvatar size={34}>{getInitials(fullName as string)}</CustomAvatar>
-        }
-    }
+    const { isOpenModal, closeModal, openModal } = useModal()
 
     return (
         <>
             <Card>
-                <CardHeader title='Filters' className='pbe-4' />
-                {/* <TableFilters setData={setFilteredData} tableData={data} /> */}
+                <DialogUploadCSV open={isOpenModal} handleClose={closeModal} />
+                <CardContent className='pbe-4 flex justify-end'>
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        startIcon={<i className='tabler-plus' />}
+                        onClick={openModal}
+                    >
+                        Upload CRM
+                    </Button>
+                </CardContent>
                 <div className='flex justify-between flex-col items-start md:flex-row md:items-center p-6 border-bs gap-4'>
                     <CustomTextField
                         select

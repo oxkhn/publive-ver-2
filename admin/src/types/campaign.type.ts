@@ -5,7 +5,7 @@ export type CampaignType = {
     startDate: Date
     endDate: Date
     status: string
-    productSKUs?: string[]
+    productSKUs?: ProductCampaign[]
     banner?: string
     registerLink: string
     registerStartDate: Date
@@ -15,6 +15,12 @@ export type CampaignType = {
     bu: string
     cat: string
     brand: string
+}
+
+export type ProductCampaign = {
+    sku: string
+    hc: number
+    coms: number
 }
 
 export type CampaignTypeWithId = CampaignType & { _id: string }

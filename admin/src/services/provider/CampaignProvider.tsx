@@ -1,9 +1,8 @@
 'use client'
-
 import { ChildrenType } from '@/@core/types'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useGetAllCampaign } from '../api/campaign/useGetAllCampaign'
-import { CampaignTypeWithId } from '@/types/campaign.type'
+import { CampaignTypeWithId, ProductCampaign } from '@/types/campaign.type'
 import { useDeleteCampaign } from '../api/campaign/useDeleteCampaign'
 
 type CampaignContextProps = {

@@ -1,8 +1,6 @@
 'use client'
 import { ChildrenType } from '@/@core/types'
-import useGetProductOfCampaign from '@/services/api/campaign/useGetProductOfCampaign'
-import { usePostCreateCampaign } from '@/services/api/campaign/usePostCreateCampaign'
-import { CampaignType, CampaignTypeWithId } from '@/types/campaign.type'
+import { CampaignType, CampaignTypeWithId, ProductCampaign } from '@/types/campaign.type'
 import { ProductType } from '@/types/product.type'
 import { isValidURL } from '@/utils/string'
 import { addDays } from 'date-fns'
@@ -10,19 +8,22 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { BU } from './ProductProvider'
 import { useGetCategories } from '../api/product/useGetCategories'
+import useGetProductOfCampaign from '../api/campaign/useGetProductOfCampaign copy'
+import { usePostCreateCampaign } from '../api/campaign/usePostCreateCampaign'
+import { usePostProductOfCampaign } from '../api/campaign/usePostProductOfCampaign'
 
 type CampaignDetailContextProps = {
     campaignData: CampaignTypeWithId
     setupStep: number
     products: ProductType[]
     categories: any
-
     nextStep: () => void
     prevStep: () => void
     setBannerFile: any
     onSubmit: (updatedData?: CampaignTypeWithId) => Promise<void>
     handleInputChange: (e: any, name: keyof CampaignTypeWithId, callback?: () => void) => void
     initCampaign: (campaign: CampaignTypeWithId) => void
+    handleEditProductCampaign: (productCampaign: ProductCampaign) => Promise<ProductCampaign>
 }
 
 export const CampaignDetailContext = createContext<CampaignDetailContextProps | undefined>(undefined)
@@ -51,7 +52,7 @@ export const CampaignDetailProvider = (props: Props) => {
         registerEndDate: addDays(new Date(), 1000),
         status: 'active',
         tags: '',
-        productSKUs: [],
+        productSKUs: [] as any,
         type: 1,
         _id: '',
         bu: '',
@@ -157,9 +158,12 @@ export const CampaignDetailProvider = (props: Props) => {
 
         Object.entries(campaign).forEach(([key, value]) => {
             if (Array.isArray(value)) {
-                value.forEach((item, index) => {
-                    formData.append(`${key}[${index}]`, item)
+                value.forEach((item: any, index) => {
+                    formData.append(`${key}[${index}]`, typeof item === 'object' ? JSON.stringify(item) : item)
                 })
+            } else if (typeof value === 'object') {
+                // Convert object to JSON string
+                formData.append(key, JSON.stringify(value))
             } else {
                 formData.append(key, value as string | Blob)
             }
@@ -177,6 +181,19 @@ export const CampaignDetailProvider = (props: Props) => {
         } catch (error) {}
     }
 
+    const _postProductCampaign = usePostProductOfCampaign()
+    const handleEditProductCampaign = async (productCampaign: ProductCampaign) => {
+        try {
+            const body = {
+                data: productCampaign,
+                id: campaignData._id
+            }
+
+            const res = await _postProductCampaign.mutateAsync(body)
+            return res.data
+        } catch (error) {}
+    }
+
     useEffect(() => {
         getCategories()
     }, [])
@@ -191,7 +208,8 @@ export const CampaignDetailProvider = (props: Props) => {
         handleInputChange,
         setBannerFile,
         onSubmit,
-        initCampaign
+        initCampaign,
+        handleEditProductCampaign
     }
 
     return <CampaignDetailContext.Provider value={value}>{props.children}</CampaignDetailContext.Provider>

@@ -1,5 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+export class ProductCampaign {
+  @Prop({ type: String })
+  sku: string;
+
+  @Prop({ type: Number, default: 0 })
+  hc: number;
+
+  @Prop({ type: Number, default: 0 })
+  coms: number;
+}
+
 @Schema({
   timestamps: true,
 })
@@ -26,8 +37,8 @@ export class Campaign {
   })
   status: string;
 
-  @Prop({ type: [String], default: [] })
-  productSKUs: string[];
+  @Prop({ type: [ProductCampaign], default: [] })
+  productSKUs: ProductCampaign[];
 
   @Prop({ type: String })
   banner: string;

@@ -12,7 +12,7 @@ import Button from "@/packages/@ui-kit/Button";
 import { toast } from "react-toastify";
 
 interface CampaignProductCardProps {
-  product?: ProductType;
+  product?: any;
 }
 
 const CampaignProductCard: React.FC<CampaignProductCardProps> = (props) => {
@@ -79,16 +79,19 @@ const CampaignProductCard: React.FC<CampaignProductCardProps> = (props) => {
           <div className="mt-2 flex gap-3">
             <div className="flex-1">
               <Button className="!line-clamp-2 flex flex-1 flex-col !gap-0 !whitespace-normal !bg-[#13C44F] !p-0 px-1 !text-[10px] leading-3">
-                <p>Hot cash +10k/order</p>
+                <p>Hot cash {product.hc}k/order</p>
               </Button>
             </div>
 
             <div className="flex-1">
               <Button
-                className="!line-clamp-2 flex flex-1 flex-col !gap-0 !whitespace-normal !p-0 px-1 !text-[10px] leading-3"
+                className="!line-clamp-2 flex w-full flex-1 flex-col !gap-0 !whitespace-normal !p-0 px-1 !text-[10px] leading-3"
                 variant="secondary"
               >
-                <p>Chiết khấu 25%</p>
+                <p>
+                  Chiết khấu <br />
+                  {product.coms * 100}%
+                </p>
               </Button>
             </div>
           </div>

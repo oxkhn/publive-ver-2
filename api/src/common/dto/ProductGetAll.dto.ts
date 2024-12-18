@@ -43,7 +43,6 @@ export class GetProductDto {
   cat?: string;
 
   @IsOptional()
-  @IsString()
   publisher?: string[];
 
   @IsOptional()

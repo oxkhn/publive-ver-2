@@ -83,16 +83,15 @@ export class ProductService {
         query.cat = cat;
       }
 
-      if (publisher && publisher.toLowerCase() !== '') {
-        query.publisher = publisher;
+      if (Array.isArray(publisher)) {
+        // If publisher is an array, check if it's not empty
+        if (publisher.length > 0) {
+          query.publisher = publisher;
+        }
       }
 
       if (filterType) {
         query.type = filterType;
-      }
-
-      if (publisher && publisher.toLowerCase() !== '') {
-        query.publisher = publisher;
       }
 
       const nameSkuConditions: any[] = [];

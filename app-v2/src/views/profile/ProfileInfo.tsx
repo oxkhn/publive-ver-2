@@ -7,6 +7,7 @@ import Dropdown from "@/packages/@ui-kit/Dropdown";
 import ImageKit from "@/packages/@ui-kit/Image";
 import ImageEditor from "@/packages/@ui-kit/Image/ImageEditor";
 import Line from "@/packages/@ui-kit/Line";
+import { useAuthContext } from "@/services/AuthProvider";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
@@ -30,6 +31,7 @@ const platformItems = [
 ];
 
 const ProfileInfor = () => {
+  const { user } = useAuthContext();
   const [date, setDate] = useState(new Date());
   const [platform, setPlatform] = useState(platformItems[0]);
   const [time, setTime] = useState(dayjs().utc().add(30, "day"));
@@ -37,47 +39,47 @@ const ProfileInfor = () => {
   const [formData, setFormData] = useState({ name: "" });
   const [formError, setFormError] = useState<string[]>([]);
 
-  //   const onSetFormData = (key: string, value: string | boolean | any) => {
-  //     setFormError([]);
-  //     if (key.includes(".")) {
-  //       const keys = key.split(".");
+  const onSetFormData = (key: string, value: string | boolean | any) => {
+    setFormError([]);
+    if (key.includes(".")) {
+      const keys = key.split(".");
 
-  //       setFormData((prevData: any) => {
-  //         return {
-  //           ...prevData,
-  //           [keys[0]]: {
-  //             ...prevData[keys[0]],
-  //             [keys[1]]: {
-  //               ...prevData[keys[0]][keys[1]],
-  //               [keys[2]]: value,
-  //             },
-  //           },
-  //         };
-  //       });
-  //     } else {
-  //       setFormData({ ...formData, [key]: value });
-  //     }
-  //   };
+      setFormData((prevData: any) => {
+        return {
+          ...prevData,
+          [keys[0]]: {
+            ...prevData[keys[0]],
+            [keys[1]]: {
+              ...prevData[keys[0]][keys[1]],
+              [keys[2]]: value,
+            },
+          },
+        };
+      });
+    } else {
+      setFormData({ ...formData, [key]: value });
+    }
+  };
 
-  //   useEffect(() => {
-  //     if (user) {
-  //       setFormData(user);
-  //       setTime(dayjs.utc(user.dob));
-  //     }
-  //   }, [user]);
+  useEffect(() => {
+    if (user) {
+      setFormData(user);
+      setTime(dayjs.utc(user.dob));
+    }
+  }, [user]);
 
-  //   const handleUpdateProfile = () => {
-  //     try {
-  //       updateProfile(formData);
-  //     } catch (error) {}
-  //   };
+  const handleUpdateProfile = () => {
+    try {
+      // updateProfile(formData);
+    } catch (error) {}
+  };
 
-  //   const handleDateChange = (date: any) => {
-  //     if (date) {
-  //       setTime(date.utc());
-  //       onSetFormData("dob", date.utc());
-  //     }
-  //   };
+  const handleDateChange = (date: any) => {
+    if (date) {
+      setTime(date.utc());
+      onSetFormData("dob", date.utc());
+    }
+  };
 
   return (
     <div className="shadow-card flex w-full flex-col rounded-lg bg-white px-6 py-8">

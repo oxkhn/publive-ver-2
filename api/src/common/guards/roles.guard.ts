@@ -16,12 +16,18 @@ export class RolesGuard implements CanActivate {
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
     );
+    const request = context.switchToHttp().getRequest<Request>();
 
     if (!requiredRoles) {
+      // No specific roles required, but still verify and assign user
+      const token = request.headers.authorization?.split(' ')[1];
+      if (token) {
+        const user = await this.jwtService.verifyAsync(token);
+        request['user'] = user;
+      }
       return true;
     }
 
-    const request = context.switchToHttp().getRequest<Request>();
     const token = request.headers.authorization?.split(' ')[1];
     if (!token) {
       return false;
@@ -30,7 +36,6 @@ export class RolesGuard implements CanActivate {
     try {
       const user = await this.jwtService.verifyAsync(token);
       request['user'] = user; // Ensure `request['user']` is correctly set
-
       return requiredRoles.some((role) => user.roles?.includes(role)); // Updated to `user.roles`
     } catch (err) {
       return false;

@@ -117,7 +117,7 @@ export const AuthProvider = (props: Props) => {
   };
 
   useEffect(() => {
-    const storedToken = Cookies.get("tokenAccess");
+    const storedToken = Cookies.get("accessToken");
     if (storedToken) {
       getProfile(storedToken);
       setToken(storedToken);

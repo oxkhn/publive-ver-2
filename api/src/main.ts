@@ -224,10 +224,10 @@ async function bootstrap() {
   // tiktokService.runFetchDataTiktokVideo({ keyword: '#dove', pages: 5 });
 
   // Sau khi server đã sẵn sàng, bắt đầu loop
-  for (const hashtag of hashtags) {
-    console.log(`Crawling data for: ${hashtag}`);
-    await tiktokService.runFetchDataTiktokVideo({ keyword: hashtag, pages: 5 });
-  }
+  // for (const hashtag of hashtags) {
+  //   console.log(`Crawling data for: ${hashtag}`);
+  //   await tiktokService.runFetchDataTiktokVideo({ keyword: hashtag, pages: 5 });
+  // }
 
   if (module.hot) {
     module.hot.accept();

@@ -23,10 +23,6 @@ export class GetProductDto {
   sku?: string;
 
   @IsOptional()
-  @IsString()
-  cat?: string;
-
-  @IsOptional()
   @IsNumber()
   commission?: number;
 
@@ -44,7 +40,11 @@ export class GetProductDto {
 
   @IsOptional()
   @IsString()
-  publisher?: string;
+  cat?: string;
+
+  @IsOptional()
+  @IsString()
+  publisher?: string[];
 
   @IsOptional()
   @IsDateString()

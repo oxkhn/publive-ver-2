@@ -61,7 +61,7 @@ export class Social {
   tiktok: SocialLink;
   youtube: SocialLink;
   other: SocialLink;
-  shopeeLive: SocialLink;
+  shopeeUsername: SocialLink;
   shopee: SocialLink;
   instagram: SocialLink;
 }
@@ -85,6 +85,9 @@ export class User {
 
   @Prop({ type: String, required: true })
   password: string;
+
+  @Prop({ type: String, required: true })
+  address: string;
 
   @Prop({ type: Date, default: Date.now })
   dob: Date;
@@ -115,8 +118,8 @@ export class User {
       youtube: { linkUrl: '', verify: false, accessToken: '' },
       instagram: { linkUrl: '', verify: false, accessToken: '' },
       other: { linkUrl: '', verify: false, accessToken: '' },
-      shopeeLive: { linkUrl: '', verify: false, accessToken: '' },
       shopee: { linkUrl: '', verify: false, accessToken: '' },
+      shopeeUsername: { linkUrl: '', verify: false, accessToken: '' },
     },
   })
   social: Social;

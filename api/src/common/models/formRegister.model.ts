@@ -26,7 +26,7 @@ export class FormRegisterAffiliate {
   email: string;
 
   @Prop({ type: String, default: '' })
-  shopeeAffiliateAccount: string;
+  shopeeUsername: string;
 
   @Prop({ type: String, default: '' })
   facebookLink: string;
@@ -54,12 +54,6 @@ export class FormRegisterAffiliate {
 
   @Prop({ type: String, default: '' })
   address: string;
-
-  @Prop({ type: String, default: '' })
-  receivePhoneNumber: string;
-
-  @Prop({ type: String, default: '' })
-  receiveName: string;
 
   @Prop({ type: [String] })
   productSKUs: string[];

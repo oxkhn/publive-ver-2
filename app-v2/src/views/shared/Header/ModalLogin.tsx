@@ -74,36 +74,38 @@ const ModalLogin = (props: Props) => {
                 validators={{
                   onChange: ({ value }) => {
                     if (!value) {
-                      return "Email là bắt buộc"; // Đã chỉnh sửa thông báo
+                      return "Email là bắt buộc"; // Required email
                     } else if (value.length < 3) {
-                      return "Email phải có ít nhất 3 ký tự";
+                      return "Email phải có ít nhất 3 ký tự"; // Minimum length
                     } else if (!/\S+@\S+\.\S+/.test(value)) {
-                      return "Định dạng email không hợp lệ"; // Thêm xác thực cho định dạng email
+                      return "Định dạng email không hợp lệ"; // Invalid email format
                     }
                     return undefined;
                   },
                   onChangeAsync: async ({ value }) => {
                     await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate async validation
                     if (value.includes("error")) {
-                      return 'The word "error" is not allowed in email'; // Updated message for clarity
+                      return 'The word "error" is not allowed in email'; // Async validation error
                     }
                     return undefined;
                   },
                 }}
-                children={(field) => (
+              >
+                {(field) => (
                   <div>
                     <Input
                       title="Email"
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e: any) => field.handleChange(e.target.value)}
+                      onChange={(e:any) => field.handleChange(e.target.value)}
                     />
                     <em role="alert" className="text-xs text-red">
                       {field.state.meta.errors.join(", ")}
                     </em>
                   </div>
                 )}
-              />
+              </form.Field>
+
               <form.Field
                 name="password"
                 validators={{
@@ -116,7 +118,8 @@ const ModalLogin = (props: Props) => {
                     return undefined;
                   },
                 }}
-                children={(field) => (
+              >
+                {(field) => (
                   <div>
                     <Input
                       title="Mật Khẩu"
@@ -132,7 +135,7 @@ const ModalLogin = (props: Props) => {
                     ) : null}{" "}
                   </div>
                 )}
-              />
+              </form.Field>
               <span className="cursor-pointer text-end text-sm text-primary">
                 Quên mật khẩu?
               </span>

@@ -88,7 +88,8 @@ const ModalRegister = (props: Props) => {
                         return undefined;
                       },
                     }}
-                    children={(field) => (
+                  >
+                    {(field) => (
                       <div>
                         <Input
                           title="Tên"
@@ -105,7 +106,7 @@ const ModalRegister = (props: Props) => {
                         ) : null}{" "}
                       </div>
                     )}
-                  />
+                  </form.Field>
                   <form.Field
                     name="phoneNumber"
                     validators={{
@@ -122,7 +123,8 @@ const ModalRegister = (props: Props) => {
                         return undefined;
                       },
                     }}
-                    children={(field) => (
+                  >
+                    {(field) => (
                       <div>
                         <Input
                           title="Số điện thoại"
@@ -139,7 +141,7 @@ const ModalRegister = (props: Props) => {
                         ) : null}{" "}
                       </div>
                     )}
-                  />
+                  </form.Field>
                 </div>
                 <form.Field
                   name="email"
@@ -162,7 +164,8 @@ const ModalRegister = (props: Props) => {
                       return undefined;
                     },
                   }}
-                  children={(field) => (
+                >
+                  {(field) => (
                     <div>
                       <Input
                         title="Email"
@@ -177,7 +180,7 @@ const ModalRegister = (props: Props) => {
                       </em>
                     </div>
                   )}
-                />
+                </form.Field>
 
                 <form.Field
                   name="password"
@@ -191,7 +194,8 @@ const ModalRegister = (props: Props) => {
                       return undefined;
                     },
                   }}
-                  children={(field) => (
+                >
+                  {(field) => (
                     <div>
                       <Input
                         title="Mật khẩu"
@@ -209,7 +213,7 @@ const ModalRegister = (props: Props) => {
                       ) : null}{" "}
                     </div>
                   )}
-                />
+                </form.Field>
                 <form.Field
                   name="rePassword"
                   validators={{
@@ -224,7 +228,8 @@ const ModalRegister = (props: Props) => {
                       return undefined;
                     },
                   }}
-                  children={(field) => (
+                >
+                  {(field) => (
                     <div>
                       <Input
                         title="Nhập lại mật khẩu"
@@ -242,7 +247,7 @@ const ModalRegister = (props: Props) => {
                       ) : null}{" "}
                     </div>
                   )}
-                />
+                </form.Field>
               </div>
               <div className="mt-6 text-center">
                 <Button title="Đăng ký" className="w-full" />

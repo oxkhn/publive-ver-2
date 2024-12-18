@@ -15,6 +15,7 @@ const ProductProfile = () => {
           {[...Array(10)].map((_, index) => {
             return (
               <Image
+                key={index}
                 src={ImageDemo}
                 alt=""
                 width={84}

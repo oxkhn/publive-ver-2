@@ -1,4 +1,5 @@
 "use client";
+
 import React, { HTMLProps } from "react";
 import "./checkbox.css";
 import clsx from "clsx";
@@ -6,7 +7,7 @@ import clsx from "clsx";
 export type CheckBoxType = {
   isChecked: boolean;
   onChange: (isChecked: boolean) => void;
-  className?: HTMLProps<HTMLElement>["className"];
+  className?:string;
 };
 
 const Checkbox: React.FC<CheckBoxType> = (props) => {

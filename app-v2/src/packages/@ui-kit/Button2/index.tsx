@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { HTMLProps } from "react";
-
+import "./style.css";
 interface Props {
   children?: React.ReactNode;
   className?: HTMLProps<HTMLButtonElement>["className"];
@@ -14,9 +14,6 @@ interface Props {
   type?: "button" | "submit" | "reset"; // Explicitly define valid button types
   isLoading?: boolean;
 }
-
-import { ring } from "ldrs";
-ring.register();
 
 const Button = (props: Props) => {
   const {
@@ -71,13 +68,26 @@ const Button = (props: Props) => {
     >
       {isLoading ? (
         // Default values shown
-        <l-ring
-          size="20"
-          stroke="2"
-          bg-opacity="0"
-          speed="3"
-          color={variant == "contained" ? "white" : "#3067F2"}
-        ></l-ring>
+        <svg className="container" viewBox="0 0 40 40" height="40" width="40">
+          <circle
+            className="track"
+            cx="20"
+            cy="20"
+            r="17.5"
+            // pathlength="100"
+            stroke-width="5px"
+            fill="none"
+          />
+          <circle
+            className="car"
+            cx="20"
+            cy="20"
+            r="17.5"
+            // pathlength="100"
+            stroke-width="5px"
+            fill="none"
+          />
+        </svg>
       ) : (
         <p className="text-sm font-semibold">{title}</p>
       )}

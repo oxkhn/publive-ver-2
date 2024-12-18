@@ -1,18 +1,15 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface BreadcrumbProps {
   title?: string;
 }
 
-const Breadcrumb: React.FC<BreadcrumbProps> = (props) => {
-  const { title } = props;
-  const router = useRouter();
-
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
   const pathArray = usePathname()
-    .split("/")
-    .filter((path) => path);
+    ?.split("/")
+    .filter((path) => path) || [];
 
   return (
     <nav className="my-4 text-sm">

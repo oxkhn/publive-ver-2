@@ -9,11 +9,11 @@ import { BrandCategory, BU } from '@/services/provider/ProductProvider'
 
 const CreateStep1 = () => {
     const { campaignData, handleInputChange, categories: categoriesData } = useCampaignDetailContext()
+
     const [selectedBU, setSelectedBU] = useState<string>('')
     const [selectedCategory, setSelectedCategory] = useState<string>('')
     const [selectedBrand, setSelectedBrand] = useState<string>('')
-    const [publiser, setPubliser] = useState('')
-
+    
     const [categories, setCategories] = useState<BrandCategory[]>([])
     const [brands, setBrands] = useState<string[]>([])
 

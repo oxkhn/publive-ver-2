@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./style.css";
+import { Backdrop } from "@mui/material";
 
 interface IModalProps {
   isShow: boolean;
@@ -27,27 +28,19 @@ const Modal: React.FC<IModalProps> = (props) => {
   };
 
   const defaultCSS =
-    "fixed left-[50%] top-[50%] z-50 bg-background grid w-full max-w-[800px] !translate-x-[-50%] !translate-y-[-50%] gap-4 border-2 border-line p-6 shadow-lg duration-200 sm:rounded-lg overflow-auto";
-  const animationClass = isShow ? "animate-faded-in" : "animate-faded-out";
+    "fixed left-[50%] top-[50%] z-[1000] bg-background grid max-w-[800px] !translate-x-[-50%] !translate-y-[-50%] gap-4 w-fit p-6 max-sm:p-4 shadow-lg duration-200 rounded-lg overflow-auto";
 
-  const classes = clsx(defaultCSS, animationClass, className);
+  const classes = clsx(defaultCSS, className);
 
-  return shouldRender
+  return isShow
     ? ReactDOM.createPortal(
         <React.Fragment>
-          <div
-            data-state={isShow ? "open" : "closed"}
-            className="fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-faded-out data-[state=open]:animate-faded-in"
+          <Backdrop
+            sx={(theme) => ({ color: "#fff", zIndex: 999 })}
+            open={isShow}
             onClick={hide}
-          />
-          <div
-            role="dialog"
-            data-state={isShow ? "open" : "closed"}
-            className={classes}
-            onAnimationEnd={handleAnimationEnd}
-          >
-            {children}
-          </div>
+          ></Backdrop>
+          <div className={classes}>{children}</div>
         </React.Fragment>,
         document.body,
       )

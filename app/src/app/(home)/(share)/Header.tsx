@@ -10,6 +10,7 @@ import { useState } from "react";
 import RegisterProductProvider from "@/components/Modal/ModalRegisterProduct/RegisterProductProvider";
 import ImageKit from "@/packages/@ui-kit/Image";
 import Logo from "@/assets/images/logo_2.svg";
+import { ModalManager } from "./ModalManager";
 
 const Header = () => {
   const router = useRouter();
@@ -54,17 +55,7 @@ const Header = () => {
             onClick={() => setIsShowModalRegister(true)}
           />
 
-          {!user ? (
-            <Button
-              onClick={navigateLoginPage}
-              variant="secondary"
-              className="!rounded-full"
-            >
-              Đăng nhập
-            </Button>
-          ) : (
-            <UserMenu />
-          )}
+          {!user ? <ModalManager /> : <UserMenu />}
         </div>
       </div>
     </header>

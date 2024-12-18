@@ -9,7 +9,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { GetVideoDto } from './dto/GetTiktok.dto';
-import { PaginatedResponseSuccess, ResponseSuccess } from 'src/common/interfaces/response.interface';
+import {
+  PaginatedResponseSuccess,
+  ResponseSuccess,
+} from 'src/common/interfaces/response.interface';
 
 @Controller('tiktok')
 export class TiktokController {
@@ -36,7 +39,7 @@ export class TiktokController {
   @Get(':keyworld')
   async syncData(@Param('keyworld') keyworld: string) {
     try {
-      const res = await this.tiktokService.fetchTikTokSearch({
+      const res = await this.tiktokService.runFetchDataTiktokVideo({
         keyword: keyworld,
         pages: 5,
       });

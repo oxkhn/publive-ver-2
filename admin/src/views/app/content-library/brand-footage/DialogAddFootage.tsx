@@ -9,14 +9,18 @@ import {
     Divider,
     Grid,
     IconButton,
+    MenuItem,
     Typography
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useModal } from '@/hooks/useModal'
 import { FootageType } from '@/types/footage.type'
 import CustomTextField from '@/@core/components/mui/TextField'
 import EditorBasic from '@/components/Editer'
 import Image from 'next/image'
+import { useBrandFootageContext } from '@/services/provider/BrandFootageProvider'
+import { BrandCategory, BU } from '@/services/provider/ProductProvider'
+import { toast } from 'react-toastify'
 
 type Props = {
     open: boolean
@@ -26,15 +30,95 @@ type Props = {
 
 const DialogAddFootage = (props: Props) => {
     const { open, handleClose, footage } = props
+    const {
+        categories: categoriesData,
+        footageDetail,
+        createOrUpdateFootage,
+        handleInputChange
+    } = useBrandFootageContext()
 
     const [fileReview, setFileReview] = useState<any>(null)
+    const [bannerFile, setBannerFile] = useState<File>()
 
     const handleFileChange = (event: any) => {
         const file = event.target.files[0]
         if (file) {
             const fileURL = URL.createObjectURL(file)
             setFileReview(fileURL)
-            // setBannerFile(file)
+            setBannerFile(file)
+        }
+    }
+
+    const [selectedBU, setSelectedBU] = useState<string>('')
+    const [selectedCategory, setSelectedCategory] = useState<string>('')
+    const [selectedBrand, setSelectedBrand] = useState<string>('')
+
+    const [categories, setCategories] = useState<BrandCategory[]>([])
+    const [brands, setBrands] = useState<string[]>([])
+
+    // Handle BU change
+    const handleBUChange = (event: any) => {
+        handleInputChange(event.target.value as string, 'bu')
+        setSelectedBU(event.target.value as string)
+        setSelectedCategory('') // Reset category when BU changes
+        setSelectedBrand('') // Reset brand when BU changes
+        handleInputChange('', 'cat')
+        handleInputChange('', 'brand')
+    }
+
+    // Handle Category change
+    const handleCategoryChange = (event: any) => {
+        handleInputChange(event.target.value as string, 'cat')
+        setSelectedCategory(event.target.value as string)
+        setSelectedBrand('')
+        handleInputChange('', 'brand')
+    }
+
+    // Handle Brand change
+    const handleBrandChange = (event: any) => {
+        handleInputChange(event.target.value as string, 'brand')
+        setSelectedBrand(event.target.value as string)
+    }
+
+    useEffect(() => {
+        if (footageDetail) {
+            setSelectedBU(footageDetail?.bu || '')
+        }
+    }, [categoriesData, footageDetail])
+
+    useEffect(() => {
+        // Update categories based on selected BU
+        const updatedCategories = selectedBU
+            ? categoriesData.find((bu: BU) => bu.bu === selectedBU)?.categories || []
+            : []
+
+        if (updatedCategories.length > 0) {
+            setCategories(updatedCategories)
+            setSelectedCategory(footageDetail?.cat || '')
+        }
+    }, [selectedBU, categoriesData])
+
+    useEffect(() => {
+        const updatedBrands = selectedCategory ? categories.find(cat => cat.cat === selectedCategory)?.brands || [] : []
+        if (updatedBrands.length > 0) {
+            setBrands(updatedBrands)
+            setSelectedBrand(footageDetail?.brand || '')
+        }
+    }, [selectedCategory, categories])
+
+    const handleSubmit = () => {
+        if (bannerFile)
+            toast
+                .promise(createOrUpdateFootage(bannerFile), {
+                    pending: 'Initializing footage...',
+                    success: 'Footage initialized successfully.',
+                    error: 'Footage creation failed.'
+                })
+                .then(() => {
+                    handleClose()
+                })
+        else {
+            toast.error('Footage creation failed.')
         }
     }
 
@@ -53,15 +137,88 @@ const DialogAddFootage = (props: Props) => {
                 <DialogContent>
                     <Grid container spacing={4}>
                         <Grid item sm={12}>
-                            <CustomTextField fullWidth label='Title' />
+                            <CustomTextField
+                                fullWidth
+                                label='Title'
+                                value={footageDetail?.title}
+                                onChange={e => handleInputChange(e.target.value, 'title')}
+                            />
                         </Grid>
 
                         <Grid item sm={12}>
-                            <CustomTextField fullWidth label='Tags' />
+                            <CustomTextField
+                                fullWidth
+                                label='Tags'
+                                title={footageDetail?.tags}
+                                onChange={e => handleInputChange(e.target.value, 'tags')}
+                            />
                         </Grid>
 
                         <Grid item sm={12}>
-                            <CustomTextField fullWidth label='Video Url' />
+                            <CustomTextField
+                                fullWidth
+                                label='Video Url'
+                                title={footageDetail?.fileUrl}
+                                onChange={e => handleInputChange(e.target.value, 'fileUrl')}
+                            />
+                        </Grid>
+
+                        <Grid item sm={12} container spacing={4}>
+                            <Grid item sm={4}>
+                                <CustomTextField
+                                    select
+                                    fullWidth
+                                    label='Ngành hàng'
+                                    id='custom-select-category'
+                                    value={selectedBU}
+                                    onChange={handleBUChange}
+                                >
+                                    <MenuItem value=''>All Categories</MenuItem>
+                                    {categoriesData?.map((bu: BU) => (
+                                        <MenuItem key={bu.bu} value={bu.bu}>
+                                            {bu.bu}
+                                        </MenuItem>
+                                    ))}
+                                </CustomTextField>
+                            </Grid>
+                            <Grid item sm={4}>
+                                <CustomTextField
+                                    select
+                                    fullWidth
+                                    label='Category'
+                                    id='custom-select-category'
+                                    value={selectedCategory || ''}
+                                    onChange={handleCategoryChange}
+                                    disabled={!selectedBU}
+                                >
+                                    <MenuItem value=''>Select Category</MenuItem>
+                                    {categories &&
+                                        categories?.map(cat => (
+                                            <MenuItem key={cat.cat} value={cat.cat}>
+                                                {cat.cat}
+                                            </MenuItem>
+                                        ))}
+                                </CustomTextField>
+                            </Grid>
+                            <Grid item sm={4}>
+                                <CustomTextField
+                                    select
+                                    fullWidth
+                                    label='Brand'
+                                    id='custom-select-category'
+                                    value={selectedBrand}
+                                    onChange={handleBrandChange}
+                                    disabled={!selectedCategory}
+                                >
+                                    <MenuItem value=''>Select Brand</MenuItem>
+                                    {brands &&
+                                        brands?.map(brand => (
+                                            <MenuItem key={brand} value={brand}>
+                                                {brand}
+                                            </MenuItem>
+                                        ))}
+                                </CustomTextField>
+                            </Grid>
                         </Grid>
 
                         <Grid item sm={12}>
@@ -101,10 +258,8 @@ const DialogAddFootage = (props: Props) => {
 
                         <Grid item sm={12}>
                             <EditorBasic
-                                onContentChange={e => {
-                                    // handleInput('description', e)
-                                }}
-                                // content={product?.description}
+                                onContentChange={e => handleInputChange(e, 'fileUrl')}
+                                content={footageDetail?.description}
                                 label='Description'
                                 placeholder='Enter description'
                             />
@@ -113,7 +268,7 @@ const DialogAddFootage = (props: Props) => {
                     <Divider className='my-4' />
 
                     <div className='flex justify-end gap-2'>
-                        <Button variant='contained' color='primary'>
+                        <Button variant='contained' color='primary' onClick={handleSubmit}>
                             Add footage
                         </Button>
                     </div>

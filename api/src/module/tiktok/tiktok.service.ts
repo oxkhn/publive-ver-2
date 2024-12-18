@@ -4,103 +4,124 @@ import { InjectModel } from '@nestjs/mongoose';
 import axios, { AxiosResponse } from 'axios';
 import { Model } from 'mongoose';
 import puppeteer from 'puppeteer';
-import { catchError, map, Observable } from 'rxjs';
 import { GetVideoDto } from './dto/GetTiktok.dto';
-import { VideoTiktok } from 'src/common/models/tiktok.schema';
+import { TiktokVideo } from 'src/common/models/tiktokVideo.model';
 
 @Injectable()
 export class TiktokService {
   private readonly logger = new Logger();
-  private readonly apiUrl = 'https://www.tiktok.com/api/search/general/full/';
+  private readonly apiUrl = 'https://www.tiktok.com/api/search/general/full';
 
   constructor(
-    @InjectModel(VideoTiktok.name)
-    private readonly videoTiktokModel: Model<VideoTiktok>,
-    private readonly httpService: HttpService,
+    @InjectModel(TiktokVideo.name)
+    private readonly tiktokVideoModel: Model<TiktokVideo>,
   ) {}
 
-  async fetchTikTokSearch({ keyword, pages = 10 }) {
+  async runFetchDataTiktokVideo({ keyword, pages = 10 }) {
     try {
-      this.logger.log('Start');
+      this.logger.log(
+        `Starting data fetch for keyword: ${keyword}, pages: ${pages}`,
+      );
+
       const { cookieString } = await this.getTtwidCookie();
+      this.logger.log(`Acquired cookieString: ${cookieString}`);
 
-      let searchResults = await this.fetchTikTokSearch1({
-        keyword,
+      const initialPath = `${this.apiUrl}/?from_page=search&keyword=${encodeURIComponent(keyword)}&`;
+      this.logger.log(`Fetching initial search results from: ${initialPath}`);
+
+      let initialResults = await this.fetchTikTokSearch(
+        initialPath,
         cookieString,
-      });
-
-      this.logger.debug(searchResults);
-
-      let allResults = [];
-
-      if (searchResults && searchResults.length > 0) {
-        let searchId = searchResults[0].common.doc_id_str;
-        allResults.push(...searchResults);
-
-        for (let i = 1; i < pages; i++) {
-          this.logger.log('Get page: ', i);
-          let offset = (i + 1) * 12;
-          let moreResults = await this.fetchTikTokSearch2({
-            keyword,
-            offset,
-            searchId,
-
-            cookieString,
-          });
-          if (moreResults) {
-            allResults.push(...moreResults);
-          }
-        }
-        this.logger.log('Length response: ', allResults.length);
-
-        for (const [i, _] of allResults.entries()) {
-          if (!_?.item?.desc) continue;
-          this.logger.log('Save: ', _.item.desc);
-          if (!this.isVietnamese(_.item.desc)) {
-            continue;
-          }
-
-          const videoExits = await this.videoTiktokModel.findOne({
-            id: _.item.id,
-          });
-
-          try {
-            if (videoExits) {
-              await this.videoTiktokModel.findOneAndUpdate(
-                {
-                  id: _.item.id,
-                },
-                { $set: _.item }, // Update with the new data
-                { new: true, upsert: true },
-              );
-            } else {
-              const video = new this.videoTiktokModel(_.item);
-
-              await video.save();
-            }
-          } catch (error) {}
-        }
-
-        this.logger.log('Done');
-
-        return { cookies: cookieString, items: allResults };
-      } else {
+      );
+      if (!initialResults || initialResults.length === 0) {
+        this.logger.log('No search results found.');
         return { cookies: cookieString, items: [] };
       }
+
+      let allItems = [...initialResults];
+      let searchId = initialResults[0]?.common?.doc_id_str;
+
+      this.logger.log(
+        `Initial results count: ${initialResults.length}, searchId: ${searchId}`,
+      );
+
+      // Fetch additional pages
+      for (let i = 1; i < pages; i++) {
+        const offset = (i + 1) * 12;
+        const pagedPath = `${this.apiUrl}/?from_page=search&keyword=${encodeURIComponent(keyword)}&offset=${offset}&search_id=${searchId}&`;
+        this.logger.log(`Fetching page ${i + 1} results from: ${pagedPath}`);
+
+        let moreResults = await this.fetchTikTokSearch(pagedPath, cookieString);
+        if (moreResults && moreResults.length > 0) {
+          allItems.push(...moreResults);
+          this.logger.log(
+            `Page ${i + 1} fetched. Current total count: ${allItems.length}`,
+          );
+        } else {
+          this.logger.log(`No more results found at page ${i + 1}.`);
+        }
+      }
+
+      this.logger.log(`Total results fetched: ${allItems.length}`);
+
+      // Save items to database
+      for (const currentItem of allItems) {
+        if (!currentItem?.item?.desc) {
+          continue;
+        }
+
+        const description = currentItem.item.desc;
+        if (!this.isVietnamese(description)) {
+          continue;
+        }
+
+        try {
+          const videoId = currentItem.item.id;
+          this.logger.log(
+            `Processing video with ID: ${videoId}, description: "${description}"`,
+          );
+
+          const existingVideo = await this.tiktokVideoModel.findOne({
+            videoId: videoId,
+          });
+
+          if (existingVideo) {
+            this.logger.log(`Updating existing video with ID: ${videoId}`);
+            await this.tiktokVideoModel.findOneAndUpdate(
+              { videoId: videoId },
+              { $set: this.formatTiktokVideoData(currentItem) },
+              { new: true, upsert: true },
+            );
+          } else {
+            this.logger.log(`Inserting new video with ID: ${videoId}`);
+            const newVideo = new this.tiktokVideoModel(
+              this.formatTiktokVideoData(currentItem),
+            );
+            await newVideo.save();
+          }
+        } catch (dbError) {
+          this.logger.error(
+            `Database error for item ID: ${currentItem?.item?.id || 'unknown'}`,
+            dbError,
+          );
+        }
+      }
+
+      this.logger.log('Data processing completed successfully.');
+      return { cookies: cookieString, items: allItems };
     } catch (error) {
-      this.logger.error(error);
+      this.logger.error('An error occurred during data fetch process:', error);
       return { cookies: null, items: [] };
     }
   }
 
   // Internal function to fetch the first set of results
-  async fetchTikTokSearch1({ keyword, cookieString }) {
-    const urlString = `https://www.tiktok.com/api/search/general/full/?from_page=search&keyword=${keyword}&`;
-
+  async fetchTikTokSearch(path, cookieString) {
     try {
-      const res = await axios.get(urlString, {
+      const res = await axios.get(path, {
         headers: { Cookie: cookieString },
       });
+
       return res.data.data;
     } catch (err) {
       console.error(err);
@@ -116,19 +137,37 @@ export class TiktokService {
     return vietnamesePattern.test(text);
   }
 
-  // Internal function to fetch subsequent sets of results
-  async fetchTikTokSearch2({ keyword, offset, searchId, cookieString }) {
-    const urlString = `https://www.tiktok.com/api/search/general/full/?from_page=search&keyword=${keyword}&offset=${offset}&search_id=${searchId}&`;
+  formatTiktokVideoData(data) {
+    if (!data || !data.item) return null;
 
-    try {
-      const res = await axios.get(urlString, {
-        headers: { Cookie: cookieString },
-      });
-      return res.data.data;
-    } catch (err) {
-      console.error(err);
-    }
+    const { item } = data;
+    const { author, video, stats, authorStats, music } = item;
+
+    return {
+      videoId: item.id || '',
+      title: item.desc || '',
+      createTime: item.createTime || 0,
+      duration: video?.duration || 0,
+      ratio: video?.ratio || '',
+      image: video?.cover || '',
+      authorId: author?.id || '',
+      uniqueId: author?.uniqueId || '',
+      nickname: author?.nickname || '',
+      avatarThumb: author?.avatarThumb || '',
+      signature: author?.signature || '',
+      musicId: music?.id || '',
+      diggCount: stats?.diggCount || 0,
+      shareCount: stats?.shareCount || 0,
+      commentCount: stats?.commentCount || 0,
+      playCount: stats?.playCount || 0,
+      collectCount: stats?.collectCount || 0,
+      followingCount: authorStats?.followingCount || 0,
+      followerCount: authorStats?.followerCount || 0,
+      heartCount: authorStats?.heartCount || 0,
+      videoCount: authorStats?.videoCount || 0,
+    };
   }
+
   // Utility function for adding a delay
   delay(time) {
     return new Promise(function (resolve) {
@@ -142,6 +181,7 @@ export class TiktokService {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
+
     const page = await browser.newPage();
 
     // Navigate to TikTok homepage to set cookies
@@ -198,27 +238,35 @@ export class TiktokService {
   }
 
   async getAllVideo(getVideoDto: GetVideoDto) {
-    const { limit, page, name, createAt } = getVideoDto;
+    const { limit, page, hashtags, createAt, title } = getVideoDto;
     try {
       const query: any = {};
 
-      if (name && name.trim() !== '') {
-        query.desc = { $regex: name, $options: 'i' };
+      if (Array.isArray(hashtags) && hashtags.length > 0) {
+        const regexPattern = hashtags.map((tag) => `(${tag})`).join('|');
+        query.title = { $regex: regexPattern, $options: 'i' };
+      } else if (typeof hashtags === 'string' && hashtags.trim() !== '') {
+        query.title = { $regex: hashtags, $options: 'i' };
+      }
+
+      if (title && title != '') {
+        query.title = { $regex: title, $options: 'i' };
       }
 
       if (createAt) {
         query.createTime = { $gte: createAt };
       }
 
-      const totalDocuments = await this.videoTiktokModel.countDocuments(query);
+      const totalDocuments = await this.tiktokVideoModel.countDocuments(query);
       const totalPage = Math.ceil(totalDocuments / limit);
       const nextPage = page + 1 > totalPage ? null : page + 1;
 
-      const videos = await this.videoTiktokModel
+      const videos = await this.tiktokVideoModel
         .find(query)
-        .sort({ 'stats.diggCount': -1 })
+        .sort({ diggCount: -1 })
         .skip((page - 1) * limit)
         .limit(limit);
+
       return { videos, totalPage, nextPage };
     } catch (error) {
       throw new BadRequestException();

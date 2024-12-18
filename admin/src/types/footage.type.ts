@@ -1,8 +1,7 @@
 export type FootageType = {
-    userId: string
     title: string
     description: string
-    tags: string[]
+    tags: string
     fileUrl: string
     thumbnailUrl: string
     status: 'pending' | 'approved' | 'rejected'
@@ -13,4 +12,4 @@ export type FootageType = {
     brand: string
 }
 
-export type FootageTypeWithId = FootageType & { _id: string }
+export type FootageTypeWithId = FootageType & { _id?: string }

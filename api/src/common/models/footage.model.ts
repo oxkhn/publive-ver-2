@@ -6,9 +6,6 @@ import { ObjectId, Types } from 'mongoose';
   timestamps: true,
 })
 export class Footage {
-  @Prop({ type: Types.ObjectId, ref: 'users', required: true })
-  userId: Types.ObjectId;
-
   @Prop({ type: String, default: '' })
   title: string;
 
@@ -45,8 +42,6 @@ export class Footage {
 
   @Prop({ type: String, default: '' })
   brand: string;
-
-  
 }
 
 export const FootageSchema = SchemaFactory.createForClass(Footage);

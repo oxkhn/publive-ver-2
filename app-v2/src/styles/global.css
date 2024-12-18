@@ -1,0 +1,43 @@
+:root {
+  --max-width-default: 1280px; /* Mặc định */
+  --max-width-lg: 1024px; /* Màn hình lớn */
+  --max-width-md: 768px; /* Màn hình trung bình */
+  --max-width-sm: 576px; /* Màn hình nhỏ */
+  --padding-default: 24px; /* Padding mặc định */
+  --padding-lg: 20px; /* Padding cho màn hình lớn */
+  --padding-md: 16px; /* Padding cho màn hình trung bình */
+  --padding-sm: 12px; /* Padding cho màn hình nhỏ */
+}
+
+.max-w-app {
+  max-width: var(--max-width-default);
+  margin: 0 auto; /* Tự động căn giữa */
+  width: 100%; /* Đảm bảo đủ chiều rộng */
+  padding-left: var(--padding-default);
+  padding-right: var(--padding-default);
+}
+
+@media (max-width: 1200px) {
+  .max-w-app {
+    max-width: var(--max-width-lg);
+    padding-left: var(--padding-lg);
+    padding-right: var(--padding-lg);
+  }
+}
+
+@media (max-width: 992px) {
+  .max-w-app {
+    max-width: var(--max-width-md);
+    padding-left: var(--padding-md);
+    padding-right: var(--padding-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .max-w-app {
+    max-width: var(--max-width-sm);
+    padding-left: var(--padding-sm);
+    padding-right: var(--padding-sm);
+  }
+}
+

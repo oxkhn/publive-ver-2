@@ -9,9 +9,6 @@ import {
 import { Types } from 'mongoose';
 
 export class CreateFootageDto {
-  @IsNotEmpty()
-  userId: Types.ObjectId;
-
   @IsString()
   @IsOptional()
   title?: string;
@@ -20,10 +17,9 @@ export class CreateFootageDto {
   @IsOptional()
   description?: string;
 
-  @IsArray()
-  @IsString({ each: true })
+  @IsString()
   @IsOptional()
-  tags?: string[];
+  tags?: string;
 
   @IsString()
   @IsNotEmpty()

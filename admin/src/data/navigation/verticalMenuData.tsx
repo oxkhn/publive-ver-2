@@ -31,23 +31,22 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
             }
         ]
     },
-
-    // {
-    //     label: 'Content Library',
-    //     icon: 'tabler-smart-home',
-    //     children: [
-    //         {
-    //             label: 'Content trending'
-    //         },
-    //         {
-    //             label: 'Training Content Gallery'
-    //         },
-    //         {
-    //             label: 'Brand Footage & Stock',
-    //             href: '/content-library/brand-footage'
-    //         }
-    //     ]
-    // },
+    {
+        label: 'Content Library',
+        icon: 'tabler-smart-home',
+        children: [
+            {
+                label: 'Content trending'
+            },
+            {
+                label: 'Training Content Gallery'
+            },
+            {
+                label: 'Brand Footage & Stock',
+                href: '/content-library/brand-footage'
+            }
+        ]
+    },
     // {
     //     label: 'Affiliate Performance Management',
     //     icon: 'tabler-smart-home',

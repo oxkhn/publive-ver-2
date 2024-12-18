@@ -1,0 +1,17 @@
+@import "../styles/global.css";
+@import "../packages/@ui-kit/styles/index.css";
+@import "../styles/muiui-custom.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #000000;
+  background: #eff3fb;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

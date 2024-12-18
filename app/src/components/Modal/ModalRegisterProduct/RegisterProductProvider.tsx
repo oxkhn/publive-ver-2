@@ -40,13 +40,11 @@ const RegisterProductProvider = ({
   const _postForm = usePostFormRegister();
 
   const onSetFormData = (key: keyof FormRegister, value: string) => {
-    // setFormError([])
     setFormData({ ...formData, [key]: value });
   };
 
   // Hàm debounce thay đổi searchTerm
   useEffect(() => {
-    console.log(searchTerm);
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm); // Cập nhật giá trị sau khi debounce
     }, 300); // Thời gian debounce (300ms ở đây)

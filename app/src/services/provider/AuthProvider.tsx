@@ -6,7 +6,6 @@ import {
   MessageTypeEnum,
   useToast,
 } from "@/packages/@ui-kit/Toast/ToastProvider";
-import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { usePostLogin } from "../api/auth/usePostLogin";
 import Cookies from "js-cookie";
 import { useGetProfile } from "../api/auth/useGetProfile";
@@ -42,7 +41,7 @@ export const AuthProvider = ({
   const saveToken = (token: string) => {
     setToken(token);
 
-    Cookies.set("tokenAccess", token, {
+    Cookies.set("accessToken", token, {
       expires: 100,
       path: "/", // Set to root path
     });
@@ -51,7 +50,7 @@ export const AuthProvider = ({
   const removeToken = () => {
     setToken(null);
     setUser(null);
-    Cookies.remove("tokenAccess");
+    Cookies.remove("accessToken");
   };
 
   const _postLogin = usePostLogin();

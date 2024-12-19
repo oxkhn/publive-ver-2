@@ -19,6 +19,7 @@ import { join } from 'path';
 import { FootageModule } from './module/footage/footage.module';
 import { CrmModule } from './module/crm/crm.module';
 import { TiktokModule } from './module/tiktok/tiktok.module';
+import { TrackingModule } from './module/tracking/tracking.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { TiktokModule } from './module/tiktok/tiktok.module';
     FootageModule,
     CrmModule,
     TiktokModule,
+    TrackingModule,
   ],
   controllers: [],
   providers: [

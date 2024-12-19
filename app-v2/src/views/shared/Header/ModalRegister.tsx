@@ -7,6 +7,7 @@ import { useModal } from "@/components/@core/Modal/useModal";
 import BannerDemo from "@/assets/images/login_banner.jpg";
 import { useForm } from "@tanstack/react-form";
 import { useAuthContext } from "@/services/AuthProvider";
+import useTracking from "@/hooks/useTracking";
 
 type Props = {
   isShow: boolean;
@@ -30,6 +31,7 @@ const ModalRegister = (props: Props) => {
       try {
         const result = await onRegister(value);
         if (result) {
+
           hide();
         } else {
         }

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useRef } from "react";
 import MCNCardRanking from "@/components/MNCCard";
+import Image from "next/image";
+import MCNIcon from "@/assets/images/top_mcn.svg";
 
 const mockupData = [
   {
@@ -85,12 +87,12 @@ const TopMCN = () => {
   return (
     <div className="mt-[100px] flex w-full items-start gap-8 max-md:mt-20 max-md:flex-col max-md:gap-2">
       <div className="flex h-full w-[185px] flex-col max-md:hidden">
-        <ImageKit
-          src={ImageTopMCN}
-          className="h-full w-[185px] min-w-[185px] cursor-pointer object-cover"
-          onClick={() => {
-            router.push("/leaderboard");
-          }}
+        <Image
+          src={MCNIcon}
+          alt=""
+          width={185}
+          height={200}
+          className="h-full w-[185px] max-sm:hidden"
         />
       </div>
       <div className="md:hidden">
@@ -138,8 +140,6 @@ const TopMCN = () => {
               onClick={() => router.push("/leaderboard")}
             />
           </div>
-
-         
         </div>
       </div>
     </div>

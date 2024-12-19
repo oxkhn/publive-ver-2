@@ -57,4 +57,14 @@ export class TrackingController {
       return new ResponseSuccess(res);
     } catch (error) {}
   }
+
+  @Get('/product')
+  async getAnsProduct() {
+    try {
+      const res = await this.trackingService.getProductPageViewCounts();
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
 }

@@ -35,9 +35,22 @@ export class TrackingService {
 
   async getAllEventPage() {
     try {
+      const results = await this.eventModel.aggregate([
+        {
+          $match: { event: 'page_view' }, // Filter events where event = 'page_view'
+        },
+        {
+          $group: {
+            _id: '$page', // Group by the 'page' field
+            count: { $sum: 1 }, // Count the number of occurrences
+          },
+        },
+        {
+          $sort: { count: -1 }, // (Optional) Sort by count descending
+        },
+      ]);
 
-      const res = await this.eventModel
-
+      return results;
     } catch (error) {
       throw new BadRequestException(error);
     }

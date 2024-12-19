@@ -20,8 +20,6 @@ import { Event } from 'src/common/models/event.model';
 @Controller('tracking')
 export class TrackingController {
   constructor(
-    @InjectModel(Event.name) private readonly eventModel: Model<Event>,
-
     private readonly trackingService: TrackingService,
     private readonly jwtService: JwtService,
   ) {}
@@ -55,22 +53,8 @@ export class TrackingController {
   @Get('/page')
   async getEventPage() {
     try {
-      const results = await this.eventModel.aggregate([
-        {
-          $match: { event: 'page_view' }, // Filter events where event = 'page_view'
-        },
-        {
-          $group: {
-            _id: '$page', // Group by the 'page' field
-            count: { $sum: 1 }, // Count the number of occurrences
-          },
-        },
-        {
-          $sort: { count: -1 }, // (Optional) Sort by count descending
-        },
-      ]);
-
-      return results;
+      const res = await this.trackingService.getAllEventPage();
+      return new ResponseSuccess(res);
     } catch (error) {}
   }
 }

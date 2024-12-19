@@ -95,7 +95,7 @@ export const AuthProvider = ({
   const _getProfile = useGetProfile();
   const getProfile = async (_token: string) => {
     try {
-      const resData = await _getProfile.mutateAsync(_token);
+      const resData = await _getProfile.mutateAsync();
 
       const user = resData.data;
 

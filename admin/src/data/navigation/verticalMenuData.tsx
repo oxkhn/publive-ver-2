@@ -71,6 +71,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
                 href: '/crm'
             }
         ]
+    },
+    {
+        label: 'Traffic measurement',
+        icon: 'tabler-brand-google-analytics',
+        href: '/traffic-measurement'
     }
 ]
 

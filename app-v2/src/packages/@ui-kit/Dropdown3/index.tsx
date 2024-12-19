@@ -63,7 +63,7 @@ const DropdownHor: React.FC<DropdownProps> = (props) => {
   const classes = clsx(defaultCSS, className);
 
   const defaultCSSElement =
-    "anni-item-show absolute left-0 top-7 z-50 mt-[1px] flex max-h-[300px] flex-wrap gap-1 overflow-auto rounded-md border border-line bg-white p-1 shadow-lg transition-all";
+    "anni-item-show absolute left-0 top-full w-fit z-50 mt-[1px] flex max-h-[300px] flex-wrap gap-1 overflow-auto rounded-md border border-line bg-white p-1 shadow-lg transition-all";
   const classesElement = clsx(
     defaultCSSElement,
     animationClass,

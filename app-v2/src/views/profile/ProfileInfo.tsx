@@ -7,6 +7,8 @@ import Dropdown from "@/packages/@ui-kit/Dropdown";
 import ImageKit from "@/packages/@ui-kit/Image";
 import ImageEditor from "@/packages/@ui-kit/Image/ImageEditor";
 import Line from "@/packages/@ui-kit/Line";
+import { useAuthContext } from "@/services/AuthProvider";
+import { IProfileInfo, UserType } from "@/types/user.type";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
@@ -34,50 +36,55 @@ const ProfileInfor = () => {
   const [platform, setPlatform] = useState(platformItems[0]);
   const [time, setTime] = useState(dayjs().utc().add(30, "day"));
 
-  const [formData, setFormData] = useState({ name: "" });
+  const { user, updateProfile } = useAuthContext();
+  const [formData, setFormData] = useState<UserType>(user);
   const [formError, setFormError] = useState<string[]>([]);
 
-  //   const onSetFormData = (key: string, value: string | boolean | any) => {
-  //     setFormError([]);
-  //     if (key.includes(".")) {
-  //       const keys = key.split(".");
+  const onSetFormData = (key: string, value: string | boolean | any) => {
+    setFormError([]);
+    if (key.includes(".")) {
+      const keys = key.split(".");
 
-  //       setFormData((prevData: any) => {
-  //         return {
-  //           ...prevData,
-  //           [keys[0]]: {
-  //             ...prevData[keys[0]],
-  //             [keys[1]]: {
-  //               ...prevData[keys[0]][keys[1]],
-  //               [keys[2]]: value,
-  //             },
-  //           },
-  //         };
-  //       });
-  //     } else {
-  //       setFormData({ ...formData, [key]: value });
-  //     }
-  //   };
+      setFormData((prevData: any) => {
+        return {
+          ...prevData,
+          [keys[0]]: {
+            ...prevData[keys[0]],
+            [keys[1]]: {
+              ...prevData[keys[0]][keys[1]],
+              [keys[2]]: value,
+            },
+          },
+        };
+      });
+    } else {
+      setFormData({ ...formData, [key]: value });
+    }
+  };
 
-  //   useEffect(() => {
-  //     if (user) {
-  //       setFormData(user);
-  //       setTime(dayjs.utc(user.dob));
-  //     }
-  //   }, [user]);
+  useEffect(() => {
+    if (user) {
+      console.log(user);
 
-  //   const handleUpdateProfile = () => {
-  //     try {
-  //       updateProfile(formData);
-  //     } catch (error) {}
-  //   };
+      setFormData(user);
+      setTime(dayjs.utc(user.dob));
+    }
+  }, [user]);
 
-  //   const handleDateChange = (date: any) => {
-  //     if (date) {
-  //       setTime(date.utc());
-  //       onSetFormData("dob", date.utc());
-  //     }
-  //   };
+  const handleUpdateProfile = () => {
+    try {
+      updateProfile(formData);
+    } catch (error) {}
+  };
+
+  const handleDateChange = (date: any) => {
+    if (date) {
+      setTime(date.utc());
+      onSetFormData("dob", date.utc());
+    }
+  };
+
+  if (!user) return;
 
   return (
     <div className="shadow-card flex w-full flex-col rounded-lg bg-white px-6 py-8">
@@ -95,7 +102,7 @@ const ProfileInfor = () => {
             classContainer="w-full"
             value={formData?.name}
             onChange={(e: any) => {
-              //   onSetFormData("name", e.target.value);
+              onSetFormData("name", e.target.value);
             }}
           />
         </div>
@@ -103,7 +110,17 @@ const ProfileInfor = () => {
           <div className="flex min-w-[152px] max-sm:min-w-[65px] sm:justify-end">
             <p className="text-sm font-bold">Email</p>
           </div>
-          <Input classContainer="w-full" disabled />
+          <Input classContainer="w-full" disabled value={formData?.email} />
+        </div>
+        <div className="flex w-full items-center gap-8 max-sm:gap-2">
+          <div className="flex min-w-[152px] max-sm:min-w-[65px] sm:justify-end">
+            <p className="text-sm font-bold">Address</p>
+          </div>
+          <textarea
+            value={formData?.address}
+            onChange={(e) => onSetFormData("address", e.target.value)}
+            className="mt-2 w-full rounded-lg border border-line bg-transparent p-2 text-xs outline-none hover:border-primary focus:border-primary"
+          ></textarea>
         </div>
         <div className="flex w-full items-center gap-8 max-sm:gap-2">
           <div className="flex min-w-[152px] max-sm:min-w-[65px] sm:justify-end">
@@ -114,10 +131,9 @@ const ProfileInfor = () => {
             <div className="flex items-center gap-2">
               <Checkbox
                 onChange={(e: any) => {
-                  //   onSetFormData("sex", true);
+                  onSetFormData("sex", true);
                 }}
-                isChecked
-                // isChecked={formData?.sex}
+                isChecked={formData?.sex}
               />
               <p className="text-sm">Nam</p>
             </div>
@@ -125,10 +141,9 @@ const ProfileInfor = () => {
             <div className="flex items-center gap-2">
               <Checkbox
                 onChange={(e: any) => {
-                  //   onSetFormData("sex", false);
+                  onSetFormData("sex", false);
                 }}
-                // isChecked={!formData?.sex}
-                isChecked
+                isChecked={!formData?.sex}
               />
               <p className="text-sm">Nữ</p>
             </div>
@@ -140,7 +155,20 @@ const ProfileInfor = () => {
           </div>
           <DatePickup
             time={time}
-            // handleDateChange={(e: any) => handleDateChange(e)}
+            handleDateChange={(e: any) => handleDateChange(e)}
+          />
+        </div>
+        <div className="flex w-full gap-1 max-sm:flex-col sm:items-center sm:gap-8">
+          <div className="flex min-w-[152px] sm:justify-end">
+            <p className="text-sm font-bold">Shoppe username</p>
+          </div>
+          <Input
+            classContainer="w-full"
+            placeholder="Input your Shoppe username"
+            value={formData?.social?.shopeeUsername.linkUrl}
+            onChange={(e: any) => {
+              onSetFormData("social.shopeeUsername.linkUrl", e.target.value);
+            }}
           />
         </div>
       </div>
@@ -157,9 +185,9 @@ const ProfileInfor = () => {
           <Input
             classContainer="w-full"
             placeholder="Input your Facebook profile link"
-            // value={formData?.social.facebook.linkUrl}
+            value={formData?.social?.facebook.linkUrl}
             onChange={(e: any) => {
-              //   onSetFormData("social.facebook.linkUrl", e.target.value);
+              onSetFormData("social.facebook.linkUrl", e.target.value);
             }}
           />
         </div>
@@ -170,9 +198,9 @@ const ProfileInfor = () => {
           <Input
             classContainer="w-full"
             placeholder="Input your Instagram profile link"
-            // value={formData?.social.instagram.linkUrl}
+            value={formData?.social?.instagram.linkUrl}
             onChange={(e: any) => {
-              //   onSetFormData("social.instagram.linkUrl", e.target.value);
+              onSetFormData("social.instagram.linkUrl", e.target.value);
             }}
           />
         </div>
@@ -184,9 +212,9 @@ const ProfileInfor = () => {
           <Input
             classContainer="w-full"
             placeholder="Input your Tiktok profile link"
-            // value={formData?.social.tiktok.linkUrl}
+            value={formData?.social?.tiktok.linkUrl}
             onChange={(e: any) => {
-              //   onSetFormData("social.tiktok.linkUrl", e.target.value);
+              onSetFormData("social.tiktok.linkUrl", e.target.value);
             }}
           />
         </div>
@@ -197,9 +225,22 @@ const ProfileInfor = () => {
           <Input
             classContainer="w-full"
             placeholder="Input your Youtube profile link"
-            // value={formData?.social.youtube.linkUrl}
+            value={formData?.social?.youtube.linkUrl}
             onChange={(e: any) => {
-              //   onSetFormData("social.youtube.linkUrl", e.target.value);
+              onSetFormData("social.youtube.linkUrl", e.target.value);
+            }}
+          />
+        </div>
+        <div className="flex w-full gap-1 max-sm:flex-col sm:items-center sm:gap-8">
+          <div className="flex min-w-[152px] sm:justify-end">
+            <p className="text-sm font-bold">Shoppe</p>
+          </div>
+          <Input
+            classContainer="w-full"
+            placeholder="Input your Shoppe profile link"
+            value={formData?.social?.shopee.linkUrl}
+            onChange={(e: any) => {
+              onSetFormData("social.shopee.linkUrl", e.target.value);
             }}
           />
         </div>
@@ -209,7 +250,7 @@ const ProfileInfor = () => {
         title="Lưu"
         className="ml-auto mt-4 !rounded-full !px-10"
         onClick={() => {
-          //   handleUpdateProfile();
+          handleUpdateProfile();
         }}
       />
     </div>

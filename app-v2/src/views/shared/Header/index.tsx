@@ -11,6 +11,7 @@ import RegisterReceiveModal from "./RegisterReceiveProduct";
 import ModalRegister from "./ModalRegister";
 import { ModalManager } from "./ModalManager";
 import { useAuthContext } from "@/services/AuthProvider";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const router = useRouter();
@@ -20,6 +21,14 @@ const Header = () => {
 
   const navHome = () => {
     router.push("/");
+  };
+
+  const triggerRegister = () => {
+    if (!user) {
+      toast.warning("Vui lòng đăng nhập!");
+      return;
+    }
+    toggleRegisterReceive();
   };
 
   return (
@@ -42,7 +51,7 @@ const Header = () => {
           <Button
             title="Đăng ký nhận sản phẩm"
             onClick={() => {
-              toggleRegisterReceive();
+              triggerRegister();
             }}
             variant="outline"
           />

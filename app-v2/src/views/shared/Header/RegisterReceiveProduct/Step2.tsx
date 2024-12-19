@@ -1,24 +1,27 @@
 "use client";
 import Button from "@/packages/@ui-kit/Button2";
+import { useRegisterProductContext } from "@/services/RegisterProductProvider";
 import { useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
 const Step2 = () => {
-//   const sigPad = useRef(null);
+  //   const sigPad = useRef(null);
 
-//   const clearSignature = () => {
-//     sigPad.current.clear();
-//   };
+  //   const clearSignature = () => {
+  //     sigPad.current.clear();
+  //   };
 
-//   const saveSignature = () => {
-//     if (sigPad.current.isEmpty()) {
-//       alert("Please provide a signature first!");
-//     } else {
-//       const dataURL = sigPad.current.toDataURL();
-//       console.log("Saved signature:", dataURL);
-//       // Save the dataURL to a server or use it in your application
-//     }
-//   };
+  //   const saveSignature = () => {
+  //     if (sigPad.current.isEmpty()) {
+  //       alert("Please provide a signature first!");
+  //     } else {
+  //       const dataURL = sigPad.current.toDataURL();
+  //       console.log("Saved signature:", dataURL);
+  //       // Save the dataURL to a server or use it in your application
+  //     }
+  //   };
+
+  const { setSignMessage, signMessage } = useRegisterProductContext();
 
   const rules = [
     "1. Chấp nhận và cam kết về hàng mẫu: KOL cam kết nhận hàng mẫu từ Unilever chỉ với mục đích quảng bá sản phẩm theo yêu cầu.",
@@ -55,7 +58,13 @@ const Step2 = () => {
             className: "signatureCanvas",
           }}
         /> */}
-        <Button title="Ký đồng ý yêu cầu" onClick={() => {}}></Button>
+        <Button
+          title="Ký đồng ý yêu cầu"
+          disabled={signMessage}
+          onClick={() => {
+            setSignMessage(true);
+          }}
+        ></Button>
       </div>
     </div>
   );

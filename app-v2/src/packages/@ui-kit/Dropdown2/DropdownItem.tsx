@@ -14,7 +14,7 @@ const DropdownItem: React.FC<DropdownItemProps> = (props) => {
 
   const classes = clsx();
 
-  const renderItemName = (item:any) => {
+  const renderItemName = (item: any) => {
     switch (item) {
       case "BW":
         return "Chăm sóc sắc đẹp";

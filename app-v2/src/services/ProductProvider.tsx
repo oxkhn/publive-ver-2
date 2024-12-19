@@ -1,16 +1,72 @@
+"use client";
 import useGetAllProduct from "@/api/product/useGetAllProduct";
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { BrandState } from "./ContentProvider";
+import useGetProductBrand from "@/api/product/useGetProductBrand";
+import { ProductType } from "@/types/product.type";
+import { useDebounce } from "use-debounce";
+import { registerProductDTO } from "./RegisterProductProvider";
+import usePostRegisterProduct from "@/api/registerProduct/registerProduct";
+import { toast } from "react-toastify";
 
-type ProductContextProps = {};
+type ProductContextProps = {
+  brands: BrandState[];
+  products: ProductType[];
+
+  marketplaceChecked: string[];
+  setMarketplaceChecked: Dispatch<SetStateAction<string[]>>;
+
+  brandList: string[];
+  setBrandList: Dispatch<SetStateAction<string[]>>;
+
+  filterType: number;
+  setFilterType: Dispatch<SetStateAction<number>>;
+
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+
+  commissionValue: number;
+  setCommissionValue: Dispatch<SetStateAction<number>>;
+
+  buSelected: string;
+  setBuSelected: Dispatch<SetStateAction<string>>;
+
+  brandSelected: string;
+  setBrandSelected: Dispatch<SetStateAction<string>>;
+
+  toggleMarketplace: (marketplaceFilter: string) => void;
+  clearData: () => void;
+};
+
+export const FilterTypeEnum = {
+  HOA_HONG_CAO_NHAT: 1,
+  HOT_DEAL_LIVESTREAM: 2,
+  TOP_BAN_CHAY: 3,
+};
+
+export const MarketplaceEnum = {
+  SHOPEE: "shopee",
+  LAZADA: "lazada",
+  UNILEVER: "unilever",
+};
 
 type GetAllProductDto = {
   limit: number;
   page: number;
   bu: string;
   brand: string;
-  sku: string;
-  name: string;
-  publisher: "lazada" | "shopee";
+  sku?: string;
+  name?: string;
+  publisher: string[];
+  filterType?: number;
+  commission?: number;
 };
 
 const ProductContext = createContext<ProductContextProps | undefined>(
@@ -21,14 +77,128 @@ type Props = {
   children: React.ReactNode;
 };
 
-const ProductProvider = (props: Props) => {
+export const ProductProvider = (props: Props) => {
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [brands, setBrands] = useState<BrandState[]>([]);
+  const [brandList, setBrandList] = useState<string[]>([]);
+  const [filterType, setFilterType] = useState<number>(0);
+  const [marketplaceChecked, setMarketplaceChecked] = useState<string[]>([
+    MarketplaceEnum.SHOPEE,
+    MarketplaceEnum.LAZADA,
+    MarketplaceEnum.UNILEVER,
+  ]);
+  const [search, setSearch] = useState<string>("");
+  const [commissionValue, setCommissionValue] = useState(10);
+  const [buSelected, setBuSelected] = useState<string>("");
+  const [brandSelected, setBrandSelected] = useState<string>("");
 
-  const [filterGetAllProduct, setFilterGetAllProduct] = useState()
+  const [commissionValueDebounce] = useDebounce(commissionValue, 1000);
+
+  const clearData = () => {
+    setBrandList([]);
+    setFilterType(0);
+    setMarketplaceChecked([
+      MarketplaceEnum.SHOPEE,
+      MarketplaceEnum.LAZADA,
+      MarketplaceEnum.UNILEVER,
+    ]);
+    setSearch(""), setCommissionValue(10);
+    setBuSelected(""), setBrandSelected("");
+  };
 
   const _getAllProduct = useGetAllProduct();
-  const getAllProduct = (getData: GetAllProductDto) => {};
+  const getAllProduct = async (getData: GetAllProductDto) => {
+    const res = await _getAllProduct.mutateAsync(getData);
+    console.log(res.data);
 
-  const value = {};
+    setProducts(res.data);
+  };
+
+  const _getBrands = useGetProductBrand();
+
+  const getBrands = async () => {
+    try {
+      const res = await _getBrands.mutateAsync();
+      setBrands(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const toggleMarketplace = (marketplaceFilter: string) => {
+    const index = marketplaceChecked.findIndex(
+      (marketplace) => marketplace == marketplaceFilter,
+    );
+    if (index >= 0) {
+      const marketplaceUpdated = marketplaceChecked.filter(
+        (marketplace) => marketplace != marketplaceFilter,
+      );
+      setMarketplaceChecked(marketplaceUpdated);
+    } else {
+      setMarketplaceChecked([...marketplaceChecked, marketplaceFilter]);
+    }
+  };
+
+  useEffect(() => {
+    let bodyData: GetAllProductDto = {
+      page: 1,
+      limit: 50,
+      commission: commissionValue,
+    };
+    if (buSelected != "Tất cả") {
+      if (buSelected) bodyData = { ...bodyData, bu: buSelected };
+      if (marketplaceChecked)
+        bodyData = { ...bodyData, publisher: marketplaceChecked };
+
+      if (filterType) bodyData = { ...bodyData, filterType: filterType };
+
+      if (search) bodyData = { ...bodyData, name: search };
+
+      if (brandSelected) bodyData = { ...bodyData, brand: brandSelected };
+    }
+
+    getAllProduct(bodyData);
+  }, [
+    marketplaceChecked,
+    filterType,
+    search,
+    commissionValueDebounce,
+    buSelected,
+    brandSelected,
+  ]);
+
+  useEffect(() => {
+    getBrands();
+  }, []);
+
+  const value = {
+    brands,
+    products,
+
+    brandList,
+    setBrandList,
+
+    filterType,
+    setFilterType,
+
+    marketplaceChecked,
+    setMarketplaceChecked,
+
+    search,
+    setSearch,
+
+    commissionValue,
+    setCommissionValue,
+
+    buSelected,
+    setBuSelected,
+
+    brandSelected,
+    setBrandSelected,
+
+    toggleMarketplace,
+    clearData,
+  };
 
   return (
     <ProductContext.Provider value={value}>

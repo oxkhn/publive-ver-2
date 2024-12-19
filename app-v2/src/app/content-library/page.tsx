@@ -1,8 +1,5 @@
 import Filter from "@/views/content-library/Filter";
-import ImageBanner from "@/assets/images/banner_trending.png";
-import Image from "next/image";
 import { ContentProvider } from "@/services/ContentProvider";
-import TrendingList from "@/views/content-library/TrendingList";
 
 const ContentLibraryPage = () => {
   return (

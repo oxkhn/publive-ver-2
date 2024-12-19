@@ -105,7 +105,9 @@ export const TableProduct = (props: Props) => {
                             alt=''
                             className='rounded backdrop-blur-md'
                         />
-                        <p className='text-primary'>+{row.original.imageList.length - 1}</p>
+                        <p className='text-primary'>
+                            {row.original.imageList.length > 1 ? `+` + (row.original.imageList.length - 1) : ''}{' '}
+                        </p>
                         <Typography className='truncate max-w-[200px] text-sm line-clamp-2  ml-2' color='text.primary'>
                             {row.original.productName}
                         </Typography>
@@ -171,14 +173,14 @@ export const TableProduct = (props: Props) => {
                                     'Are you sure you want to delete this product? This action cannot be undone.'
                                 )
                                 if (!isConfirmed) return
-                                
+
                                 try {
                                     await toast.promise(deleteProduct(row.original.sku), {
                                         pending: 'Deleting...',
                                         success: 'Product deleted successfully 👌',
                                         error: 'Delete product rejected 🤯'
                                     })
-                                
+
                                     onReload()
                                 } catch (error) {}
                             }}

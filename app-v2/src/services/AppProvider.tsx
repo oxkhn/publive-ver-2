@@ -2,6 +2,8 @@ import UIKitProvider from "@/packages/@ui-kit/UIKitProvider";
 import React from "react";
 import { AuthProvider } from "./AuthProvider";
 import TanstackProvider from "./TanstackProvider";
+import { RegisterProductProvider } from "./RegisterProductProvider";
+import { ProductProvider } from "./ProductProvider";
 
 const AppProvider = ({
   children,
@@ -11,7 +13,11 @@ const AppProvider = ({
   return (
     <TanstackProvider>
       <UIKitProvider>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <ProductProvider>
+            <RegisterProductProvider>{children}</RegisterProductProvider>
+          </ProductProvider>
+        </AuthProvider>
       </UIKitProvider>
     </TanstackProvider>
   );

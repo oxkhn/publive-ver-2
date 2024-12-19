@@ -56,13 +56,13 @@ export class FormRegisterController {
     }
   }
 
-  @Get('/user')
-  @UseGuards(RolesGuard)
-  async getFormOfUser(@Request() req) {
+  @Get('/user/:email')
+  // @UseGuards(RolesGuard)
+  async getFormOfUser(@Request() req, @Param('email') _email: string) {
     try {
-      const payload = req.user;
-      const email = payload.email;
-      const res = await this.formRegisterService.getFormOfUser(email);
+      // const payload = req.user;
+      // const email = payload.email;
+      const res = await this.formRegisterService.getFormOfUser(_email);
       return new ResponseSuccess(res);
     } catch (error) {
       throw new BadRequestException(error);

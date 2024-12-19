@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, Post, Request } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  Post,
+  Request,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CreateFormDto } from 'src/common/dto/FormCreate.dto';
@@ -100,31 +106,46 @@ export class FormRegisterService {
       const user = await this.userModel.findOne({ email: email });
       if (!user) throw new BadRequestException('User not found.');
 
-      const pipeline = [
-        { $match: { userId: new Types.ObjectId(user._id) } },
-        { $unwind: '$productSKUs' },
-        { $group: { _id: '$productSKUs' } },
-        {
-          $lookup: {
-            from: 'products', // Tên collection trong MongoDB thường là số nhiều và chữ thường
-            localField: 'sku',
-            foreignField: 'sku',
-            as: 'productDetails',
+      const formsWithProducts = await this.formRegisterModel
+        .aggregate([
+          { $match: { userId: new Types.ObjectId(user._id) } },
+          {
+            $lookup: {
+              from: 'products', // Tên collection trong MongoDB thường là số nhiều và lowercase
+              localField: 'productSKUs',
+              foreignField: 'sku',
+              as: 'products',
+            },
           },
-        },
-        { $unwind: '$productDetails' },
-        {
-          $group: {
-            _id: null,
-            products: { $push: '$productDetails' },
+          {
+            $project: {
+              name: 1,
+              phoneNumber: 1,
+              email: 1,
+              address: 1,
+              productSKUs: 1,
+              isSign: 1,
+              status: 1,
+              shippingMethod: 1,
+              trackingNumber: 1,
+              estimatedDeliveryTime: 1,
+              shippingCarrier: 1,
+              userId: 1,
+              products: 1, // Danh sách sản phẩm tương ứng
+              createdAt: 1,
+              updatedAt: 1,
+            },
           },
-        },
-        { $project: { _id: 0, products: 1 } },
-      ];
+        ])
+        .exec();
 
-      const result = await this.formRegisterModel.aggregate(pipeline).exec();
+      if (!formsWithProducts || formsWithProducts.length === 0) {
+        throw new NotFoundException(
+          `No forms found for user with ID ${user._id}`,
+        );
+      }
 
-      return result;
+      return formsWithProducts;
     } catch (error) {
       throw new BadRequestException(error);
     }

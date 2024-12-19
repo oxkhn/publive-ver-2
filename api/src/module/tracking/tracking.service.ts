@@ -64,68 +64,70 @@ export class TrackingService {
   async getProductPageViewCounts(): Promise<any[]> {
     try {
       const results = await this.eventModel.aggregate([
-        // Stage 1: Lọc các sự kiện 'page_view' liên quan đến sản phẩm
+        // 1. Lọc event
         {
-          $match: {
-            event: 'page_view',
-            page: { $regex: '^/product/' },
-          },
+          $match: { event: 'page_view', page: { $regex: '^/product/' } },
         },
-        // Stage 2: Trích xuất SKU từ URL bằng $regexFind
+        // 2. Trích xuất SKU
         {
           $addFields: {
-            skuExtracted: {
-              $regexFind: {
-                input: '$page',
-                regex: /^\/product\/([A-Za-z0-9\-]+)/, // Điều chỉnh regex tùy theo định dạng SKU
+            sku: {
+              $let: {
+                vars: {
+                  captureResult: {
+                    $regexFind: {
+                      input: '$page',
+                      regex: /\/product\/([A-Za-z0-9\-]+)/,
+                    },
+                  },
+                },
+                in: { $arrayElemAt: ['$$captureResult.captures', 0] },
               },
             },
           },
         },
-        // Stage 3: Chiếu SKU vào một trường mới
+        // 3. Chuyển SKU thành string
         {
           $project: {
-            sku: { $ifNull: ['$skuExtracted.captures.0', null] },
+            sku: { $toString: { $ifNull: ['$sku', null] } },
           },
         },
-        // Stage 4: Loại bỏ các sự kiện không có SKU
-        {
-          $match: { sku: { $ne: null } },
-        },
-        // Stage 5: Nối với bộ sưu tập Product thông qua SKU
+        // 4. Nối với Product
         {
           $lookup: {
-            from: 'products', // Tên của bộ sưu tập Product
-            localField: 'sku', // SKU trích xuất từ Event
-            foreignField: 'sku', // SKU trong Product
+            from: 'products',
+            let: { localSku: '$sku' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: [{ $toString: '$sku' }, '$$localSku'] },
+                },
+              },
+            ],
             as: 'productDetails',
           },
         },
-        // Stage 6: Làm phẳng productDetails để mỗi dòng chỉ chứa một product
+        // 5. Làm phẳng mảng productDetails
         {
           $unwind: {
             path: '$productDetails',
-            preserveNullAndEmptyArrays: true, // Để các event không có sản phẩm vẫn hiển thị
+            preserveNullAndEmptyArrays: false,
           },
         },
-        // Stage 7: Nhóm theo sản phẩm và đếm số lần xuất hiện
+        // 6. Nhóm lại và đếm số lần xuất hiện
         {
           $group: {
-            _id: '$productDetails._id', // Nhóm theo ID của sản phẩm
-            product: { $first: '$productDetails' }, // Lấy thông tin chi tiết sản phẩm
-            count: { $sum: 1 }, // Đếm số lần xuất hiện
+            _id: '$productDetails._id',
+            product: { $first: '$productDetails' },
+            count: { $sum: 1 },
           },
         },
-        // Stage 8: Sắp xếp theo số lần xuất hiện (tùy chọn)
-        {
-          $sort: { count: -1 },
-        },
-        // Stage 9: Trình bày kết quả mong muốn
+        // 7. Trình bày kết quả
         {
           $project: {
-            _id: 0, // Ẩn _id, chỉ hiển thị thông tin chi tiết
-            product: 1, // Chi tiết sản phẩm
-            count: 1, // Số lần xuất hiện của sản phẩm
+            _id: 0,
+            product: 1,
+            count: 1,
           },
         },
       ]);

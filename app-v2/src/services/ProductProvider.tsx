@@ -16,6 +16,7 @@ import { registerProductDTO } from "./RegisterProductProvider";
 import usePostRegisterProduct from "@/api/registerProduct/registerProduct";
 import { toast } from "react-toastify";
 import { useGetProductDetail } from "@/api/product/useGetProductDetail";
+import { useParams, useSearchParams } from "next/navigation";
 
 type ProductContextProps = {
   brands: BrandState[];
@@ -45,7 +46,9 @@ type ProductContextProps = {
   toggleMarketplace: (marketplaceFilter: string) => void;
   clearData: () => void;
   getProductDetail: (sku: string) => void;
-  productDetail: ProductType;
+  productDetail: ProductType | undefined;
+
+  relatedProduct: ProductType[];
 };
 
 export const FilterTypeEnum = {
@@ -70,6 +73,7 @@ type GetAllProductDto = {
   publisher?: string[];
   filterType?: number;
   commission?: number;
+  cat?: string;
 };
 
 const ProductContext = createContext<ProductContextProps | undefined>(
@@ -109,10 +113,13 @@ export const defaultProduct: ProductType = {
   registeredCount: 0,
   unitsSold: 0,
   isAuthentic: false,
+  hc: 0,
+  coms: 0,
 };
 
 export const ProductProvider = (props: Props) => {
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [relatedProduct, setRelatedProduct] = useState<ProductType[]>([]);
   const [brands, setBrands] = useState<BrandState[]>([]);
   const [brandList, setBrandList] = useState<string[]>([]);
   const [filterType, setFilterType] = useState<number>(0);
@@ -128,8 +135,11 @@ export const ProductProvider = (props: Props) => {
 
   const [commissionValueDebounce] = useDebounce(commissionValue, 1000);
 
-  const [productDetail, setProductDetail] =
-    useState<ProductType>(defaultProduct);
+  const { sku } = useParams();
+
+  const [productDetail, setProductDetail] = useState<ProductType | undefined>(
+    undefined,
+  );
 
   const _getProductDetail = useGetProductDetail();
   const getProductDetail = async (sku: string) => {
@@ -154,9 +164,12 @@ export const ProductProvider = (props: Props) => {
   const _getAllProduct = useGetAllProduct();
   const getAllProduct = async (getData: GetAllProductDto) => {
     const res = await _getAllProduct.mutateAsync(getData);
-    console.log(res.data);
-
     setProducts(res.data);
+  };
+
+  const getRelatedProduct = async (getData: GetAllProductDto) => {
+    const res = await _getAllProduct.mutateAsync(getData);
+    setRelatedProduct(res.data);
   };
 
   const _getBrands = useGetProductBrand();
@@ -218,6 +231,21 @@ export const ProductProvider = (props: Props) => {
     getBrands();
   }, []);
 
+  useEffect(() => {
+    if (sku) {
+      getProductDetail(sku as string);
+    }
+  }, [sku]);
+
+  useEffect(() => {
+    const bodyData: GetAllProductDto = {
+      page: 1,
+      limit: 5,
+      cat: productDetail?.cat,
+    };
+    getRelatedProduct(bodyData);
+  }, [productDetail]);
+
   const value = {
     brands,
     products,
@@ -248,6 +276,8 @@ export const ProductProvider = (props: Props) => {
 
     getProductDetail,
     productDetail,
+
+    relatedProduct,
   };
 
   return (

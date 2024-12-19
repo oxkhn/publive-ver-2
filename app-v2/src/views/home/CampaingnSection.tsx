@@ -13,7 +13,7 @@ import { useCampaignContext } from "@/services/CampaignProvider";
 const CampaignSection = () => {
   const router = useRouter();
 
-  const { campaigns } = useCampaignContext();
+  const { campaigns, handleFilterChange, filterValue } = useCampaignContext();
 
   return (
     <div className="relative flex gap-8 max-sm:flex-col">
@@ -27,19 +27,21 @@ const CampaignSection = () => {
         />
 
         <Image
+          onClick={() => handleFilterChange(1, "type")}
           src={ChienThanLivestream}
           alt=""
           width={185}
           height={200}
-          className="w-[185px]"
+          className={`w-[185px] cursor-pointer transition-all hover:opacity-100 ${filterValue.type == 1 ? "opacity-100" : "opacity-50"}`}
         />
 
         <Image
+          onClick={() => handleFilterChange(2, "type")}
           src={ChienThanDuDon}
           alt=""
           width={185}
           height={200}
-          className="w-[185px]"
+          className={`w-[185px] cursor-pointer transition-all hover:opacity-100 ${filterValue.type == 2 ? "opacity-100" : "opacity-50"}`}
         />
       </div>
 

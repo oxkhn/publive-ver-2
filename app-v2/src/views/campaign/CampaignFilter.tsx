@@ -1,12 +1,16 @@
+"use client";
 import Image from "next/image";
 import CampaignIcon from "@/assets/images/chien_dich_hot.svg";
 import CampaignMobileIcon from "@/assets/images/chien_dich_hot_mobile.svg";
 import ChienThanLivestream from "@/assets/images/chien_than_livestream.svg";
 import ChienThanDuDon from "@/assets/images/chien_than_du_don.svg";
+import { useCampaignContext } from "@/services/CampaignProvider";
 
 const CampaignFilter = () => {
+  const { filterValue, handleFilterChange } = useCampaignContext();
+
   return (
-    <div >
+    <div>
       <div className="sticky top-20 z-20 flex h-full w-[185px] flex-col gap-4 max-sm:hidden">
         <Image
           src={CampaignIcon}
@@ -17,19 +21,21 @@ const CampaignFilter = () => {
         />
 
         <Image
+          onClick={() => handleFilterChange(1, "type")}
           src={ChienThanLivestream}
           alt=""
           width={185}
           height={200}
-          className="w-[185px]"
+          className={`w-[185px] cursor-pointer transition-all hover:opacity-100 ${filterValue.type == 1 ? "opacity-100" : "opacity-50"}`}
         />
 
         <Image
+          onClick={() => handleFilterChange(2, "type")}
           src={ChienThanDuDon}
           alt=""
           width={185}
           height={200}
-          className="w-[185px]"
+          className={`w-[185px] cursor-pointer transition-all hover:opacity-100 ${filterValue.type == 2 ? "opacity-100" : "opacity-50"}`}
         />
       </div>
 

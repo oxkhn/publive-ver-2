@@ -4,10 +4,20 @@ import { useGetCampaign } from "@/api/campaign/useGetCampaign";
 import { CampaignTypeWithId } from "@/types/campaign.type";
 import { createContext, useContext, useEffect, useState } from "react";
 
+interface FilterCampaignType {
+  name: string;
+  type: number;
+  bu: string;
+  cat: string;
+}
+
 type CampaignContextProps = {
   campaigns: CampaignTypeWithId[];
   campaignDetail: CampaignTypeWithId | undefined;
   getCampaign: (campaignId: string) => void;
+
+  filterValue: FilterCampaignType;
+  handleFilterChange: (value: any, name: keyof CampaignTypeWithId) => void;
 };
 
 const CampaignContext = createContext<CampaignContextProps | undefined>(
@@ -21,7 +31,7 @@ type Props = {
 export const CampaignProvider = (props: Props) => {
   const [campaigns, setCampaigns] = useState<CampaignTypeWithId[]>([]);
   const [campaignDetail, setCampaignDetail] = useState<CampaignTypeWithId>();
-  const [filterValue, setFilterValue] = useState({
+  const [filterValue, setFilterValue] = useState<FilterCampaignType>({
     name: "",
     type: 0,
     bu: "",
@@ -62,9 +72,16 @@ export const CampaignProvider = (props: Props) => {
 
   useEffect(() => {
     getAllCampaign();
-  }, []);
+  }, [filterValue]);
 
-  const value = { campaigns, campaignDetail, getCampaign };
+  const value = {
+    campaigns,
+    campaignDetail,
+    getCampaign,
+
+    filterValue,
+    handleFilterChange,
+  };
 
   return (
     <CampaignContext.Provider value={value}>

@@ -27,7 +27,7 @@ const CampaignProductCard: React.FC<CampaignProductCardProps> = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const navProductDetail = () => {
-    router.push("/product/" + product._id);
+    router.push("/product/" + product.sku);
   };
 
   return (

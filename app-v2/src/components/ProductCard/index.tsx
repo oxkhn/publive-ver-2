@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { toast } from "react-toastify";
 import { ProductType } from "@/types/product.type";
-import { formatNumberToK, formatVND } from "@/utils/string";
+import { copyString, formatNumberToK, formatVND } from "@/utils/string";
 import { MarketplaceEnum } from "@/services/ProductProvider";
 
 interface ProductCardProps {
@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const navProductDetail = () => {
     console.log("dasdasdas");
-    router.push("/product/s");
+    router.push("/product/" + product.sku);
   };
 
   return (
@@ -43,6 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Button
             title="Affiliate link"
             onClick={(e) => {
+              copyString(product.productLink);
               toast.success("Sao chép thành công.");
               e.stopPropagation();
             }}

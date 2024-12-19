@@ -66,3 +66,8 @@ export function formatDateToDDMMYYYY(input: string): string {
 
   return `${day}/${month}/${year}`;
 }
+
+export const copyString = (data: string | undefined) => {
+  if(!data) return;
+  navigator.clipboard.writeText(data);
+}

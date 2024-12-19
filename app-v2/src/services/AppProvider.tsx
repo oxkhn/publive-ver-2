@@ -6,6 +6,7 @@ import { RegisterProductProvider } from "./RegisterProductProvider";
 import { ProductProvider } from "./ProductProvider";
 import { CampaignProvider } from "./CampaignProvider";
 import { ContentProvider } from "./ContentProvider";
+import { ProfileProvider } from "./ProfileProvider";
 
 const AppProvider = ({
   children,
@@ -19,7 +20,9 @@ const AppProvider = ({
           <ContentProvider>
             <ProductProvider>
               <CampaignProvider>
-                <RegisterProductProvider>{children}</RegisterProductProvider>
+                <ProfileProvider>
+                  <RegisterProductProvider>{children}</RegisterProductProvider>
+                </ProfileProvider>
               </CampaignProvider>
             </ProductProvider>
           </ContentProvider>

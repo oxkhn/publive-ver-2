@@ -6,7 +6,7 @@ export const useGetCampaign = () => {
   return useMutation({
     mutationKey: ["GET_CAMPAIGN"],
     mutationFn: async (campaignId: string) => {
-      const res = await axiosWithoutAccessToken.get("/api/campaign/" + campaignId);
+      const res = await axiosWithoutAccessToken.get("/campaign/" + campaignId);
       return res.data.data;
     },
   });

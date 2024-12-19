@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div
-      className="relative flex min-w-[158px] cursor-pointer flex-col rounded-lg border bg-white transition-all duration-200 hover:rounded-b-none hover:shadow-xl"
+      className="relative flex w-[158px] cursor-pointer flex-col rounded-lg border bg-white transition-all duration-200 hover:rounded-b-none hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => navProductDetail()}
@@ -64,7 +64,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               height={30}
             />
           </div>
-          <p>{1 * 100}%</p>
+          <p>{product.commission * 100}%</p>
         </div>
       </div>
 
@@ -105,7 +105,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           height={100}
           src={product?.imageList[0]}
           alt=""
-          className={`${isHovered && "scale-125"} h-full w-full transition-all duration-500`}
+          className={`${isHovered && "scale-125"} w-[158px] transition-all duration-500`}
         />
       </div>
 

@@ -139,9 +139,10 @@ const Filter = () => {
               className="w-full !text-black"
               value={brandSelected}
             >
-              {brandList?.map((brand) => {
+              {brandList?.map((brand, index) => {
                 return (
                   <DropdownItem
+                    key={index}
                     title={brand}
                     onClick={() => setBrandSelected(brand)}
                   />

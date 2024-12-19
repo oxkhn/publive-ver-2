@@ -100,8 +100,31 @@ export class FormRegisterService {
       const user = await this.userModel.findOne({ email: email });
       if (!user) throw new BadRequestException('User not found.');
 
-      const forms = await this.formRegisterModel.findOne({ userId: user._id });
-      return forms;
+      const pipeline = [
+        { $match: { userId: new Types.ObjectId(user._id) } },
+        { $unwind: '$productSKUs' },
+        { $group: { _id: '$productSKUs' } },
+        {
+          $lookup: {
+            from: 'products', // Tên collection trong MongoDB thường là số nhiều và chữ thường
+            localField: 'sku',
+            foreignField: 'sku',
+            as: 'productDetails',
+          },
+        },
+        { $unwind: '$productDetails' },
+        {
+          $group: {
+            _id: null,
+            products: { $push: '$productDetails' },
+          },
+        },
+        { $project: { _id: 0, products: 1 } },
+      ];
+
+      const result = await this.formRegisterModel.aggregate(pipeline).exec();
+
+      return result;
     } catch (error) {
       throw new BadRequestException(error);
     }

@@ -34,13 +34,13 @@ export class FormRegisterAffiliate {
   @Prop({ type: Boolean })
   isSign: boolean;
 
-  @Prop({ enum: StatusForm })
+  @Prop({ enum: StatusForm, default: StatusForm.Pending })
   status: string;
 
   @Prop({ type: String })
   shippingMethod: string;
 
-  @Prop({ type: String })
+  @Prop({ type: String, default: '' })
   trackingNumber: string;
 
   @Prop({ type: Date })

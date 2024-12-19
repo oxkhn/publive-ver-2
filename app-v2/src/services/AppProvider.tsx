@@ -4,6 +4,7 @@ import { AuthProvider } from "./AuthProvider";
 import TanstackProvider from "./TanstackProvider";
 import { RegisterProductProvider } from "./RegisterProductProvider";
 import { ProductProvider } from "./ProductProvider";
+import { CampaignProvider } from "./CampaignProvider";
 
 const AppProvider = ({
   children,
@@ -15,7 +16,9 @@ const AppProvider = ({
       <UIKitProvider>
         <AuthProvider>
           <ProductProvider>
-            <RegisterProductProvider>{children}</RegisterProductProvider>
+            <CampaignProvider>
+              <RegisterProductProvider>{children}</RegisterProductProvider>
+            </CampaignProvider>
           </ProductProvider>
         </AuthProvider>
       </UIKitProvider>

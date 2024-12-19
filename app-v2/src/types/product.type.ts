@@ -27,4 +27,6 @@ export type ProductType = {
   registeredCount: number;
   unitsSold: number;
   isAuthentic: boolean;
+  hc: number,
+  coms: number,
 };

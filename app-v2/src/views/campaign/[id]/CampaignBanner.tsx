@@ -1,5 +1,5 @@
 import BannerDemo from "@/assets/images/banner.jpg";
-import { useCampaignContext } from "@/services/CampaignService";
+import { useCampaignContext } from "@/services/CampaignProvider";
 import Image from "next/image";
 
 const CampaignBanner = () => {

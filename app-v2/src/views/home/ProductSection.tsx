@@ -75,7 +75,7 @@ const ProductSection = () => {
           alt=""
           width={185}
           height={200}
-          className={`cursor-pointer opacity-50 transition-all hover:opacity-100 ${FilterTypeEnum.HOT_DEAL_LIVESTREAM == filterType && "opacity-100"}`}
+          className={`cursor-pointer transition-all hover:opacity-100 ${FilterTypeEnum.HOT_DEAL_LIVESTREAM == filterType ? "opacity-100" : "opacity-50"}`}
         />
         <Image
           onClick={() => setFilterType(FilterTypeEnum.HOA_HONG_CAO_NHAT)}
@@ -83,7 +83,7 @@ const ProductSection = () => {
           alt=""
           width={185}
           height={200}
-          className={`cursor-pointer opacity-50 transition-all hover:opacity-100 ${FilterTypeEnum.HOA_HONG_CAO_NHAT == filterType && "opacity-100"}`}
+          className={`cursor-pointer transition-all hover:opacity-100 ${FilterTypeEnum.HOA_HONG_CAO_NHAT == filterType ? "opacity-100" : "opacity-50"}`}
         />
         <Image
           onClick={() => setFilterType(FilterTypeEnum.TOP_BAN_CHAY)}
@@ -91,7 +91,7 @@ const ProductSection = () => {
           alt=""
           width={185}
           height={200}
-          className={`cursor-pointer opacity-50 transition-all hover:opacity-100 ${FilterTypeEnum.TOP_BAN_CHAY == filterType && "opacity-100"}`}
+          className={`cursor-pointer transition-all hover:opacity-100 ${FilterTypeEnum.TOP_BAN_CHAY == filterType ? "opacity-100" : "opacity-50"}`}
         />
       </div>
 

@@ -4,9 +4,9 @@ import CampaignBanner from "./CampaignBanner";
 import CampaignInfo from "./CampaignInfo";
 import CampaignProductList from "./CampaignProductList";
 import CampaignRule from "./CampaignRule";
-import { useCampaignContext } from "@/services/CampaignService";
 import { useEffect } from "react";
 import Breadcrumb from "@/packages/@ui-kit/Breadcrumb";
+import { useCampaignContext } from "@/services/CampaignProvider";
 
 const CampaignDetailPageDetail = () => {
   const { id } = useParams();
@@ -14,7 +14,6 @@ const CampaignDetailPageDetail = () => {
   const { campaignDetail, getCampaign } = useCampaignContext();
   useEffect(() => {
     if (id) getCampaign(id as string);
-
   }, [id]);
   return (
     <>

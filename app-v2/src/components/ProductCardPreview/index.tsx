@@ -56,7 +56,7 @@ const ProductCardPreview: React.FC<ProductCardPreviewProps> = ({ product }) => {
         ) >= 0 && <FaCheck className="h-4 text-green" />}
       </div>
       <div className="absolute left-2 top-2 z-10 h-6 w-6 rounded-full bg-white p-1">
-        {product.publisher == MarketplaceEnum.LAZADA && (
+        {product?.publisher == MarketplaceEnum.LAZADA && (
           <Image
             src={LazadaLogo}
             alt="logo"
@@ -65,7 +65,7 @@ const ProductCardPreview: React.FC<ProductCardPreviewProps> = ({ product }) => {
             className="rounded-full"
           />
         )}
-        {product.publisher == MarketplaceEnum.SHOPEE && (
+        {product?.publisher == MarketplaceEnum.SHOPEE && (
           <Image
             src={ShopeeLogo}
             alt="logo"
@@ -75,7 +75,7 @@ const ProductCardPreview: React.FC<ProductCardPreviewProps> = ({ product }) => {
           />
         )}
 
-        {product.publisher == MarketplaceEnum.UNILEVER && (
+        {product?.publisher == MarketplaceEnum.UNILEVER && (
           <Image
             src={UnileverLogo}
             alt="logo"

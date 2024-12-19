@@ -1,9 +1,11 @@
+import { ProductType } from "./product.type"
+
 export type CampaignType = {
     name: string
     brandName: string
     description: string
-    startDate: Date
-    endDate: Date
+    startDate: string
+    endDate: string
     status: string
     productSKUs?: string[]
     banner: string
@@ -15,6 +17,7 @@ export type CampaignType = {
     bu: string
     cat: string
     brand: string
+    products: ProductType[]
 }
 
 export type CampaignTypeWithId = CampaignType & { _id: string }

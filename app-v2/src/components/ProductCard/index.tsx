@@ -68,7 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       <div className="absolute left-2 top-2 z-10 h-6 w-6 rounded-full bg-white p-1">
-        {product.publisher == MarketplaceEnum.LAZADA && (
+        {product?.publisher == MarketplaceEnum.LAZADA && (
           <Image
             src={LazadaLogo}
             alt="logo"
@@ -77,7 +77,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className="rounded-full"
           />
         )}
-        {product.publisher == MarketplaceEnum.SHOPEE && (
+        {product?.publisher == MarketplaceEnum.SHOPEE && (
           <Image
             src={ShopeeLogo}
             alt="logo"
@@ -87,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
         )}
 
-        {product.publisher == MarketplaceEnum.UNILEVER && (
+        {product?.publisher == MarketplaceEnum.UNILEVER && (
           <Image
             src={UnileverLogo}
             alt="logo"

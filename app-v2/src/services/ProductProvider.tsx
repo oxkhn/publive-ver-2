@@ -145,17 +145,19 @@ export const ProductProvider = (props: Props) => {
       limit: 50,
       commission: commissionValue,
     };
-    if (buSelected != "Tất cả") {
-      if (buSelected) bodyData = { ...bodyData, bu: buSelected };
-      if (marketplaceChecked)
-        bodyData = { ...bodyData, publisher: marketplaceChecked };
 
-      if (filterType) bodyData = { ...bodyData, filterType: filterType };
-
-      if (search) bodyData = { ...bodyData, name: search };
-
-      if (brandSelected) bodyData = { ...bodyData, brand: brandSelected };
+    if (buSelected) {
+      if (buSelected != "Tất cả") {
+        bodyData = { ...bodyData, bu: buSelected };
+        if (brandSelected) bodyData = { ...bodyData, brand: brandSelected };
+      }
     }
+    if (marketplaceChecked)
+      bodyData = { ...bodyData, publisher: marketplaceChecked };
+
+    if (filterType) bodyData = { ...bodyData, filterType: filterType };
+
+    if (search) bodyData = { ...bodyData, name: search };
 
     getAllProduct(bodyData);
   }, [

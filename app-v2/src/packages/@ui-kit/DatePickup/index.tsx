@@ -18,7 +18,7 @@ const DatePickup: React.FC<DatePickupProps> = (props) => {
   return (
     <ConfigProvider>
       <DatePicker
-        className="h-full w-full rounded-full"
+        className="h-full w-full"
         value={time}
         format="YYYY-MM-DD"
         onChange={handleDateChange}

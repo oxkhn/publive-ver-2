@@ -8,9 +8,12 @@ import ChienThanDuDon from "@/assets/images/chien_than_du_don.svg";
 import BannerDemo from "@/assets/images/banner.jpg";
 import Button from "@/packages/@ui-kit/Button2";
 import { useRouter } from "next/navigation";
+import { useCampaignContext } from "@/services/CampaignProvider";
 
 const CampaignSection = () => {
   const router = useRouter();
+
+  const { campaigns } = useCampaignContext();
 
   return (
     <div className="relative flex gap-8 max-sm:flex-col">
@@ -69,10 +72,12 @@ const CampaignSection = () => {
       </div>
 
       <div className="flex flex-1 flex-col gap-4">
-        {[...Array(4)].map((_, index) => {
+        {campaigns.map((_, index) => {
           return (
             <Image
-              src={BannerDemo}
+              width={500}
+              height={200}
+              src={_?.banner}
               alt=""
               className="w-full rounded-lg object-cover max-sm:h-[100px]"
               key={index}

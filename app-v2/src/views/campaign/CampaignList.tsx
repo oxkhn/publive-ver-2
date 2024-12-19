@@ -2,7 +2,7 @@
 import Image from "next/image";
 import BannerDemo from "@/assets/images/banner.jpg";
 import CampaignCard from "./CampaignCard";
-import { useCampaignContext } from "@/services/CampaignService";
+import { useCampaignContext } from "@/services/CampaignProvider";
 
 const CampaignList = () => {
   const { campaigns } = useCampaignContext();

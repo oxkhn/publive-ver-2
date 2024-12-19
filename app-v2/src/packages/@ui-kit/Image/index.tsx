@@ -1,6 +1,6 @@
 "use client";
 import Image, { StaticImageData } from "next/image";
-import ImageDemo from "@/assets/images/demo.svg";
+import ImageDemo from "@/assets/images/demo.jpg";
 import { HTMLProps, useEffect, useState, useRef } from "react";
 import LoadingIcon from "../Loading/LoadingIcon";
 import clsx from "clsx";

@@ -15,6 +15,7 @@ import { useDebounce } from "use-debounce";
 import { registerProductDTO } from "./RegisterProductProvider";
 import usePostRegisterProduct from "@/api/registerProduct/registerProduct";
 import { toast } from "react-toastify";
+import { useGetProductDetail } from "@/api/product/useGetProductDetail";
 
 type ProductContextProps = {
   brands: BrandState[];
@@ -43,6 +44,8 @@ type ProductContextProps = {
 
   toggleMarketplace: (marketplaceFilter: string) => void;
   clearData: () => void;
+  getProductDetail: (sku: string) => void;
+  productDetail: ProductType;
 };
 
 export const FilterTypeEnum = {
@@ -60,11 +63,11 @@ export const MarketplaceEnum = {
 type GetAllProductDto = {
   limit: number;
   page: number;
-  bu: string;
-  brand: string;
+  bu?: string;
+  brand?: string;
   sku?: string;
   name?: string;
-  publisher: string[];
+  publisher?: string[];
   filterType?: number;
   commission?: number;
 };
@@ -75,6 +78,37 @@ const ProductContext = createContext<ProductContextProps | undefined>(
 
 type Props = {
   children: React.ReactNode;
+};
+
+export const defaultProduct: ProductType = {
+  _id: "",
+  bu: "",
+  cat: "",
+  brand: "",
+  shopSku: "",
+  sku: "",
+  productName: "",
+  productLink: "",
+  commission: 0,
+  productGift: "",
+  productGiftLink: "",
+  price: 0,
+  discountPrice: 0,
+  image: "",
+  imageList: [],
+  availableStock: 0,
+  tags: [],
+  description: "",
+  affiliateLink: "",
+  publisher: "",
+  startDate: new Date(),
+  endDate: new Date(),
+  isActive: false,
+  typeShort: "",
+  isNew: false,
+  registeredCount: 0,
+  unitsSold: 0,
+  isAuthentic: false,
 };
 
 export const ProductProvider = (props: Props) => {
@@ -93,6 +127,17 @@ export const ProductProvider = (props: Props) => {
   const [brandSelected, setBrandSelected] = useState<string>("");
 
   const [commissionValueDebounce] = useDebounce(commissionValue, 1000);
+
+  const [productDetail, setProductDetail] =
+    useState<ProductType>(defaultProduct);
+
+  const _getProductDetail = useGetProductDetail();
+  const getProductDetail = async (sku: string) => {
+    try {
+      const res = await _getProductDetail.mutateAsync(sku);
+      setProductDetail(res);
+    } catch (error) {}
+  };
 
   const clearData = () => {
     setBrandList([]);
@@ -198,6 +243,9 @@ export const ProductProvider = (props: Props) => {
 
     toggleMarketplace,
     clearData,
+
+    getProductDetail,
+    productDetail,
   };
 
   return (

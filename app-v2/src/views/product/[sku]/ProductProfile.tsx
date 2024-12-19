@@ -4,8 +4,13 @@ import Image from "next/image";
 import ImageDemo from "@/assets/images/demo.jpg";
 import Line from "@/packages/@ui-kit/Line";
 import Button from "@/packages/@ui-kit/Button2";
+import { useProductContext } from "@/services/ProductProvider";
+import { useParams } from "next/navigation";
 
 const ProductProfile = () => {
+  const { sku } = useParams();
+
+  const { productDetail } = useProductContext();
   return (
     <div className="flex flex-wrap gap-8 rounded-md p-8 shadow-md max-sm:p-2 max-sm:shadow-none">
       <div className="flex max-w-[455px] flex-1 flex-col gap-4">
@@ -35,6 +40,9 @@ const ProductProfile = () => {
           <div className="rounded-md border border-secondary px-2 py-1">
             <p className="text-sm text-secondary">Shopee</p>
           </div>
+          <div className="rounded-md border border-red px-2 py-1">
+            <p className="text-sm text-red">Hoa hồng 30%</p>
+          </div>
         </div>
 
         <p className="text-xl font-semibold">
@@ -55,18 +63,14 @@ const ProductProfile = () => {
         </div>
 
         <div className="my-4 flex flex-wrap items-center gap-4">
-          <div className="mr-10 flex items-center gap-4 rounded-md bg-[#EF4B35] px-4 py-2 font-semibold text-white">
-            Hoa Hồng
-            <p>50%</p>
-          </div>
+          <Button title="Nhận affiliate link" onClick={() => {}} />
+
           <div className="flex items-center gap-4">
             <p className="text-[30px] font-semibold text-secondary">200.000</p>
             <p className="text-sm font-semibold line-through">200.000</p>
             <p className="text-sm font-semibold text-secondary">-57%</p>
           </div>
         </div>
-
-        <Button title="Nhận affiliate link" onClick={() => {}} />
 
         <div className="flex gap-8">
           <p className="w-[100px] text-sm font-semibold text-gray-700">Mô tả</p>

@@ -4,7 +4,6 @@ import ProductSection from "@/views/home/ProductSection";
 import Title from "@/views/home/Title";
 import TopMCNSection from "@/views/home/TopMCNSection";
 import VideoSection from "@/views/home/VideoSection";
-import { ModalManager } from "@/views/shared/Header/ModalManager";
 
 export default function Home() {
   return (

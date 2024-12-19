@@ -12,23 +12,35 @@ import ImageHand from "@/assets/images/handshake.svg";
 import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { toast } from "react-toastify";
+import { FaCheck } from "react-icons/fa";
+import { useRegisterProductContext } from "@/services/RegisterProductProvider";
 import { ProductType } from "@/types/product.type";
-import { formatNumberToK, formatVND } from "@/utils/string";
 import { MarketplaceEnum } from "@/services/ProductProvider";
 
-interface ProductCardProps {
+interface ProductCardPreviewProps {
   product: ProductType;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCardPreview: React.FC<ProductCardPreviewProps> = ({ product }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
-
   const [isHovered, setIsHovered] = useState(false);
 
-  const navProductDetail = () => {
-    console.log("dasdasdas");
-    router.push("/product/s");
+  const { productSelected, setProductSelected } = useRegisterProductContext();
+
+  const toggleRegister = () => {
+    const index = productSelected.findIndex(
+      (productSelected) => productSelected._id == product._id,
+    );
+    if (index >= 0) {
+      let selectUpdated = productSelected;
+      selectUpdated = selectUpdated.filter(
+        (productSelected) => productSelected._id != product._id,
+      );
+      setProductSelected([...selectUpdated]);
+    } else {
+      setProductSelected([...productSelected, product]);
+    }
   };
 
   return (
@@ -36,37 +48,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       className="relative flex min-w-[158px] cursor-pointer flex-col rounded-lg border bg-white transition-all duration-200 hover:rounded-b-none hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => navProductDetail()}
+      onClick={() => toggleRegister()}
     >
-      {(isHovered || isMobile) && (
-        <div className="absolute -bottom-8 left-0 right-0 z-20 grid h-9 place-items-center overflow-auto transition-all duration-500">
-          <Button
-            title="Affiliate link"
-            onClick={(e) => {
-              toast.success("Sao chép thành công.");
-              e.stopPropagation();
-            }}
-            className="w-full rounded-t-none"
-          />
-        </div>
-      )}
-
-      <div className="absolute -right-1 -top-[13px] z-10 h-[30px] w-[79px]">
-        <Image src={PyramidIcon} className="" alt="" width={100} height={100} />
-        <div className="absolute left-1/2 top-1 flex -translate-x-1/2 items-center gap-1 text-xs font-bold text-white">
-          <div className="h-3 w-3">
-            <Image
-              src={ImageHand}
-              className="h-3 w-3"
-              alt=""
-              width={40}
-              height={30}
-            />
-          </div>
-          <p>{1 * 100}%</p>
-        </div>
+      <div className="absolute right-2 top-2 z-10 grid aspect-square h-6 place-items-center rounded-full bg-white">
+        {productSelected.findIndex(
+          (productSelected) => productSelected._id == product._id,
+        ) >= 0 && <FaCheck className="h-4 text-green" />}
       </div>
-
       <div className="absolute left-2 top-2 z-10 h-6 w-6 rounded-full bg-white p-1">
         {product.publisher == MarketplaceEnum.LAZADA && (
           <Image
@@ -102,20 +90,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Image
           width={100}
           height={100}
-          src={product?.imageList[0]}
+          src={product?.imageList?.[0]}
           alt=""
           className={`${isHovered && "scale-125"} h-full w-full transition-all duration-500`}
         />
       </div>
 
       <div className="flex flex-col gap-2 p-2">
-        <p className="line-clamp-2 text-xs">{product?.productName}</p>
-        <p className="font-semibold text-secondary">
-          {formatVND(product?.price)}
+        <p className="line-clamp-2 text-sm">{product?.productName}</p>
+        <p className="text-xs font-normal text-primary/80">
+          Hàng mẫu: {product?.availableStock}
         </p>
       </div>
     </div>
   );
 };
 
-export default ProductCard;
+export default ProductCardPreview;

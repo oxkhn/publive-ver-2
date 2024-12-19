@@ -1,12 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { axiosWithoutAccessToken } from "../../../axiosConfig/axiosConfig";
 
 const useGetAllProduct = () => {
   return useMutation({
     mutationKey: ["GET_ALL_PRODUCT"],
     mutationFn: async (body: any) => {
-      const path = "/api/product/";
-      const res = await axios.post(path, body.data);
+      const res = await axiosWithoutAccessToken.post("/product/", body);
 
       return res.data;
     },

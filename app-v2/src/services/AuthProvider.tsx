@@ -14,6 +14,7 @@ type AuthContextProps = {
   onLogin: (email: string, password: string) => Promise<boolean>;
   onLogout: () => void;
   onRegister: (registerDTO: RegisterDTO) => Promise<boolean>;
+  updateProfile: (data: any) => void;
 };
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -93,7 +94,7 @@ export const AuthProvider = (props: Props) => {
   const _getProfile = useGetProfile();
   const getProfile = async (_token: string) => {
     try {
-      const resData = await _getProfile.mutateAsync(_token);
+      const resData = await _getProfile.mutateAsync();
 
       const user = resData.data;
 
@@ -124,7 +125,7 @@ export const AuthProvider = (props: Props) => {
     }
   }, []);
 
-  const value = { onLogin, onLogout, onRegister, user };
+  const value = { onLogin, onLogout, onRegister, user, updateProfile };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -4,12 +4,13 @@ export type UserType = {
   password: string
   dob: Date
   sex: boolean
-  phoneNumber: string
+  phoneNumber?: string
   verify: boolean
-  avatar: string
+  avatar?: string
   role: Role
-  tag: string
-  social: Social
+  tag?: string
+  address?: string,
+  social?: Social
 }
 
 export enum Role {
@@ -24,7 +25,7 @@ export type Social = {
   tiktok: SocialLink
   youtube: SocialLink
   other: SocialLink
-  shopeeLive: SocialLink
+  shopeeUsername: SocialLink
   shopee: SocialLink
   instagram: SocialLink
 }
@@ -34,3 +35,17 @@ export type SocialLink = {
   verify: boolean
   accessToken: string
 }
+
+
+export type IProfileInfo = {
+  shoppeUserName: string;
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  facebookLink?: string;
+  instagramLink?: string;
+  threadsLink?: string;
+  tiktokLink?: string;
+  youtubeLink?: string;
+};

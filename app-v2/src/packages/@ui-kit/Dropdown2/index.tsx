@@ -61,7 +61,7 @@ const DropdownV2: React.FC<DropdownProps> = (props) => {
   const classes = clsx(defaultCSS, className);
 
   const defaultCSSElement =
-    "z-50 absolute top-9 left-0 grid bg-white mt-[1px] transition-all gap-1 rounded-md p-1 anni-item-show max-w-lg gap-1 border border-line p-1 shadow-lg sm:max-w-[425px] p-1";
+    "z-50 absolute top-full left-0 grid bg-white min-w-full mt-[1px] transition-all gap-1 rounded-md p-1 anni-item-show max-w-lg gap-1 border border-line p-1 shadow-lg sm:max-w-[425px] p-1";
   const classesElement = clsx(defaultCSSElement, animationClass);
 
   const classesContainer = clsx(
@@ -110,7 +110,7 @@ const DropdownV2: React.FC<DropdownProps> = (props) => {
       {isShowDropdown && (
         <div
           className={classesElement}
-          style={{ width: dropdownWidth }} // Set dropdown width dynamically
+          // style={{ width: dropdownWidth }} // Set dropdown width dynamically
         >
           {Array.isArray(children)
             ? children.map((child, index) => (

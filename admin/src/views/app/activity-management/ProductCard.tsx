@@ -101,12 +101,12 @@ const ProductCard = (props: Props) => {
 
             <Image
                 className='w-full h-fit rounded  aspect-square'
-                src={product.imageList[0]}
+                src={product?.imageList[0]}
                 alt=''
                 width={100}
                 height={100}
             />
-            <p className='text-sm font-semibold line-clamp-2'>{product.productName}</p>
+            <p className='text-sm font-semibold line-clamp-2'>{product?.productName}</p>
             <div className='flex gap-2 items-center'>
                 <div className='bg-green-500 h-full rounded flex-1 flex flex-col py-1 px-4'>
                     <p className='text-xs font-semibold text-start'>HC</p>

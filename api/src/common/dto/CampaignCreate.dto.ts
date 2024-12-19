@@ -25,12 +25,12 @@ export class CreateCampaignDto {
   @IsOptional()
   description: string;
 
-  @IsDate()
   @Type(() => Date)
+  @IsDate()
   startDate: Date;
 
-  @IsDate()
   @Type(() => Date)
+  @IsDate()
   endDate: Date;
 
   @IsEnum(['active', 'inactive', 'completed'])
@@ -50,12 +50,12 @@ export class CreateCampaignDto {
   @IsOptional()
   registerLink: string;
 
-  @IsDate()
   @Type(() => Date)
+  @IsDate()
   registerStartDate: Date;
 
-  @IsDate()
   @Type(() => Date)
+  @IsDate()
   registerEndDate: Date;
 
   @IsOptional()

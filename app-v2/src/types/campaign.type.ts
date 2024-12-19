@@ -6,7 +6,7 @@ export type CampaignType = {
     endDate: Date
     status: string
     productSKUs?: string[]
-    banner?: string
+    banner: string
     registerLink: string
     registerStartDate: Date
     registerEndDate: Date

@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { FormRegisterService } from './form-register.service';
 import { CreateFormDto } from 'src/common/dto/FormCreate.dto';
 import {
@@ -8,16 +17,19 @@ import {
 import { BaseExceptionFilter } from '@nestjs/core';
 import { FormGetAllDto } from 'src/common/dto/FormGetAll.dto';
 import { FormRegisterAffiliate } from 'src/common/models/formRegister.model';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
 @Controller('form-register')
 export class FormRegisterController {
   constructor(private readonly formRegisterService: FormRegisterService) {}
 
   @Post()
-  async addForm(@Body() createFormDto: any) {
+  @UseGuards(RolesGuard)
+  async addForm(@Body() createFormDto: any, @Request() req) {
     try {
-      console.log(createFormDto);
-      await this.formRegisterService.addForm(createFormDto);
+      const payload = req.user;
+      const email = payload.email;
+      await this.formRegisterService.addForm(createFormDto, email);
 
       return new ResponseSuccess('');
     } catch (error) {

@@ -52,8 +52,6 @@ export class CampaignService {
 
       delete createCampaignDto._id;
 
-      this.logger.debug(createCampaignDto);
-
       const newCampaign = new this.campaignModel(createCampaignDto);
       newCampaign.save();
       return newCampaign;

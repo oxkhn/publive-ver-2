@@ -156,18 +156,19 @@ export const CampaignDetailProvider = (props: Props) => {
         const formData = new FormData()
         if (bannerFile) formData.append('banner', bannerFile)
 
-        Object.entries(campaign).forEach(([key, value]) => {
-            if (Array.isArray(value)) {
-                value.forEach((item: any, index) => {
-                    formData.append(`${key}[${index}]`, typeof item === 'object' ? JSON.stringify(item) : item)
-                })
-            } else if (typeof value === 'object') {
-                // Convert object to JSON string
-                formData.append(key, JSON.stringify(value))
-            } else {
-                formData.append(key, value as string | Blob)
-            }
-        })
+            Object.entries(campaign).forEach(([key, value]) => {
+                if (Array.isArray(value)) {
+                    value.forEach((item: any, index) => {
+                        formData.append(`${key}[${index}]`, typeof item === 'object' ? JSON.stringify(item) : item);
+                    });
+                } else if (typeof value === 'object' && !(value instanceof Date)) {
+                    // Nếu giá trị là object nhưng không phải Date, chuyển thành JSON string
+                    formData.append(key, JSON.stringify(value));
+                } else {
+                    // Nếu là Date, chuyển thành chuỗi ISO
+                    formData.append(key, value instanceof Date ? value.toISOString() : String(value));
+                }
+            });
 
         await _postCreateCampaign.mutateAsync(formData)
         setSetupStep(1)

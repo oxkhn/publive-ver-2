@@ -20,43 +20,19 @@ export class FormRegisterAffiliate {
   name: string;
 
   @Prop({ type: String, default: '' })
-  phone: string;
+  phoneNumber: string;
 
   @Prop({ type: String, default: '' })
   email: string;
-
-  @Prop({ type: String, default: '' })
-  shopeeUsername: string;
-
-  @Prop({ type: String, default: '' })
-  facebookLink: string;
-
-  @Prop({ type: String, default: '' })
-  instargramLink: string;
-
-  @Prop({ type: String, default: '' })
-  threadsLink: string;
-
-  @Prop({ type: String, default: '' })
-  tiktokLink: string;
-
-  @Prop({ type: String, default: '' })
-  youtubeLink: string;
-
-  @Prop({ type: String, default: '' })
-  websiteLink: string;
-
-  @Prop({ type: String, default: '' })
-  shopeeLiveLink: string;
-
-  @Prop({ type: String, default: '' })
-  shopeeVideoLink: string;
 
   @Prop({ type: String, default: '' })
   address: string;
 
   @Prop({ type: [String] })
   productSKUs: string[];
+
+  @Prop({ type: Boolean })
+  isSign: boolean;
 
   @Prop({ enum: StatusForm })
   status: string;

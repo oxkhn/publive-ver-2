@@ -1,23 +1,29 @@
-import { BadRequestException, Injectable, Post } from '@nestjs/common';
+import { BadRequestException, Injectable, Post, Request } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CreateFormDto } from 'src/common/dto/FormCreate.dto';
 import { FormGetAllDto } from 'src/common/dto/FormGetAll.dto';
 import { FormRegisterAffiliate } from 'src/common/models/formRegister.model';
 import { ProductService } from '../product/product.service';
+import { User } from 'src/common/models/user.model';
 
 @Injectable()
 export class FormRegisterService {
   constructor(
     @InjectModel(FormRegisterAffiliate.name)
     private readonly formRegisterModel: Model<FormRegisterAffiliate>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<User>,
     private readonly productService: ProductService,
   ) {}
 
-  async addForm(createFormDto: CreateFormDto) {
+  async addForm(createFormDto: CreateFormDto, email: string) {
     try {
-      const newForm = new this.formRegisterModel(createFormDto);
+      const user = await this.userModel.findOne({ email: email });
+      if (!user) throw new BadRequestException('User not found.');
 
+      const newForm = new this.formRegisterModel(createFormDto);
+      newForm.userId = user._id.toString();
       await newForm.save();
     } catch (error) {
       throw new BadRequestException('');

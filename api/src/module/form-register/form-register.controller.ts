@@ -56,16 +56,6 @@ export class FormRegisterController {
     }
   }
 
-  @Get('/:id')
-  async getDetail(@Param('id') id: string) {
-    try {
-      const form = await this.formRegisterService.getDetail(id);
-      return new ResponseSuccess(form);
-    } catch (error) {
-      throw new BaseExceptionFilter(error.message);
-    }
-  }
-
   @Get('/user')
   @UseGuards(RolesGuard)
   async getFormOfUser(@Request() req) {
@@ -76,6 +66,16 @@ export class FormRegisterController {
       return new ResponseSuccess(res);
     } catch (error) {
       throw new BadRequestException(error);
+    }
+  }
+
+  @Get('/:id')
+  async getDetail(@Param('id') id: string) {
+    try {
+      const form = await this.formRegisterService.getDetail(id);
+      return new ResponseSuccess(form);
+    } catch (error) {
+      throw new BaseExceptionFilter(error.message);
     }
   }
 }

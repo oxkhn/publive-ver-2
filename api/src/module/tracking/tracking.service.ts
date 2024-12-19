@@ -14,14 +14,18 @@ export class TrackingService {
 
   async postEvent(event: CreateEventDto, email: string) {
     try {
-      const user = await this.usertModel.findOne({ email: email });
-      if (!user) throw new BadRequestException('User not found.');
-
-      user.lastActive = new Date(Date.now());
-      await user.save();
-
       const newEvent = new this.eventModel(event);
-      newEvent.userId = user._id;
+
+      if (email) {
+        const user = await this.usertModel.findOne({ email: email });
+        if (user) {
+          user.lastActive = new Date(Date.now());
+          await user.save();
+        }
+
+        newEvent.userId = user._id;
+      }
+
 
       await newEvent.save();
 

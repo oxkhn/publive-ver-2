@@ -1,3 +1,4 @@
+import Tracking from "@/components/Tracking";
 import Banner from "@/views/home/Banner";
 import CampaignSection from "@/views/home/CampaingnSection";
 import ProductSection from "@/views/home/ProductSection";
@@ -17,6 +18,7 @@ export default function Home() {
         <VideoSection />
         <TopMCN />
       </div>
+      <Tracking />
     </div>
   );
 }

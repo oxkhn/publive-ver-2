@@ -110,4 +110,14 @@ export class AuthService {
       throw new BadRequestException('');
     }
   }
+
+  async getAllUser() {
+    try {
+      const res = await this.userModel.find().select('-password');
+
+      return res;
+    } catch (error) {
+      throw new BadRequestException('');
+    }
+  }
 }

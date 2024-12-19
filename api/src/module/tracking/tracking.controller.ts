@@ -16,15 +16,16 @@ export class TrackingController {
   constructor(private readonly trackingService: TrackingService) {}
 
   @Post()
-  @UseGuards(RolesGuard)
+  // @UseGuards(RolesGuard)
   async postTracking(@Body() event: CreateEventDto, @Request() req) {
     try {
       const payload = req.user;
-      const res = await this.trackingService.postEvent(event, payload.email);
+      const email = payload ? payload.email : '';
+      const res = await this.trackingService.postEvent(event, email);
 
       return new ResponseSuccess(res);
     } catch (error) {
-      throw new BadRequestException();
+      throw new BadRequestException(error);
     }
   }
 }

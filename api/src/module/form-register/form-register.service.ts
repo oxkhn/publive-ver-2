@@ -94,4 +94,16 @@ export class FormRegisterService {
       throw new BadRequestException(error.message);
     }
   }
+
+  async getFormOfUser(email: string) {
+    try {
+      const user = await this.userModel.findOne({ email: email });
+      if (!user) throw new BadRequestException('User not found.');
+
+      const forms = await this.formRegisterModel.findOne({ userId: user._id });
+      return forms;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
 }

@@ -67,24 +67,21 @@ const Button = (props: Props) => {
       type={type}
     >
       {isLoading ? (
-        // Default values shown
-        <svg className="container" viewBox="0 0 40 40" height="40" width="40">
+        <svg className="container" viewBox="0 0 20 20" height="10" width="10">
           <circle
             className="track"
-            cx="20"
-            cy="20"
-            r="17.5"
-            // pathlength="100"
-            stroke-width="5px"
+            cx="10"
+            cy="10"
+            r="8.75"
+            strokeWidth="2.5px"
             fill="none"
           />
           <circle
             className="car"
-            cx="20"
-            cy="20"
-            r="17.5"
-            // pathlength="100"
-            stroke-width="5px"
+            cx="10"
+            cy="10"
+            r="8.75"
+            strokeWidth="2.5px"
             fill="none"
           />
         </svg>

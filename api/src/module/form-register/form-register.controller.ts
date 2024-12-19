@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -62,6 +63,19 @@ export class FormRegisterController {
       return new ResponseSuccess(form);
     } catch (error) {
       throw new BaseExceptionFilter(error.message);
+    }
+  }
+
+  @Get('/user')
+  @UseGuards(RolesGuard)
+  async getFormOfUser(@Request() req) {
+    try {
+      const payload = req.user;
+      const email = payload.email;
+      const res = await this.formRegisterService.getFormOfUser(email);
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new BadRequestException(error);
     }
   }
 }

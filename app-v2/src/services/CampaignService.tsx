@@ -1,10 +1,13 @@
 "use client";
 import { useGetAllCampaign } from "@/api/campaign/useGetAllCampaign";
+import { useGetCampaign } from "@/api/campaign/useGetCampaign";
 import { CampaignTypeWithId } from "@/types/campaign.type";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type CampaignContextProps = {
   campaigns: CampaignTypeWithId[];
+  campaignDetail: CampaignTypeWithId | undefined;
+  getCampaign: (campaignId: string) => void;
 };
 
 const CampaignContext = createContext<CampaignContextProps | undefined>(
@@ -17,6 +20,7 @@ type Props = {
 
 export const CampaignProvider = (props: Props) => {
   const [campaigns, setCampaigns] = useState<CampaignTypeWithId[]>([]);
+  const [campaignDetail, setCampaignDetail] = useState<CampaignTypeWithId>();
   const [filterValue, setFilterValue] = useState({
     name: "",
     type: 0,
@@ -47,11 +51,20 @@ export const CampaignProvider = (props: Props) => {
     } catch (error) {}
   };
 
+  const _getCampaign = useGetCampaign();
+  const getCampaign = async (campaignId: string) => {
+    try {
+      const res = await _getCampaign.mutateAsync(campaignId);
+      console.log(res);
+      setCampaignDetail(res);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getAllCampaign();
   }, []);
 
-  const value = { campaigns };
+  const value = { campaigns, campaignDetail, getCampaign };
 
   return (
     <CampaignContext.Provider value={value}>

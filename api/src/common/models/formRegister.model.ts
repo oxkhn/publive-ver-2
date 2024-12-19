@@ -50,7 +50,7 @@ export class FormRegisterAffiliate {
   shippingCarrier: string;
 
   @Prop({ type: Types.ObjectId, ref: 'user' })
-  userId: string;
+  userId: Types.ObjectId;
 }
 
 export const FormRegisterAffiliateSchema = SchemaFactory.createForClass(

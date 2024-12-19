@@ -1,15 +1,23 @@
 import Image from "next/image";
 import BannerDemo from "@/assets/images/banner.jpg";
 import { CampaignTypeWithId } from "@/types/campaign.type";
+import { useRouter } from "next/navigation";
 
 type Props = {
   campaign: CampaignTypeWithId;
 };
 
 const CampaignCard = (props: Props) => {
+  const router = useRouter();
+
   const { campaign } = props;
   return (
-    <div className="relative h-[200px]">
+    <div
+      className="relative h-[200px] cursor-pointer"
+      onClick={() => {
+        router.push("/campaign/" + campaign._id);
+      }}
+    >
       <Image
         src={campaign.banner}
         alt=""

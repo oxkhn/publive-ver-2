@@ -1,13 +1,18 @@
+import { useCampaignContext } from "@/services/CampaignService";
 import { LuCalendarRange } from "react-icons/lu";
 
 const CampaignInfo = () => {
+  const { campaignDetail } = useCampaignContext();
+
   return (
     <div className="flex flex-wrap gap-4 rounded-lg border bg-white p-4 max-sm:flex-col-reverse">
       <div className="flex flex-1 flex-col gap-2">
         <p className="text-2xl font-semibold text-primary">
-          Sale khủng ngày vàng, da xinh mịn màng 29.11
+          {campaignDetail?.name}
         </p>
-        <p className="text-sm">Số sản phẩm: 10</p>
+        <p className="text-sm">
+          Số sản phẩm: {campaignDetail?.productSKUs?.length}
+        </p>
       </div>
 
       <div className="flex flex-1 flex-col items-end gap-2 max-sm:items-start">

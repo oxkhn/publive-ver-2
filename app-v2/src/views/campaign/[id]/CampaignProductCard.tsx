@@ -18,7 +18,6 @@ const CampaignProductCard = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const navProductDetail = () => {
-    console.log("dasdasdas");
     router.push("/product/s");
   };
 

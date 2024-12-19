@@ -23,7 +23,7 @@ export class FormRegisterService {
       if (!user) throw new BadRequestException('User not found.');
 
       const newForm = new this.formRegisterModel(createFormDto);
-      newForm.userId = user._id.toString();
+      newForm.userId = user._id;
       await newForm.save();
     } catch (error) {
       throw new BadRequestException('');

@@ -61,4 +61,15 @@ export class AuthController {
       throw new BadRequestException('');
     }
   }
+
+  @Post('/get-all')
+  async getAllUser() {
+    try {
+      const users = await this.authService.getAllUser();
+
+      return new ResponseSuccess(users);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import Tracking from "@/components/Tracking";
 import Breadcrumb from "@/packages/@ui-kit/Breadcrumb";
 import CampaignFilter from "@/views/campaign/CampaignFilter";
 import CampaignList from "@/views/campaign/CampaignList";
@@ -13,6 +14,7 @@ const CampaignPage = () => {
         <CampaignFilter />
         <CampaignList />
       </div>
+      <Tracking />
     </div>
   );
 };

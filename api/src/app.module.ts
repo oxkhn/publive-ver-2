@@ -52,6 +52,7 @@ import { TrackingModule } from './module/tracking/tracking.module';
     CrmModule,
     TiktokModule,
     TrackingModule,
+    
   ],
   controllers: [],
   providers: [

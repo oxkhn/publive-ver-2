@@ -9,12 +9,14 @@ import { useParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { copyString, formatVND } from "@/utils/string";
 import { toast } from "react-toastify";
+import useTracking from "@/hooks/useTracking";
 
 const ProductProfile = () => {
   const { productDetail } = useProductContext();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const { trackEvent } = useTracking();
 
   useEffect(() => {
     const changeImage = () => {
@@ -125,6 +127,10 @@ const ProductProfile = () => {
           <Button
             title="Nhận affiliate link"
             onClick={(e) => {
+              trackEvent({
+                event: "interaction",
+                page: productDetail?.sku,
+              });
               copyString(productDetail?.productLink);
               toast.success("Sao chép thành công.");
               e.stopPropagation();

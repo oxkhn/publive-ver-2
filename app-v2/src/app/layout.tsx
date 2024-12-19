@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Nav from "@/views/shared/Nav";
 import AppProvider from "@/services/AppProvider";
+import Tracking from "@/components/Tracking";
 
 const ProductFont = localFont({
   src: [

@@ -15,7 +15,6 @@ const UserMenu = () => {
   const { user, onLogout } = useAuthContext();
   const [isShowDropdown, setIsShowDropdown] = useState(false);
   const dropdownRef = useRef<any>(null);
-  console.log(user);
 
   const hiddenDropdown = () => {
     setIsShowDropdown(false);

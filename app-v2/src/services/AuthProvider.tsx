@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { usePostLogin } from "@/api/auth/usePostLogin";
 import { useRouter } from "next/navigation";
+import useTracking from "@/hooks/useTracking";
 
 type AuthContextProps = {
   user: UserType;
@@ -33,6 +34,7 @@ type Props = {
 export const AuthProvider = (props: Props) => {
   const { children } = props;
   const router = useRouter();
+  const { trackEvent } = useTracking();
   const [token, setToken] = useState<string | any>(null);
   const [user, setUser] = useState<UserType | any>(null);
 
@@ -70,6 +72,10 @@ export const AuthProvider = (props: Props) => {
 
   const onLogout = () => {
     removeToken();
+    trackEvent({
+      event: "logout",
+      page: "/logout",
+    });
     router.push("/");
   };
 
@@ -95,9 +101,7 @@ export const AuthProvider = (props: Props) => {
   const getProfile = async (_token: string) => {
     try {
       const resData = await _getProfile.mutateAsync();
-
       const user = resData.data;
-
       setUser(user);
     } catch (error) {}
   };

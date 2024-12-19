@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import Button from "@/packages/@ui-kit/Button2";
+import useTracking from "@/hooks/useTracking";
 
 type Props = {
   isShow: boolean;
@@ -17,6 +18,8 @@ type Props = {
 };
 
 const ModalLogin = (props: Props) => {
+  const { trackEvent } = useTracking();
+
   const { isShow, hide, switchToRegister } = props;
   const { onLogin, user } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +35,10 @@ const ModalLogin = (props: Props) => {
         const result = await onLogin(value.email, value.password);
         if (result) {
           setIsLoading(true);
+          trackEvent({
+            event: "login",
+            page: "/login",
+          });
           hide();
         } else {
           setIsLoading(false);
@@ -97,7 +104,7 @@ const ModalLogin = (props: Props) => {
                       title="Email"
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e:any) => field.handleChange(e.target.value)}
+                      onChange={(e: any) => field.handleChange(e.target.value)}
                     />
                     <em role="alert" className="text-xs text-red">
                       {field.state.meta.errors.join(", ")}

@@ -1,3 +1,5 @@
+import { ProductType } from "./product.type"
+
 export type AffiliateType = {
     campaignId: string
     affiliateId: string
@@ -16,4 +18,9 @@ export type AffiliateType = {
     shopeeLink: string
     youtubeLink: string
     igLink: string
+}
+
+export type AffiliateManagementType = {
+    product: ProductType,
+    count: number,
 }

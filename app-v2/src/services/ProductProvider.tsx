@@ -240,7 +240,7 @@ export const ProductProvider = (props: Props) => {
   useEffect(() => {
     const bodyData: GetAllProductDto = {
       page: 1,
-      limit: 5,
+      limit: 10,
       cat: productDetail?.cat,
     };
     getRelatedProduct(bodyData);

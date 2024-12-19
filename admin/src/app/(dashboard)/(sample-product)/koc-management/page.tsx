@@ -1,27 +1,26 @@
-import { TraffictMeasurementProvider } from '@/services/provider/TrafficMeasurementProvider'
-import Action from '@/views/app/email-marketing/Action'
-import { TableTrafficMeasurement } from '@/views/app/traffict-measurement/TableTrafficMeasurement'
+import { SampleProductProvider } from '@/services/provider/SampleProductProvider'
+import { TableKOCRegister } from '@/views/app/sample-product/TableKOCRegister'
 import { Breadcrumbs, Grid, Link, Typography } from '@mui/material'
 
-const TrafficMeasurement = () => {
+const SampleProduct = () => {
     return (
-        <TraffictMeasurementProvider>
+        <SampleProductProvider>
             <Breadcrumbs aria-label='breadcrumb'>
                 <Link underline='hover' color='inherit' href='/'>
                     Home
                 </Link>
-                <Typography sx={{ color: 'text.primary' }}>Traffic measurement</Typography>
+                <Typography sx={{ color: 'text.primary' }}>KOC management</Typography>
             </Breadcrumbs>
             <Grid container spacing={6} className='mt-2'>
                 <Grid item sm={12} alignItems='end'>
                     {/* <Action /> */}
                 </Grid>
                 <Grid item sm={12}>
-                    <TableTrafficMeasurement />
+                    <TableKOCRegister />
                 </Grid>
             </Grid>
-        </TraffictMeasurementProvider>
+        </SampleProductProvider>
     )
 }
 
-export default TrafficMeasurement
+export default SampleProduct

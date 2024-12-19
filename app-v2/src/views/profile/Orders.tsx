@@ -92,7 +92,7 @@ const Orders = () => {
 
   return (
     <div>
-      <div className="shadow-card sticky top-[90px] z-30 flex h-fit flex-col gap-4 rounded-lg bg-white px-4 py-6 max-md:py-2">
+      <div className="shadow-card sticky top-[80px] z-30 flex h-fit flex-col gap-4 rounded-lg bg-white px-4 py-6 max-md:py-2">
         <div className="flex gap-8 overflow-auto border-b">
           {tabs.map((tab, i) => (
             <div
@@ -110,7 +110,7 @@ const Orders = () => {
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <p className="w-[80px] text-sm font-bold">Thương hiệu</p>
           <div className="h-fit rounded-[124px] border border-primary px-3 py-1 leading-4 text-primary">
             All
@@ -149,7 +149,7 @@ const Orders = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         <Input
           placeholder="Tìm kiếm sản phẩm"
           classContainer="flex-1 shadow-card rounded-[124px]"

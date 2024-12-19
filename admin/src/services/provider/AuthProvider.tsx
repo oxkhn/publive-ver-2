@@ -8,10 +8,13 @@ import { usePathname } from 'next/navigation'
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useGetAllUser } from '../api/auth/useGetAllUser'
+import { UsersType } from '@/types/userTypes'
 
 type AuthContextProps = {
     accessToken: string | undefined
     signIn: (username: string, password: string) => void
+    allUsers: UsersType[]
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
@@ -25,8 +28,16 @@ export const AuthProvider = (props: Props) => {
 
     //state
     const [accessToken, setAccessToken] = useState<string>()
+    const [allUsers, setAllUsers] = useState<UsersType[]>([])
 
     const _postSignIn = useSignIn()
+    const _getAllUser = useGetAllUser()
+
+    const getAllUser = async () => {
+        const res = await _getAllUser.mutateAsync()
+        setAllUsers(res.data)
+    }
+
     const signIn = async (username: string, password: string) => {
         const body = {
             email: username,
@@ -51,6 +62,7 @@ export const AuthProvider = (props: Props) => {
     }
 
     useEffect(() => {
+        getAllUser()
         const _accessToken = Cookies.get('accessToken')
         setAccessToken(_accessToken)
 
@@ -63,7 +75,8 @@ export const AuthProvider = (props: Props) => {
 
     const value = {
         accessToken,
-        signIn
+        signIn,
+        allUsers
     }
 
     return <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>

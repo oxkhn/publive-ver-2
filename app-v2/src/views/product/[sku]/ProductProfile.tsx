@@ -44,7 +44,7 @@ const ProductProfile = () => {
   };
 
   return (
-    <div className="flex flex-wrap gap-8 rounded-md p-8 shadow-md max-sm:p-2 max-sm:shadow-none">
+    <div className="flex flex-wrap gap-8 rounded-md bg-white p-8 shadow-md max-sm:p-2 max-sm:shadow-none">
       <div className="flex max-w-[455px] flex-1 flex-col gap-4">
         <div
           onMouseEnter={() => setIsHovered(true)}

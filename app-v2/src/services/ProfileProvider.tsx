@@ -1,8 +1,17 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
-type ProfileContextProps = {};
+type ProfileContextProps = {
+  tabActive: number;
+  setTabActive: Dispatch<SetStateAction<number>>;
+};
 
 type Props = {
   children: React.ReactNode;
@@ -13,7 +22,12 @@ const ProfileContext = createContext<ProfileContextProps | undefined>(
 );
 
 export const ProfileProvider = (props: Props) => {
-  const value = {};
+  const [tabActive, setTabActive] = useState(1);
+
+  const value = {
+    tabActive,
+    setTabActive,
+  };
 
   return (
     <ProfileContext.Provider value={value}>

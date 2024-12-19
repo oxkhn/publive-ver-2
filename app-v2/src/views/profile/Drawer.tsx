@@ -7,9 +7,10 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoLinkSharp } from "react-icons/io5";
 import Demo from "@/assets/images/banner.jpg";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useProfileContext } from "@/services/ProfileProvider";
 
 const Drawer = () => {
-  const [tabActive, setTabActive] = useState(1);
+  const { tabActive, setTabActive } = useProfileContext();
   const isMobile = useIsMobile();
   const [isShow, setIsShow] = useState(false);
 

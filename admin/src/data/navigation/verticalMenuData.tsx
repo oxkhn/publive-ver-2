@@ -18,6 +18,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
         href: '/email-marketing'
     },
     {
+        label: 'Affiliate Management',
+        icon: 'tabler-align-box-right-stretch',
+        href: '/affiliate-management'
+    },
+    {
         label: 'Sample Campaign',
         icon: 'tabler-forms',
         children: [
@@ -69,6 +74,10 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
             {
                 label: 'User List',
                 href: '/crm'
+            },
+            {
+                label: 'User List1',
+                href: '/crm/user-list1'
             }
         ]
     },
@@ -76,6 +85,20 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
         label: 'Traffic measurement',
         icon: 'tabler-brand-google-analytics',
         href: '/traffic-measurement'
+    },
+    {
+        label: 'Sample product',
+        icon: 'tabler-brand-google-analytics',
+        children: [
+            {
+                label: 'Product management',
+                href: '/product-management'
+            },
+            {
+                label: 'KOC management',
+                href: '/koc-management'
+            }
+        ]
     }
 ]
 

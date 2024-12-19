@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { usePostLogin } from "@/api/auth/usePostLogin";
 import { useRouter } from "next/navigation";
+import useGetAllRegisterProduct from "@/api/auth/useGetAllRegisterProduct";
+import { ProductType } from "@/types/product.type";
 
 type AuthContextProps = {
   user: UserType;
@@ -35,6 +37,15 @@ export const AuthProvider = (props: Props) => {
   const router = useRouter();
   const [token, setToken] = useState<string | any>(null);
   const [user, setUser] = useState<UserType | any>(null);
+  const [registerProducts, setRegisterProducts] = useState([]);
+
+  const _getAllRegisterProduct = useGetAllRegisterProduct();
+
+  const getAllRegisterProduct = async () => {
+    const res = await _getAllRegisterProduct.mutateAsync();
+    console.log(res.data);
+    setRegisterProducts(res.data);
+  };
 
   const saveToken = (token: string) => {
     setToken(token);
@@ -124,6 +135,14 @@ export const AuthProvider = (props: Props) => {
       setToken(storedToken);
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+
+      getAllRegisterProduct();
+    }
+  }, [user]);
 
   const value = { onLogin, onLogout, onRegister, user, updateProfile };
 

@@ -48,13 +48,33 @@ const OrderCard: React.FC = () => {
           <p className="font-bold">Dove</p>
         </div>
         <div className="flex max-[500px]:flex-col max-[500px]:divide-y-2 min-[500px]:items-center min-[500px]:divide-x-2 sm:items-center">
-          <div className="text-green flex items-center gap-1 px-2">
+          <div className="flex items-center gap-1 px-2 text-green">
             <PiTruck className="text-xl" />
             <p>Giao hàng thành công</p>
           </div>
           <p className="pl-2 text-sm uppercase text-secondary">Hoàn thành</p>
         </div>
       </div>
+      <div className="pt-4">
+        <div className="flex items-center gap-4 max-sm:flex-col">
+          <ImageKit src="" className="h-[92px] w-[92px] rounded" />
+          <div ref={containerRef} className="flex flex-col gap-2">
+            <p className="font-bold text-grays">
+              Dove Deep Moisture, sữa tắm dưỡng thể, dưỡng ẩm chuyên sâu, mềm
+              mịn tức thì
+            </p>
+            <p>Phân loại sản phẩm: Sửa tắm</p>
+            <p>X1</p>
+            <p className="">
+              Link shopee:{" "}
+              <span className="text-primary underline">
+                {truncateLink(shopeeLink, maxChars)}{" "}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="pt-4">
         <div className="flex items-center gap-4 max-sm:flex-col">
           <ImageKit src="" className="h-[92px] w-[92px] rounded" />

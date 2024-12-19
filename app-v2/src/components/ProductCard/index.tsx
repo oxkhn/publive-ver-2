@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div
-      className="relative flex min-w-[158px] cursor-pointer flex-col rounded-lg border bg-white transition-all duration-200 hover:rounded-b-none hover:shadow-xl"
+      className="relative flex min-w-[158px] flex-1 cursor-pointer flex-col rounded-lg border bg-white transition-all duration-200 hover:rounded-b-none hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => navProductDetail()}
@@ -101,11 +101,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       <div className="overflow-hidden rounded-md">
         <Image
-          width={100}
-          height={100}
+          width={158}
+          height={158}
           src={product?.imageList[0]}
           alt=""
-          className={`${isHovered && "scale-125"} h-full w-full transition-all duration-500`}
+          className={`${isHovered && "scale-125"} w-full transition-all duration-500`}
         />
       </div>
 

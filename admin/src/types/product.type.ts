@@ -28,3 +28,8 @@ export type ProductType = {
     unitsSold: number
     isAuthentic: boolean
 }
+
+export type SampleProductAnalysType = {
+    product: ProductType,
+    userCount: number
+}

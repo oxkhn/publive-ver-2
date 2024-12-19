@@ -72,25 +72,24 @@ const AddUserDrawer = (props: Props) => {
     })
 
     const onSubmit = (data: FormValidateType) => {
-        const newUser: UsersType = {
-            id: (userData?.length && userData?.length + 1) || 1,
-            avatar: `/images/avatars/${Math.floor(Math.random() * 8) + 1}.png`,
-            fullName: data.fullName,
-            username: data.username,
-            email: data.email,
-            role: data.role,
-            currentPlan: data.plan,
-            status: data.status,
-            company: formData.company,
-            country: formData.country,
-            contact: formData.contact,
-            billing: userData?.[Math.floor(Math.random() * 50) + 1].billing ?? 'Auto Debit'
-        }
-
-        setData([...(userData ?? []), newUser])
-        handleClose()
-        setFormData(initialData)
-        resetForm({ fullName: '', username: '', email: '', role: '', plan: '', status: '' })
+        // const newUser: UsersType = {
+        //     id: (userData?.length && userData?.length + 1) || 1,
+        //     avatar: `/images/avatars/${Math.floor(Math.random() * 8) + 1}.png`,
+        //     fullName: data.fullName,
+        //     username: data.username,
+        //     email: data.email,
+        //     role: data.role,
+        //     currentPlan: data.plan,
+        //     status: data.status,
+        //     company: formData.company,
+        //     country: formData.country,
+        //     contact: formData.contact,
+        //     billing: userData?.[Math.floor(Math.random() * 50) + 1].billing ?? 'Auto Debit'
+        // }
+        // setData([...(userData ?? []), newUser])
+        // handleClose()
+        // setFormData(initialData)
+        // resetForm({ fullName: '', username: '', email: '', role: '', plan: '', status: '' })
     }
 
     const handleReset = () => {

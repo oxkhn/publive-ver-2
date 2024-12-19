@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { ProductType } from "@/types/product.type";
 import { copyString, formatNumberToK, formatVND } from "@/utils/string";
 import { MarketplaceEnum } from "@/services/ProductProvider";
+import useTracking from "@/hooks/useTracking";
 
 interface ProductCardProps {
   product: ProductType;
@@ -23,6 +24,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
+  const { trackEvent } = useTracking();
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -43,6 +45,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Button
             title="Affiliate link"
             onClick={(e) => {
+              trackEvent({
+                event: "interaction",
+                page: product.sku,
+              });
               copyString(product.productLink);
               toast.success("Sao chép thành công.");
               e.stopPropagation();

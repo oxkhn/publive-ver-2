@@ -113,9 +113,55 @@ export class AuthService {
 
   async getAllUser() {
     try {
-      const res = await this.userModel.find().select('-password');
+      const usersWithAffiliateCount = await this.userModel.aggregate([
+        {
+          // Join with the 'events' collection
+          $lookup: {
+            from: 'events', // Ensure this matches the actual collection name
+            let: { userId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$userId', '$$userId'] },
+                      { $eq: ['$event', 'interaction'] },
+                      // Add more conditions here if 'interaction' events have sub-types
+                      // For example, if there's a field like 'action' that specifies 'copy_affiliate_link'
+                      // { $eq: ['$action', 'copy_affiliate_link'] },
+                    ],
+                  },
+                },
+              },
+              {
+                // Count the number of matching events
+                $count: 'count',
+              },
+            ],
+            as: 'affiliateInteractions',
+          },
+        },
+        {
+          // Add the affiliateLinkCopied field
+          $addFields: {
+            affiliateLinkCopied: {
+              $ifNull: [
+                { $arrayElemAt: ['$affiliateInteractions.count', 0] },
+                0,
+              ],
+            },
+          },
+        },
+        {
+          // Exclude the password and affiliateInteractions fields from the final output
+          $project: {
+            password: 0,
+            affiliateInteractions: 0,
+          },
+        },
+      ]);
 
-      return res;
+      return usersWithAffiliateCount;
     } catch (error) {
       throw new BadRequestException('');
     }

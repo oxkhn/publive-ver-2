@@ -7,6 +7,7 @@ import CampaignRule from "./CampaignRule";
 import { useEffect } from "react";
 import Breadcrumb from "@/packages/@ui-kit/Breadcrumb";
 import { useCampaignContext } from "@/services/CampaignProvider";
+import Tracking from "@/components/Tracking";
 
 const CampaignDetailPageDetail = () => {
   const { id } = useParams();

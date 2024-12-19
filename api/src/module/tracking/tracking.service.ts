@@ -25,10 +25,8 @@ export class TrackingService {
 
         newEvent.userId = user._id;
       }
-
-
+      
       await newEvent.save();
-
       return newEvent;
     } catch (error) {
       throw new BadRequestException(error);

@@ -1,3 +1,4 @@
+import Tracking from "@/components/Tracking";
 import Breadcrumb from "@/packages/@ui-kit/Breadcrumb";
 import VideoSection from "@/views/home/VideoSection";
 import MoreProduct from "@/views/product/[sku]/MoreProduct";
@@ -13,6 +14,7 @@ const ProductDetail = () => {
       <ProductProfile />
       <VideoSection />
       <MoreProduct />
+      <Tracking />
     </div>
   );
 };

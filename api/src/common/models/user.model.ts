@@ -110,6 +110,9 @@ export class User {
   @Prop({ type: [String], default: [] })
   tag: string;
 
+  @Prop({ type: Date, default: Date.now})
+  lastActive: Date;
+
   @Prop({
     type: Social,
     default: {

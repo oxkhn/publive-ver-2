@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import { usePostLogin } from "@/api/auth/usePostLogin";
 import { useRouter } from "next/navigation";
 import useGetAllRegisterProduct from "@/api/auth/useGetAllRegisterProduct";
-import { ProductType } from "@/types/product.type";
+import useTracking from "@/hooks/useTracking";
 
 type AuthContextProps = {
   user: UserType;
@@ -35,6 +35,7 @@ type Props = {
 export const AuthProvider = (props: Props) => {
   const { children } = props;
   const router = useRouter();
+  const { trackEvent } = useTracking();
   const [token, setToken] = useState<string | any>(null);
   const [user, setUser] = useState<UserType | any>(null);
   const [registerProducts, setRegisterProducts] = useState([]);
@@ -81,6 +82,10 @@ export const AuthProvider = (props: Props) => {
 
   const onLogout = () => {
     removeToken();
+    trackEvent({
+      event: "logout",
+      page: "/logout",
+    });
     router.push("/");
   };
 
@@ -106,9 +111,7 @@ export const AuthProvider = (props: Props) => {
   const getProfile = async (_token: string) => {
     try {
       const resData = await _getProfile.mutateAsync();
-
       const user = resData.data;
-
       setUser(user);
     } catch (error) {}
   };

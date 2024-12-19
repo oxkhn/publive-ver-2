@@ -56,13 +56,33 @@ export class FormRegisterController {
     }
   }
 
-  @Get('/user/:email')
+  @Get('/user')
   @UseGuards(RolesGuard)
   async getFormOfUser(@Request() req) {
     try {
       const payload = req.user;
       const email = payload.email;
       const res = await this.formRegisterService.getFormOfUser(email);
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  @Get('/product-analys')
+  async getProductAnalys() {
+    try {
+      const res = await this.formRegisterService.getUserCountPerSKU();
+      return new ResponseSuccess(res);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  @Get('/user-analys')
+  async getUserAnalys() {
+    try {
+      const res = await this.formRegisterService.getProductCountPerUser();
       return new ResponseSuccess(res);
     } catch (error) {
       throw new BadRequestException(error);

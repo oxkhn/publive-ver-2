@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Post,
   Request,
   UseGuards,
@@ -12,10 +13,15 @@ import { ResponseSuccess } from 'src/common/interfaces/response.interface';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Throttle } from '@nestjs/throttler';
 import { JwtService } from '@nestjs/jwt';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Event } from 'src/common/models/event.model';
 
 @Controller('tracking')
 export class TrackingController {
   constructor(
+    @InjectModel(Event.name) private readonly eventModel: Model<Event>,
+
     private readonly trackingService: TrackingService,
     private readonly jwtService: JwtService,
   ) {}
@@ -44,5 +50,27 @@ export class TrackingController {
     } catch (error) {
       throw new BadRequestException(error);
     }
+  }
+
+  @Get('/page')
+  async getEventPage() {
+    try {
+      const results = await this.eventModel.aggregate([
+        {
+          $match: { event: 'page_view' }, // Filter events where event = 'page_view'
+        },
+        {
+          $group: {
+            _id: '$page', // Group by the 'page' field
+            count: { $sum: 1 }, // Count the number of occurrences
+          },
+        },
+        {
+          $sort: { count: -1 }, // (Optional) Sort by count descending
+        },
+      ]);
+
+      return results;
+    } catch (error) {}
   }
 }

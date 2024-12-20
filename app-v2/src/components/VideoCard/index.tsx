@@ -23,7 +23,13 @@ const VideoCard = (props: Props) => {
       className="relative flex h-[270px] min-w-[185px] cursor-pointer flex-col overflow-hidden rounded-lg border bg-white transition-all duration-200 hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => {}}
+      onClick={() => {
+        window.open(
+          "https://www.tiktok.com/@/video/" + videoData?.videoId,
+          "_blank",
+        );
+        // setShowProfileTiktoker(true);
+      }}
     >
       <div className="overflow-hidden">
         <Image

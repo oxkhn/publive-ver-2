@@ -17,7 +17,7 @@ type Props = {
 };
 const VideoAcheCard = (props: Props) => {
   return (
-    <div className="flex flex-col gap-3 rounded-md border p-4">
+    <div className="flex cursor-pointer flex-col gap-3 rounded-md border bg-white p-4 hover:shadow-md transition-all">
       <div>
         <Image
           src={ImageDemo}

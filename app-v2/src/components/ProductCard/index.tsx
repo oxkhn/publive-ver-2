@@ -29,7 +29,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const navProductDetail = () => {
-    console.log("dasdasdas");
     router.push("/product/" + product.sku);
   };
 

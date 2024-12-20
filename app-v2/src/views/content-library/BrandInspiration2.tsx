@@ -135,8 +135,8 @@ const BrandInspiration2 = () => {
     <div className="flex flex-col gap-8 px-8 pb-20">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <BsStars className="font-semibold text-primary" />
-          <p className="font-semibold text-primary">Tìm hiểu sản phẩm </p>
+          <BsStars className="font-semibold text-secondary" />
+          <p className="font-semibold text-secondary">Tìm hiểu sản phẩm </p>
           <Tooltip
             title="Các thông tin về nhãn hàng/ sản phẩm bạn cần biết"
             arrow
@@ -158,8 +158,10 @@ const BrandInspiration2 = () => {
 
       <div className="mt-20 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <BsStars className="font-semibold text-primary" />
-          <p className="font-semibold text-primary">Ý tưởng review sản phẩm</p>
+          <BsStars className="font-semibold text-secondary" />
+          <p className="font-semibold text-secondary">
+            Ý tưởng review sản phẩm
+          </p>
           <Tooltip
             title="Lợi ích & Tính năng nổi bật của sản phẩm; Ý tưởng review sản phẩm"
             arrow

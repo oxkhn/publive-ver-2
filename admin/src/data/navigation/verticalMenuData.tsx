@@ -3,6 +3,43 @@ import type { VerticalMenuDataType } from '@/types/menuTypes'
 
 const verticalMenuData = (): VerticalMenuDataType[] => [
     {
+        label: 'Dashboard',
+        suffix: {
+            label: '5',
+            color: 'error'
+        },
+        icon: 'tabler-smart-home',
+        children: [
+            // This is how you will normally render menu item
+            {
+                label: 'CRM',
+                icon: 'tabler-circle',
+                href: '/dashboards/crm'
+            },
+            {
+                label: 'Analytics',
+                icon: 'tabler-circle',
+                href: '/dashboards/analytics'
+            },
+            {
+                label: 'Ecommerce',
+                icon: 'tabler-circle',
+                href: '/dashboards/ecommerce'
+            },
+            {
+                label: 'Academy',
+                icon: 'tabler-circle',
+                href: '/dashboards/academy'
+            },
+            {
+                label: 'Logistics',
+                icon: 'tabler-circle',
+                href: '/dashboards/logistics'
+            }
+        ]
+    },
+    { label: 'System management', isSection: false },
+    {
         label: 'Deal Management',
         icon: 'tabler-align-box-right-stretch',
         href: '/deal-management'
@@ -99,6 +136,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
                 href: '/koc-management'
             }
         ]
+    },
+    {
+        label: 'Calender',
+        icon: 'tabler-brand-google-analytics',
+        href: '/dashboardEcom'
     }
 ]
 

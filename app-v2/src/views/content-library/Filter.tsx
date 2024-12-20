@@ -24,6 +24,7 @@ import { FilterTabBrand } from "./FilterTabBrand";
 import TrendingList from "./TrendingList";
 import BrandList from "./BrandList";
 import BrandInspiration from "./BrandInspiration";
+import BrandInspiration2 from "./BrandInspiration2";
 
 const Filter = () => {
   const [tabActive, setTabActive] = useState(tabs[0]);
@@ -63,7 +64,7 @@ const Filter = () => {
       <div>
         {tabActive == tabs[0] && <TrendingList />}
         {tabActive == tabs[1] && <BrandList />}
-        {tabActive == tabs[2] && <BrandInspiration />}
+        {tabActive == tabs[2] && <BrandInspiration2 />}
       </div>
     </>
   );

@@ -12,6 +12,7 @@ import DropdownHor from "@/packages/@ui-kit/Dropdown3";
 import DropdownItem from "@/packages/@ui-kit/Dropdown3/DropdownItem";
 import { useContentContext } from "@/services/ContentProvider";
 import { filterDate } from "./data";
+import Button from "@/packages/@ui-kit/Button2";
 
 export const FilterTabBrand = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -88,7 +89,7 @@ export const FilterTabBrand = () => {
               </DropdownHor>
             </div> */}
             {/* <div className="h-6 w-[1px] bg-grays/15"></div> */}
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <p className="text-sm">C.sóc sắc đẹp</p>
               <DropdownHor
                 defaultValue={bwBrands[0]}
@@ -137,7 +138,27 @@ export const FilterTabBrand = () => {
                   <DropdownItem key={i} title={_} />
                 ))}
               </DropdownHor>
-            </div>
+            </div> */}
+            <Button
+              title="Chăm sóc sắc đẹp"
+              onClick={() => {}}
+              className="!h-7"
+              variant="outline"
+            />
+            <div className="h-6 w-[1px] bg-grays/15"></div>
+            <Button
+              title="Chăm sóc cơ thể"
+              onClick={() => {}}
+              className="!h-7"
+              variant="outline"
+            />
+            <div className="h-6 w-[1px] bg-grays/15"></div>
+            <Button
+              title="Chăm sóc nhà cửa"
+              onClick={() => {}}
+              className="!h-7"
+              variant="outline"
+            />
           </div>
 
           <Input

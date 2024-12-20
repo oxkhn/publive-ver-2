@@ -10,6 +10,7 @@ import ThemeProvider from '@components/theme'
 import { getMode, getSettingsFromCookie, getSystemMode } from '@core/utils/serverHelpers'
 import { AuthProvider } from '../services/provider/AuthProvider'
 import { AppProviders } from '../services/provider/AppProviders'
+import ReduxProvider from '@/redux-store/ReduxProvider'
 
 type Props = ChildrenType & {
     direction: Direction

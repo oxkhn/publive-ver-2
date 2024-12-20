@@ -9,6 +9,8 @@ import { useState } from "react";
 import { ITiktokVideo } from "@/types/tiktok.type";
 import { FiDownload } from "react-icons/fi";
 import Button from "@/packages/@ui-kit/Button";
+import { useAuthContext } from "@/services/AuthProvider";
+import { toast } from "react-toastify";
 
 type Props = {
   videoData?: ITiktokVideo;
@@ -16,6 +18,7 @@ type Props = {
 
 const BrandVideo = (props: Props) => {
   const { videoData } = props;
+  const { user } = useAuthContext();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -50,7 +53,15 @@ const BrandVideo = (props: Props) => {
         </div>
 
         <div className="mt-1 flex items-center justify-between">
-          <div className="grid h-7 w-7 place-items-center rounded-full bg-gray-200 p-1 transition-all hover:bg-primary hover:text-white">
+          <div
+            onClick={() => {
+              if (!user) toast.error("Vui lòng đăng nhập.");
+              else {
+                toast.success("Video sẽ được tải sau.");
+              }
+            }}
+            className="grid h-7 w-7 place-items-center rounded-full bg-gray-200 p-1 transition-all hover:bg-primary hover:text-white"
+          >
             <FiDownload className="text-sm" />
           </div>
           <div className="flex items-center justify-end gap-3 text-xs">

@@ -24,6 +24,7 @@ const VideoCard: React.FC<VideoProps> = (props) => {
 
   const navigateProductDetail = () => {
     // router.push("/product/1");
+    window.open("https://www.tiktok.com/@/video/" + video?.id, '_blank');
     setShowProfileTiktoker(true);
   };
 
@@ -39,6 +40,7 @@ const VideoCard: React.FC<VideoProps> = (props) => {
         onClick={navigateProductDetail}
         // href={"https://www.tiktok.com/@/video/" + video?.id}
         // target="_blank"
+      
       >
         <ImageKit
           src={video?.video.cover}

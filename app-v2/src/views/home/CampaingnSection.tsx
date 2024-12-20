@@ -81,8 +81,9 @@ const CampaignSection = () => {
               height={200}
               src={_?.banner}
               alt=""
-              className="w-full rounded-lg object-cover max-sm:h-[100px]"
+              className="w-full cursor-pointer rounded-lg object-cover max-sm:h-[100px]"
               key={index}
+              onClick={() => router.push("/campaign/" + _?._id)}
             />
           );
         })}

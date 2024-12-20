@@ -18,11 +18,33 @@ type DataType = {
 
 // Vars
 const data: DataType[] = [
-  { name: 'Jordan Stevenson', profession: 'Business Intelligence', totalCourses: 33, avatar: '/images/avatars/1.png' },
-  { name: 'Bentlee Emblin', profession: 'Digital Marketing', totalCourses: 52, avatar: '/images/avatars/2.png' },
-  { name: 'Benedetto Rossiter', profession: 'UI/UX Design', totalCourses: 12, avatar: '/images/avatars/3.png' },
-  { name: 'Beverlie Krabbe', profession: 'Vue', totalCourses: 8, avatar: '/images/avatars/4.png' }
-]
+  { 
+    name: 'Content Creation Mastery', 
+    profession: 'Content Marketing', 
+    totalCourses: 20, 
+    avatar: '/images/avatars/1.png' 
+  },
+  { 
+    name: 'Affiliate Marketing 101', 
+    profession: 'Affiliate Marketing', 
+    totalCourses: 15, 
+    avatar: '/images/avatars/2.png' 
+  },
+  { 
+    name: 'Personal Branding for KOLs', 
+    profession: 'Branding & Identity', 
+    totalCourses: 12, 
+    avatar: '/images/avatars/3.png' 
+  },
+  { 
+    name: 'Mastering Short-form Video Content', 
+    profession: 'Video Production', 
+    totalCourses: 25, 
+    avatar: '/images/avatars/4.png' 
+  }
+];
+
+
 
 const PopularInstructors = () => {
   return (

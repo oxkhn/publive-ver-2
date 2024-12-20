@@ -71,7 +71,7 @@ const SalesByCountries = () => {
             <CardContent className='flex flex-col gap-4'>
                 {data.map((item, index) => (
                     <div key={index} className='flex items-center gap-4'>
-                        <img src={item.imgSrc} alt={item.subtitle} width={34} />
+                        {/* <img src={item.imgSrc} alt={item.subtitle} width={34} /> */}
                         <div className='flex flex-wrap justify-between items-center gap-x-4 gap-y-1 is-full'>
                             <div className='flex flex-col'>
                                 <Typography className='font-medium' color='text.primary'>

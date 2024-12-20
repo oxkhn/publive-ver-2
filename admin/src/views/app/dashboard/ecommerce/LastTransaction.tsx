@@ -46,15 +46,11 @@ const data: any[] = [
         cardNumber: 'Lê Dương Bảo Lâm',
         imgName: 'visa',
         date: `17 Mar ${new Date().getFullYear()}`,
-        gmv: '534M',
+        gmv: '534m',
         itemSold: 2825,
         order: 2261,
         estc: '22.3M',
-        roas: 23.8,
-        tag1: 'High Retention',
-        tag2: 'Upgraded',
-        sellCat: 'Fabsol, SCL, Hair care',
-        sellBrand: 'Omo Liquid, Lifebuoy Jarvis, Sunsilk'
+        roas: 23.8
     },
     {
         trend: '-$839',
@@ -67,11 +63,7 @@ const data: any[] = [
         itemSold: 2716,
         order: 1750,
         estc: '25.4M',
-        roas: 20,
-        tag1: 'Low Retention',
-        tag2: 'Acquired',
-        sellCat: 'Skin Care, Deo',
-        sellBrand: 'Simple, Vaseline, Dove Deo'
+        roas: 20
     },
     {
         trend: '+$435',
@@ -84,11 +76,7 @@ const data: any[] = [
         itemSold: 1139,
         order: 1008,
         estc: '23.1M',
-        roas: 16.8,
-        tag1: 'One-time off',
-        tag2: 'Likely churn',
-        sellCat: 'Skin care, Fabsen',
-        sellBrand: 'Simple, Comfort Fabsen'
+        roas: 16.8
     }
     // {
     //     trend: '+$2,345',
@@ -133,10 +121,7 @@ const LastTransaction = ({ serverMode }: { serverMode: SystemMode }) => {
                     <thead className='uppercase'>
                         <tr className='border-be'>
                             <th className='leading-6 plb-4 pis-6 pli-2'>Affilifate Name</th>
-                            <th className='leading-6 plb-4 pie-6 pli-2 text-right'>Selling Cate</th>
-                            <th className='leading-6 plb-4 pie-6 pli-2 text-right'>Selling Brands</th>
                             <th className='leading-6 plb-4 pie-6 pli-2 text-right'>GMV</th>
-
                             <th className='leading-6 plb-4 pie-6 pli-2 text-right'>Items sold</th>
                             <th className='leading-6 plb-4 pie-6 pli-2 text-right'>Orders</th>
                             <th className='leading-6 plb-4 pie-6 pli-2 text-right'>Est. Commission</th>
@@ -148,25 +133,28 @@ const LastTransaction = ({ serverMode }: { serverMode: SystemMode }) => {
                             <tr key={index} className='border-0'>
                                 <td className='pis-6 pli-2 plb-3'>
                                     <div className='flex items-center gap-4'>
+                                        {/* <Avatar
+                                            variant='rounded'
+                                            className={classnames('is-[50px] bs-[30px]', {
+                                                'bg-white': _mode === 'dark',
+                                                'bg-actionHover': _mode === 'light'
+                                            })}
+                                        >
+                                            <img
+                                                width={30}
+                                                alt={row.imgName}
+                                                src={`/images/logos/${row.imgName}.png`}
+                                            />
+                                        </Avatar> */}
                                         <div className='flex flex-col'>
                                             <Typography color='text.primary'>{row.cardNumber}</Typography>
                                             <Typography variant='body2' color='text.disabled'>
                                                 {row.cardType}
                                             </Typography>
-
-                                            <div className='flex gap-2 items-center'>
-                                                <div className='text-sm px-1 w-fit rounded bg-gray-200'>{row.tag1}</div>
-                                                <div className='text-sm px-1 w-fit rounded bg-gray-200'>{row.tag2}</div>
-                                            </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td className='pli-2 plb-3 pie-6 text-right'>
-                                    <Typography color='text.primary'>{row.sellCat}</Typography>
-                                </td>{' '}
-                                <td className='pli-2 plb-3 pie-6 text-right'>
-                                    <Typography color='text.primary'>{row.sellBrand}</Typography>
-                                </td>
+
                                 <td className='pli-2 plb-3 pie-6 text-right'>
                                     <Typography color='text.primary'>{row.gmv}</Typography>
                                 </td>

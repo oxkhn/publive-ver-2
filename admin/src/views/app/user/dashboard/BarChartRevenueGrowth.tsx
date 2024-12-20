@@ -119,11 +119,11 @@ const BarChartRevenueGrowth = () => {
             <CardContent className='flex justify-between gap-2'>
                 <div className='flex flex-col justify-between'>
                     <div className='flex flex-col gap-y-2'>
-                        <Typography variant='h5'>ROAS</Typography>
-                        <Typography>Weekly Report</Typography>
+                        <Typography variant='h5'>Active Affiliate</Typography>
+                        <Typography>L3Ms</Typography>
                     </div>
                     <div className='flex flex-col gap-y-2 items-start'>
-                        <Typography variant='h3'>22,9</Typography>
+                        <Typography variant='h3'>8900</Typography>
                         <Chip variant='tonal' size='small' color='success' label='+15.2%' />
                     </div>
                 </div>

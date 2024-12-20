@@ -75,13 +75,13 @@ export const TableCampaign = (props: Props) => {
                             <span className='text-gray-400'>Brand Name: </span>
                             {row.original.brandName}
                         </p>
-                        <p className='text-sm flex gap-3'>
+                        {/* <p className='text-sm flex gap-3'>
                             <span className='text-gray-400'>Description: </span>
                             <div
                                 className='line-clamp-2'
                                 dangerouslySetInnerHTML={{ __html: row.original.description }}
                             ></div>
-                        </p>
+                        </p> */}
                         <p className='text-sm flex gap-3'>
                             <span className='text-gray-400'>Register time: </span>
                             {formatDateToDDMMYYYY(row.original.registerStartDate.toString())} -{' '}
@@ -109,13 +109,7 @@ export const TableCampaign = (props: Props) => {
                                 </div>
                             )}
                         </div>
-                        <Image
-                            src={row.original.banner || ''}
-                            alt=''
-                            width={200}
-                            height={100}
-                            className='w-full mt-2'
-                        />
+                        <Image src={row.original.banner || ''} alt='' width={400} height={100} className='mt-2' />
                     </div>
                 )
             }),

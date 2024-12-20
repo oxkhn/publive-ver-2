@@ -44,8 +44,8 @@ import CustomTextField from '@/@core/components/mui/TextField'
 import ApexLineChart from '@/views/app/dashboard/ecommerce/ApexLineChart'
 import ApexAreaChart from '@/views/app/dashboard/ecommerce/ApexAreaChart'
 import { getServerMode } from '@/@core/utils/serverHelpers'
-import LastTransaction from '@/views/app/dashboard/LastTransaction'
 import LastProduct from '@/views/app/dashboard/LastProduct'
+import LastTransaction from '@/views/app/dashboard/ecommerce/LastTransaction'
 
 /**
  * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the

@@ -15,8 +15,8 @@ import RadarSalesChart from '@/views/app/user/dashboard/RadarSalesChart'
 import SalesByCountries from '@/views/app/user/dashboard/SalesByCountries'
 import ProjectStatus from '@/views/app/user/dashboard/ProjectStatus'
 import ActiveProjects from '@/views/app/user/dashboard/ActiveProjects'
-import LastTransaction from '@/views/app/user/dashboard/LastTransaction'
 import ActivityTimeline from '@/views/app/user/dashboard/ActivityTimeline'
+import LastTransaction from '@/views/app/dashboard/LastTransaction'
 
 const DashboardCRM = () => {
     // Vars
@@ -36,7 +36,7 @@ const DashboardCRM = () => {
                     subtitle='MTD'
                     stats='2.1 M'
                     avatarColor='error'
-                    avatarIcon='tabler-credit-card'
+                    avatarIcon='tabler-currency-dollar'
                     avatarSkin='light'
                     avatarSize={44}
                     chipText='+12.2%'
@@ -46,11 +46,11 @@ const DashboardCRM = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={2}>
                 <CardStatVertical
-                    title='Total Spending'
-                    subtitle='MTD'
-                    stats='24.67k'
+                    title='Retention Rate'
+                    subtitle='6Ms'
+                    stats='24.6%'
                     avatarColor='success'
-                    avatarIcon='tabler-currency-dollar'
+                    avatarIcon='tabler-credit-card'
                     avatarSkin='light'
                     avatarSize={44}
                     chipText='+24.67%'
@@ -61,12 +61,13 @@ const DashboardCRM = () => {
             <Grid item xs={12} md={8} lg={4}>
                 <BarChartRevenueGrowth />
             </Grid>
-            <Grid item xs={12} lg={8}>
+            <Grid item xs={12}>
+                <LastTransaction serverMode={serverMode} />
+            </Grid>
+            <Grid item xs={12}>
                 <EarningReportsWithTabs />
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-                <RadarSalesChart />
-            </Grid>
+
             <Grid item xs={12} md={6} lg={4}>
                 <SalesByCountries />
             </Grid>
@@ -76,12 +77,12 @@ const DashboardCRM = () => {
             <Grid item xs={12} md={6} lg={4}>
                 <ActiveProjects />
             </Grid>
-            <Grid item xs={12} md={6}>
+            {/* <Grid item xs={12} md={6}>
                 <LastTransaction serverMode={serverMode} />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Grid> */}
+            {/* <Grid item xs={12} md={6}>
                 <ActivityTimeline />
-            </Grid>
+            </Grid> */}
         </Grid>
     )
 }

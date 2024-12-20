@@ -33,7 +33,7 @@ const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexChart
 type ApexChartSeries = NonNullable<ApexOptions['series']>
 type ApexChartSeriesData = Exclude<ApexChartSeries[0], number>
 
-type TabCategory = 'GMV' | 'Affiliate Volume' | 'Spending' | 'ROAS'
+type TabCategory = 'One-time Off' | 'Low Retention' | 'High Retention'
 
 type TabType = {
     type: TabCategory
@@ -44,25 +44,25 @@ type TabType = {
 // Vars
 const tabData: TabType[] = [
     {
-        type: 'GMV',
+        type: 'One-time Off',
         avatarIcon: 'tabler-shopping-cart',
-        series: [{ data: [26, 15.9, 30.8, 21.4, 26.4, 39.8, 36.6, 37.9, 46.6] }]
+        series: [{ data: [26, 15.9, 30.8, 21.4, 26.4, 39.8] }]
     },
     {
-        type: 'Affiliate Volume',
+        type: 'Low Retention',
         avatarIcon: 'tabler-chart-bar',
-        series: [{ data: [35, 25, 15, 40, 42, 25, 48, 8, 30] }]
+        series: [{ data: [35, 25, 15, 40, 42, 25] }]
     },
     {
-        type: 'Spending',
+        type: 'High Retention',
         avatarIcon: 'tabler-currency-dollar',
-        series: [{ data: [10, 22, 27, 33, 42, 32, 27, 22, 8] }]
-    },
-    {
-        type: 'ROAS',
-        avatarIcon: 'tabler-chart-pie-2',
-        series: [{ data: [5, 9, 12, 18, 20, 25, 30, 36, 48] }]
+        series: [{ data: [10, 22, 27, 33, 42, 32] }]
     }
+    // {
+    //     type: 'ROAS',
+    //     avatarIcon: 'tabler-chart-pie-2',
+    //     series: [{ data: [5, 9, 12, 18, 20, 25, 30, 36, 48] }]
+    // }
 ]
 
 const renderTabs = (value: TabCategory) => {
@@ -78,7 +78,7 @@ const renderTabs = (value: TabCategory) => {
                         item.type === value ? 'border-solid border-[var(--mui-palette-primary-main)]' : 'border-dashed'
                     )}
                 >
-                    <CustomAvatar
+                    {/* <CustomAvatar
                         variant='rounded'
                         skin='light'
                         size={38}
@@ -91,7 +91,7 @@ const renderTabs = (value: TabCategory) => {
                                 item.avatarIcon
                             )}
                         />
-                    </CustomAvatar>
+                    </CustomAvatar> */}
                     <Typography className='font-medium capitalize' color='text.primary'>
                         {item.type}
                     </Typography>
@@ -124,7 +124,7 @@ const renderTabPanels = (value: TabCategory, theme: Theme, options: ApexOptions,
 
 const EarningReportsWithTabs = () => {
     // States
-    const [value, setValue] = useState<TabCategory>('GMV')
+    const [value, setValue] = useState<TabCategory>('One-time Off')
 
     // Hooks
     const theme = useTheme()
@@ -184,7 +184,7 @@ const EarningReportsWithTabs = () => {
         xaxis: {
             axisTicks: { show: false },
             axisBorder: { color: 'var(--mui-palette-divider)' },
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+            categories: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
             labels: {
                 style: {
                     colors: disabledText,
@@ -240,8 +240,8 @@ const EarningReportsWithTabs = () => {
     return (
         <Card>
             <CardHeader
-                title='Affiliate Performance Reports'
-                subheader='YTD'
+                title='Affiliate Performance by Retention Type'
+                subheader='6Ms period'
                 action={<OptionMenu options={['Last Week', 'Last Month', 'Last Year']} />}
             />
             <CardContent>

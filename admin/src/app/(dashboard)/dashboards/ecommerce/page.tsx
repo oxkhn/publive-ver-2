@@ -31,8 +31,6 @@ import DonutChartGeneratedLeads from '@/views/app/dashboard/ecommerce/DonutChart
 
 import DistributedBarChartOrder from '@/views/app/user/dashboard/DistributedBarChartOrder'
 import LineAreaYearlySalesChart from '@/views/app/user/dashboard/LineAreaYearlySalesChart'
-import BarChartRevenueGrowth from '@/views/app/user/dashboard/BarChartRevenueGrowth'
-import EarningReportsWithTabs from '@/views/app/user/dashboard/EarningReportsWithTabs'
 import RadarSalesChart from '@/views/app/user/dashboard/RadarSalesChart'
 import SalesByCountries from '@/views/app/user/dashboard/SalesByCountries'
 import ProjectStatus from '@/views/app/user/dashboard/ProjectStatus'
@@ -46,6 +44,8 @@ import ApexAreaChart from '@/views/app/dashboard/ecommerce/ApexAreaChart'
 import { getServerMode } from '@/@core/utils/serverHelpers'
 import LastProduct from '@/views/app/dashboard/LastProduct'
 import LastTransaction from '@/views/app/dashboard/ecommerce/LastTransaction'
+import BarChartRevenueGrowth from '@/views/app/dashboard/analytics/DonutChartGeneratedLeads'
+import EarningReportsWithTabs from '@/views/app/dashboard/ecommerce/EarningReportsWithTabs'
 
 /**
  * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the

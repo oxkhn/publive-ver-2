@@ -4,11 +4,20 @@ import { useGetCampaign } from "@/api/campaign/useGetCampaign";
 import { CampaignTypeWithId } from "@/types/campaign.type";
 import { createContext, useContext, useEffect, useState } from "react";
 
+export const ActiveEnum = {
+  ALL: 0,
+  ACTIVE: 1,
+  INACTIVE: 2,
+};
+
 interface FilterCampaignType {
   name: string;
   type: number;
   bu: string;
   cat: string;
+  startDate: string;
+  endDate: string;
+  status: number;
 }
 
 type CampaignContextProps = {
@@ -36,6 +45,9 @@ export const CampaignProvider = (props: Props) => {
     type: 0,
     bu: "",
     cat: "",
+    startDate: "",
+    endDate: "",
+    status: 0,
   });
 
   const handleFilterChange = (value: any, name: keyof CampaignTypeWithId) => {

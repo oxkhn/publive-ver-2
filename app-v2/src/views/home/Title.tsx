@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import ContentLibraryIcon from "@/assets/images/content_library.svg";
 import AffiliateIcon from "@/assets/images/affiliate_leaderboard.svg";
 import HoaHongIcon from "@/assets/images/hh_icon.svg";
+import ChienDichDacBiet from "@/assets/images/special-campaign.png";
+import FeaturedVideo from "@/assets/images/featured-video.png";
+import Ranking from "@/assets/images/ranking.png";
 
 const Title = () => {
   const router = useRouter();
@@ -52,7 +55,7 @@ const Title = () => {
           }}
         >
           <Image
-            src={HoaHongIcon}
+            src={ChienDichDacBiet}
             className="h-[72px] w-[72px] max-sm:h-[30px] max-sm:w-[30px]"
             alt=""
           />
@@ -65,7 +68,7 @@ const Title = () => {
           onClick={() => router.push("/content-library")}
         >
           <Image
-            src={HoaHongIcon}
+            src={FeaturedVideo}
             className="h-[72px] w-[72px] max-sm:h-[30px] max-sm:w-[30px]"
             alt=""
           />
@@ -79,7 +82,7 @@ const Title = () => {
           }}
         >
           <Image
-            src={HoaHongIcon}
+            src={Ranking}
             className="h-[72px] w-[72px] max-sm:h-[30px] max-sm:w-[30px]"
             alt=""
           />

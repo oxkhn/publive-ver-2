@@ -26,7 +26,7 @@ const DropdownItem: React.FC<DropdownItemProps> = (props) => {
 
   return (
     <button
-      className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm transition-colors hover:bg-grays/5"
+      className="flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm transition-colors hover:bg-grays/5"
       onClick={onClick}
     >
       {icon}

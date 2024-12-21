@@ -59,7 +59,7 @@ const UserMenu = () => {
   const classesElement = clsx(defaultCSSElement, animationClass);
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <button
         className={classes}
         onClick={() => setIsShowDropdown(!isShowDropdown)}

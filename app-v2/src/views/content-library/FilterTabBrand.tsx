@@ -28,6 +28,9 @@ export const FilterTabBrand = () => {
   const [selectedPCBrand, setSelectedPCBrand] = useState<string>("");
   const [selectedHCBrand, setSelectedHCBrand] = useState<string>("");
 
+  const [buSelected, setBuSelected] = useState<string>("");
+  const [brandSelected, setBrandSelected] = useState<string>("");
+
   useEffect(() => {
     if (Array.isArray(brands)) {
       const pc = brands.find((item) => item.bu === "PC");
@@ -139,38 +142,88 @@ export const FilterTabBrand = () => {
                 ))}
               </DropdownHor>
             </div> */}
+
             <Button
               title="Chăm sóc sắc đẹp"
-              onClick={() => {}}
-              className="!h-7"
+              onClick={() => {
+                setBuSelected("PC");
+                setBrandSelected("");
+              }}
+              className={`!h-7 ${buSelected == "PC" && "bg-primary text-white"}`}
               variant="outline"
             />
             <div className="h-6 w-[1px] bg-grays/15"></div>
             <Button
               title="Chăm sóc cơ thể"
-              onClick={() => {}}
-              className="!h-7"
+              onClick={() => {
+                setBuSelected("BW");
+                setBrandSelected("");
+              }}
+              className={`!h-7 ${buSelected == "BW" && "bg-primary text-white"}`}
               variant="outline"
             />
             <div className="h-6 w-[1px] bg-grays/15"></div>
             <Button
               title="Chăm sóc nhà cửa"
-              onClick={() => {}}
-              className="!h-7"
+              onClick={() => {
+                setBuSelected("HC");
+                setBrandSelected("");
+              }}
+              className={`!h-7 ${buSelected == "HC" && "bg-primary text-white"}`}
               variant="outline"
             />
           </div>
-
-          <Input
-            value={searchValue}
-            className="!h-7"
-            icon={<IoSearchOutline />}
-            placeholder="Tìm nhãn hiệu của bạn"
-            onChange={(e: any) => {
-              setSearchValue(e.target.value);
-            }}
-          />
+          <div className="flex flex-1 justify-end">
+            <Input
+              value={searchValue}
+              className="!h-7"
+              icon={<IoSearchOutline />}
+              placeholder="Tìm nhãn hiệu của bạn"
+              onChange={(e: any) => {
+                setSearchValue(e.target.value);
+              }}
+            />
+          </div>
         </div>
+      </div>
+      <div className="flex w-full flex-wrap gap-2 py-2">
+        {buSelected == "PC" &&
+          pcBrands.map((pcBrand, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              onClick={() => {
+                setBrandSelected(pcBrand);
+              }}
+              title={pcBrand}
+              className={`!h-7 whitespace-nowrap ${brandSelected == pcBrand && "bg-primary text-white"}`}
+            />
+          ))}
+        {buSelected == "BW" &&
+          bwBrands.map((bwBrand, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              onClick={() => {
+                setBrandSelected(bwBrand);
+              }}
+              title={bwBrand}
+              className={`!h-7 whitespace-nowrap ${brandSelected == bwBrand && "bg-primary text-white"}`}
+            />
+          ))}
+        {buSelected == "HC" &&
+          hcBrands.map((hcBrand, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              onClick={() => {
+                setBrandSelected(hcBrand);
+              }}
+              title={hcBrand}
+              className={`!h-7 whitespace-nowrap ${brandSelected == hcBrand && "bg-primary text-white"}`}
+            />
+          ))}
+        <div></div>
       </div>
     </div>
   );

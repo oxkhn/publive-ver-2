@@ -1,3 +1,5 @@
+import { ProductType } from "./product.type";
+
 export type FormRegister = {
   name: string;
   shopeeAffiliateAccount: string;
@@ -16,3 +18,18 @@ export type FormRegister = {
   receivePhoneNumber: string;
   receiveName: string;
 };
+
+export type RegisterOrder = {
+  _id: string,
+  name: string,
+  phoneNumber: string,
+  address: string,
+  productSKUs: string[],
+  isSign: boolean,
+  status: number,
+  trackingNumber: string,
+  userId: string,
+  createdAt: string,
+  updatedAt: string,
+  products: ProductType[]
+}

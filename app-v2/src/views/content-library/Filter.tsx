@@ -28,10 +28,9 @@ import BrandInspiration2 from "./BrandInspiration2";
 
 const Filter = () => {
   const [tabActive, setTabActive] = useState(tabs[0]);
-
   return (
     <>
-      <div className="max-w-app sticky -top-[140px] z-20">
+      <div className="max-w-app sticky -top-[140px] z-10">
         <div className="">
           <Image
             src={BannerImage}

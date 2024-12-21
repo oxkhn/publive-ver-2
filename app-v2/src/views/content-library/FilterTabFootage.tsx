@@ -24,9 +24,8 @@ export const FilterTabFootage = () => {
   const [pcBrands, setPcBrands] = useState<string[]>([]);
   const [hcBrands, setHcBrands] = useState<string[]>([]);
 
-  const [selectedBWBrand, setSelectedBWBrand] = useState<string>("");
-  const [selectedPCBrand, setSelectedPCBrand] = useState<string>("");
-  const [selectedHCBrand, setSelectedHCBrand] = useState<string>("");
+  const [buSelected, setBuSelected] = useState<string>("");
+  const [brandSelected, setBrandSelected] = useState<string>("");
 
   useEffect(() => {
     if (Array.isArray(brands)) {
@@ -59,7 +58,7 @@ export const FilterTabFootage = () => {
   return (
     <div className="sticky top-20">
       <div className="z-10 flex justify-between gap-4 border-b py-2">
-        <div className="flex items-center gap-4">
+        <div className="flex w-full items-center gap-4">
           <div className="flex gap-2">
             <div className="grid cursor-pointer place-items-center p-1">
               <Image src={VideoLogo} alt="" className="h-5" />
@@ -142,38 +141,82 @@ export const FilterTabFootage = () => {
 
             <Button
               title="Chăm sóc sắc đẹp"
-              onClick={() => {}}
-              className="!h-7"
+              onClick={() => {
+                setBuSelected("PC");
+                setBrandSelected("");
+              }}
+              className={`!h-7 ${buSelected == "PC" && "bg-primary text-white"}`}
               variant="outline"
             />
             <div className="h-6 w-[1px] bg-grays/15"></div>
             <Button
               title="Chăm sóc cơ thể"
-              onClick={() => {}}
-              className="!h-7"
+              onClick={() => {
+                setBuSelected("BW");
+                setBrandSelected("");
+              }}
+              className={`!h-7 ${buSelected == "BW" && "bg-primary text-white"}`}
               variant="outline"
             />
             <div className="h-6 w-[1px] bg-grays/15"></div>
             <Button
               title="Chăm sóc nhà cửa"
-              onClick={() => {}}
-              className="!h-7"
+              onClick={() => {
+                setBuSelected("HC");
+                setBrandSelected("");
+              }}
+              className={`!h-7 ${buSelected == "HC" && "bg-primary text-white"}`}
               variant="outline"
+            />
+          </div>
+          <div className="flex flex-1 justify-end">
+            <Input
+              value={searchValue}
+              className="!h-7"
+              icon={<IoSearchOutline />}
+              placeholder="Tìm nhãn hiệu của bạn"
+              onChange={(e: any) => {
+                setSearchValue(e.target.value);
+              }}
             />
           </div>
         </div>
       </div>
-      <div className="flex justify-between py-2">
+      <div className="flex w-full gap-2 overflow-auto py-2">
+        {buSelected == "PC" &&
+          pcBrands.map((pcBrand) => (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setBrandSelected(pcBrand);
+              }}
+              title={pcBrand}
+              className={`!h-7 whitespace-nowrap ${brandSelected == pcBrand && "bg-primary text-white"}`}
+            />
+          ))}
+        {buSelected == "BW" &&
+          bwBrands.map((bwBrand) => (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setBrandSelected(bwBrand);
+              }}
+              title={bwBrand}
+              className={`!h-7 whitespace-nowrap ${brandSelected == bwBrand && "bg-primary text-white"}`}
+            />
+          ))}
+        {buSelected == "HC" &&
+          hcBrands.map((hcBrand) => (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setBrandSelected(hcBrand);
+              }}
+              title={hcBrand}
+              className={`!h-7 whitespace-nowrap ${brandSelected == hcBrand && "bg-primary text-white"}`}
+            />
+          ))}
         <div></div>
-        <Input
-          value={searchValue}
-          className="!h-7"
-          icon={<IoSearchOutline />}
-          placeholder="Tìm nhãn hiệu của bạn"
-          onChange={(e: any) => {
-            setSearchValue(e.target.value);
-          }}
-        />
       </div>
     </div>
   );

@@ -1,9 +1,17 @@
 import { useContentContext } from "@/services/ContentProvider";
-import { Pagination, Tooltip } from "@mui/material";
+import { Pagination, Switch, ToggleButton, Tooltip } from "@mui/material";
 import { LiaQuestionCircleSolid } from "react-icons/lia";
 import { BsStars } from "react-icons/bs";
 import BrandVideo from "@/components/BrandVideo";
 import VideoAcheCard from "./VideoAcheCard";
+import DropdownV2 from "@/packages/@ui-kit/Dropdown2";
+import DropdownItem from "@/packages/@ui-kit/Dropdown/DropdownItem";
+import { useState } from "react";
+import Input from "@/packages/@ui-kit/Input";
+import { IoSearchOutline } from "react-icons/io5";
+import Button from "@/packages/@ui-kit/Button";
+import Image from "next/image";
+import { useTypewriter, Cursor } from "react-simple-typewriter";
 
 const courses = [
   {
@@ -131,8 +139,40 @@ const courses = [
 const BrandInspiration2 = () => {
   const { videos } = useContentContext();
 
+  const [hideCompleted, setHideCompleted] = useState(false);
+  const [cursor, hideCursor] = useState(true);
+
+  const [text] = useTypewriter({
+    words: ["Education, talents, and career opportunities. All in one place."],
+    typeSpeed: 20,
+    loop: 1,
+    onLoopDone: () => hideCursor(false),
+  });
+
   return (
     <div className="flex flex-col gap-8 px-8 pb-20">
+      <div className="flex w-full justify-center bg-white">
+        <div className="flex w-fit flex-col items-center gap-4 py-12">
+          <p className="size-[60%] text-center text-3xl">
+            {text}
+            {cursor && <Cursor />}
+          </p>
+          <p className="size-[75%] text-center text-grays">
+            Grow your skill with the most reliable online courses and
+            certifications in marketing, information technology, programming,
+            and data science.
+          </p>
+          <Input
+            value={""}
+            className="!rounded-md"
+            classContainer="w-[40%] min-w-[200px"
+            icon={<IoSearchOutline />}
+            placeholder="Tìm nhãn hiệu của bạn"
+            onChange={(e: any) => {}}
+          />
+        </div>
+      </div>
+
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <BsStars className="font-semibold text-secondary" />
@@ -143,6 +183,25 @@ const BrandInspiration2 = () => {
           >
             <LiaQuestionCircleSolid className="text-grays/50" />
           </Tooltip>
+        </div>
+        <div className="flex items-center gap-4">
+          <DropdownV2
+            value="Tất cả khoá học"
+            onSelected={() => {}}
+            className="!z-[1] !h-7"
+          >
+            <DropdownItem title="Tất cả khoá học" />
+          </DropdownV2>
+          <div className="flex items-center">
+            <Switch
+              checked={hideCompleted}
+              onChange={() => {
+                setHideCompleted(!hideCompleted);
+              }}
+              inputProps={{ "aria-label": "iOS style switch" }}
+            />
+            <p>Ẩn khoá học đã hoàn thành</p>
+          </div>
         </div>
       </div>
 
@@ -178,6 +237,43 @@ const BrandInspiration2 = () => {
       </div>
       <div className="grid w-full place-items-center">
         <Pagination count={6} />
+      </div>
+      <div className="flex gap-8 max-lg:flex-col">
+        <div className="flex items-center gap-4 rounded-md bg-primary/10 p-4">
+          <div className="flex flex-1 flex-col justify-between gap-4">
+            <p className="font-bold text-primary">Earn a Certificate</p>
+            <p className="text-sm">
+              Get the right professional certificate program for you.
+            </p>
+            <Button title="View program" />
+          </div>
+          <Image
+            width={100}
+            height={100}
+            src={""}
+            alt=""
+            className="aspect-[3/2] w-[180px] rounded-md"
+          />
+        </div>
+        <div className="flex items-center gap-4 rounded-md bg-red/10 p-4">
+          <div className="flex flex-1 flex-col justify-between gap-4">
+            <p className="font-bold text-red">Best Rated Courses</p>
+            <p className="text-sm">
+              Enroll now in the most popular and best rated courses.
+            </p>
+            <Button
+              title="View program"
+              className="bg-red/80 hover:bg-red/65"
+            />
+          </div>
+          <Image
+            width={100}
+            height={100}
+            src={""}
+            alt=""
+            className="aspect-[3/2] w-[180px] rounded-md"
+          />
+        </div>
       </div>
     </div>
   );

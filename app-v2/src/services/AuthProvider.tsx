@@ -10,6 +10,7 @@ import { usePostLogin } from "@/api/auth/usePostLogin";
 import { useRouter } from "next/navigation";
 import useGetAllRegisterProduct from "@/api/auth/useGetAllRegisterProduct";
 import useTracking from "@/hooks/useTracking";
+import { RegisterOrder } from "@/types/formRegister.type";
 
 type AuthContextProps = {
   user: UserType;
@@ -17,6 +18,7 @@ type AuthContextProps = {
   onLogout: () => void;
   onRegister: (registerDTO: RegisterDTO) => Promise<boolean>;
   updateProfile: (data: any) => void;
+  registerProducts: RegisterOrder[];
 };
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -38,7 +40,7 @@ export const AuthProvider = (props: Props) => {
   const { trackEvent } = useTracking();
   const [token, setToken] = useState<string | any>(null);
   const [user, setUser] = useState<UserType | any>(null);
-  const [registerProducts, setRegisterProducts] = useState([]);
+  const [registerProducts, setRegisterProducts] = useState<RegisterOrder[]>([]);
 
   const _getAllRegisterProduct = useGetAllRegisterProduct();
 
@@ -147,7 +149,14 @@ export const AuthProvider = (props: Props) => {
     }
   }, [user]);
 
-  const value = { onLogin, onLogout, onRegister, user, updateProfile };
+  const value = {
+    onLogin,
+    onLogout,
+    onRegister,
+    user,
+    updateProfile,
+    registerProducts,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

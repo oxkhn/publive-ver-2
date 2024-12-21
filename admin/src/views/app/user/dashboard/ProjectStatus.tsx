@@ -34,13 +34,13 @@ const series = [
 
 const data: DataType[] = [
   {
-    title: 'Donates',
+    title:'New Affiliate',
     trend: 'negative',
     amount: '$756.26',
     trendDiff: 139.34
   },
   {
-    title: 'Podcasts',
+    title: 'Old Affiliate',
     trendDiff: 576.24,
     amount: '$2,207.03'
   }
@@ -117,7 +117,7 @@ const ProjectStatus = () => {
 
   return (
     <Card>
-      <CardHeader title='Project Status' action={<OptionMenu options={['Share', 'Refresh', 'Update']} />} />
+      <CardHeader title='Affiliate Retention Rate' action={<OptionMenu options={['Share', 'Refresh', 'Update']} />} />
       <CardContent className='flex flex-col gap-6'>
         <div className='flex items-center gap-4'>
           <CustomAvatar skin='light' variant='rounded' color='warning'>
@@ -126,9 +126,9 @@ const ProjectStatus = () => {
           <div className='flex justify-between items-center is-full'>
             <div className='flex flex-col'>
               <Typography className='font-medium' color='text.primary'>
-                $4,3742
+                7,689
               </Typography>
-              <Typography variant='body2'>Your Earnings</Typography>
+              <Typography variant='body2'>Monthly Active Affiliate</Typography>
             </div>
             <Typography className='font-medium' color='success.main'>
               +10.2%

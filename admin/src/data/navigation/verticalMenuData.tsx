@@ -12,7 +12,7 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
         children: [
             // This is how you will normally render menu item
             {
-                label: 'CRM',
+                label: 'ARM',
                 icon: 'tabler-circle',
                 href: '/dashboards/crm'
             },
@@ -22,7 +22,7 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
                 href: '/dashboards/analytics'
             },
             {
-                label: 'Ecommerce',
+                label: 'Campaign Performance',
                 icon: 'tabler-circle',
                 href: '/dashboards/ecommerce'
             },

@@ -1,12 +1,11 @@
 import ImageKit from "@/packages/@ui-kit/Image";
-import { useGetAllAffiliate } from "@/services/api/affiliate/useGetAllAffiliate";
 import { AffiliateType } from "@/types/affiliate.type";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLeaderboardContext } from "./LeaderboardProvider";
 
 const TopKOL_KOC = () => {
-  const { affiliates } = useLeaderboardContext();
+  // const { affiliates } = useLeaderboardContext();
 
   const Row: React.FC<{ affiliate: AffiliateType; index: number }> = ({
     affiliate,
@@ -160,9 +159,9 @@ const TopKOL_KOC = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {affiliates?.map((_: any, i: number) => {
+            {/* {affiliates?.map((_: any, i: number) => {
               return <Row key={i} index={i} affiliate={_} />;
-            })}
+            })} */}
           </tbody>
         </table>
       </div>

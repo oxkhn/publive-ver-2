@@ -34,7 +34,7 @@ const Lesson = () => {
             <p className="">About this course</p>
             <p className="text-sm">
               Discover the essentials of marketing with Unilever, one of the
-              world's leading consumer goods brands. This course provides
+              worlds leading consumer goods brands. This course provides
               actionable strategies and insights to enhance your marketing
               skills.
             </p>
@@ -77,15 +77,15 @@ const Lesson = () => {
           <div className="flex flex-col gap-4">
             <p className="">Description</p>
             <p className="text-sm">
-              Gain insights into Unilever's marketing approach, including
+              Gain insights into Unilevers marketing approach, including
               branding strategies, market analysis, and the art of consumer
-              engagement. Whether you're a budding marketer or a professional
+              engagement. Whether youre a budding marketer or a professional
               looking to expand your skills, this course offers practical
               knowledge applicable to real-world scenarios.
             </p>
             <p className="text-sm">
-              "This course is a game-changer for marketing professionals.
-              Unilever's branding insights are invaluable." — Alex Harper
+              This course is a game-changer for marketing professionals.
+              Unilevers branding insights are invaluable. — Alex Harper
             </p>
           </div>
           <Divider />

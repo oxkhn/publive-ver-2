@@ -7,7 +7,7 @@ import { useLeaderboardContext } from "./LeaderboardProvider";
 import TopKOL_KOC_2 from "./TopKOL_KOC_2";
 
 const CampaignRanking = () => {
-  const { affiliates, random } = useLeaderboardContext();
+  // const { affiliates, random } = useLeaderboardContext();
 
   return (
     <div className="flex flex-col gap-6">
@@ -18,7 +18,7 @@ const CampaignRanking = () => {
             <div
               className="relative cursor-pointer rounded-lg"
               key={i}
-              onClick={() => random()}
+              // onClick={() => random()}
             >
               <ImageKit src={item.banner} className="h-32 rounded-lg" />
               <div className="absolute inset-0 z-10 rounded-lg bg-gradient-to-t from-black/60 to-transparent"></div>

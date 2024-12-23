@@ -2,7 +2,8 @@ import ImageKit from "@/packages/@ui-kit/Image";
 import { useLeaderboardContext } from "./LeaderboardProvider";
 
 const CategoryAndChanel = () => {
-  const { chanelFilter, setChanelFilter } = useLeaderboardContext();
+  // const { chanelFilter, setChanelFilter } = useLeaderboardContext();
+
   const categorys = [
     {
       title: "Body care",
@@ -67,27 +68,27 @@ const CategoryAndChanel = () => {
 
       <div className="flex items-center gap-3">
         <p className="w-[61px]">Chanel</p>
-        <div
+        {/* <div
           className={`rounded-[124px] border px-3 py-1 text-sm ${chanelFilter == 0 ? "border-primary text-primary" : "border-grays/15 text-grays/15"}`}
           onClick={() => {
-            setChanelFilter(0);
+            // setChanelFilter(0);
           }}
         >
           <p className="cursor-pointer leading-[14px]">All</p>
-        </div>
+        </div> */}
         <div className="flex flex-1 items-center gap-4 overflow-auto">
-          {chanels.map((_, i) => (
+          {/* {chanels.map((_, i) => (
             <div
               key={i}
               className={`flex cursor-pointer items-center gap-2 rounded-[124px] border border-grays/15 px-3 py-0.5 text-sm text-grays/15 transition-all hover:border-primary hover:text-primary ${chanelFilter == _.value ? "border-primary text-primary" : "border-grays/15 text-grays/15"}`}
               onClick={() => {
-                setChanelFilter(_.value);
+                // setChanelFilter(_.value);
               }}
             >
               <ImageKit src={_.icon} className="h-5 w-5 min-w-5 rounded-full" />
               <p className="whitespace-nowrap leading-[14px]">{_.title}</p>
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>

@@ -184,8 +184,9 @@ export const FilterTabFootage = () => {
       </div>
       <div className="flex w-full gap-2 overflow-auto py-2">
         {buSelected == "PC" &&
-          pcBrands.map((pcBrand) => (
+          pcBrands.map((pcBrand, index) => (
             <Button
+              key={index}
               variant="outline"
               onClick={() => {
                 setBrandSelected(pcBrand);
@@ -195,8 +196,9 @@ export const FilterTabFootage = () => {
             />
           ))}
         {buSelected == "BW" &&
-          bwBrands.map((bwBrand) => (
+          bwBrands.map((bwBrand, index) => (
             <Button
+              key={index}
               variant="outline"
               onClick={() => {
                 setBrandSelected(bwBrand);
@@ -206,8 +208,9 @@ export const FilterTabFootage = () => {
             />
           ))}
         {buSelected == "HC" &&
-          hcBrands.map((hcBrand) => (
+          hcBrands.map((hcBrand, index) => (
             <Button
+              key={index}
               variant="outline"
               onClick={() => {
                 setBrandSelected(hcBrand);

@@ -33,7 +33,7 @@ const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexChart
 type ApexChartSeries = NonNullable<ApexOptions['series']>
 type ApexChartSeriesData = Exclude<ApexChartSeries[0], number>
 
-type TabCategory = 'One-time Off' | 'Low Retention' | 'High Retention'
+type TabCategory = 'GMV' | 'Affiliate Volume' | 'Spending' | 'ROAS'
 
 type TabType = {
     type: TabCategory
@@ -44,25 +44,25 @@ type TabType = {
 // Vars
 const tabData: TabType[] = [
     {
-        type: 'One-time Off',
+        type: 'GMV',
         avatarIcon: 'tabler-shopping-cart',
         series: [{ data: [26, 15.9, 30.8, 21.4, 26.4, 39.8] }]
     },
     {
-        type: 'Low Retention',
+        type: 'Affiliate Volume',
         avatarIcon: 'tabler-chart-bar',
         series: [{ data: [35, 25, 15, 40, 42, 25] }]
     },
     {
-        type: 'High Retention',
+        type: 'Spending',
         avatarIcon: 'tabler-currency-dollar',
         series: [{ data: [10, 22, 27, 33, 42, 32] }]
+    },
+    {
+        type: 'ROAS',
+        avatarIcon: 'tabler-chart-pie-2',
+        series: [{ data: [5, 9, 12, 18, 20, 25, 30, 36, 48] }]
     }
-    // {
-    //     type: 'ROAS',
-    //     avatarIcon: 'tabler-chart-pie-2',
-    //     series: [{ data: [5, 9, 12, 18, 20, 25, 30, 36, 48] }]
-    // }
 ]
 
 const renderTabs = (value: TabCategory) => {
@@ -124,7 +124,7 @@ const renderTabPanels = (value: TabCategory, theme: Theme, options: ApexOptions,
 
 const EarningReportsWithTabs = () => {
     // States
-    const [value, setValue] = useState<TabCategory>('One-time Off')
+    const [value, setValue] = useState<TabCategory>('GMV')
 
     // Hooks
     const theme = useTheme()

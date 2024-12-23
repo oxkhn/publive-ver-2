@@ -24,7 +24,7 @@ const CampaignList = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-10">
-      <div className="sticky top-20 z-[1] flex flex-col gap-4 rounded-md bg-white p-4 shadow-md max-sm:hidden">
+      {/* <div className="sticky top-20 z-[1] flex flex-col gap-4 rounded-md bg-white p-4 shadow-md max-sm:hidden">
         <div className="flex flex-wrap justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex items-center gap-4">
@@ -86,7 +86,7 @@ const CampaignList = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
         {campaigns.map((_, index) => {
           return <CampaignCard campaign={_} key={index} />;

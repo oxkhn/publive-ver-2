@@ -3,6 +3,7 @@ import ImageDemo from "@/assets/images/demo.jpg";
 import { GrView } from "react-icons/gr";
 import { FcLike } from "react-icons/fc";
 import Button from "@/packages/@ui-kit/Button2";
+import { useRouter } from "next/navigation";
 
 type CourseType = {
   name: string; // Tên của khóa học
@@ -16,8 +17,10 @@ type Props = {
   course: CourseType;
 };
 const VideoAcheCard = (props: Props) => {
+  const router = useRouter();
+
   return (
-    <div className="flex cursor-pointer flex-col gap-3 rounded-md border bg-white p-4 hover:shadow-md transition-all">
+    <div className="flex cursor-pointer flex-col gap-3 rounded-md border bg-white p-4 transition-all hover:shadow-md">
       <div>
         <Image
           src={ImageDemo}
@@ -52,7 +55,9 @@ const VideoAcheCard = (props: Props) => {
       </div>
 
       <Button
-        onClick={() => {}}
+        onClick={() => {
+          router.push("content-library/1");
+        }}
         title="Bắt đầu khoá học"
         className="mt-auto w-full"
       />

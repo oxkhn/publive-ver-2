@@ -1,5 +1,6 @@
 import Divider from "@mui/material/Divider";
 import Image from "next/image";
+import ImageDemo from "@/assets/images/demo.jpg";
 import { BsCameraVideo } from "react-icons/bs";
 import { GoPeople, GoShareAndroid } from "react-icons/go";
 import { IoIosTimer, IoMdCheckmark } from "react-icons/io";
@@ -11,15 +12,19 @@ const Lesson = () => {
     <div className="flex-1 rounded-md bg-white">
       <div className="flex items-center justify-between p-6">
         <div className="flex flex-col">
-          <p className="text-xl">UI/UX Basic Fundamentals</p>
-          <p className="text-sm">Prof. Devonne Wallbridge</p>
+          <p className="text-xl">Unilever Marketing Essentials</p>
+          <p className="text-sm">Instructor: Prof. Emily Carter</p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="rounded-md bg-red/20 px-2">
-            <p className="text-sm text-red">UI/UX</p>
+          <div className="bg-blue/20 rounded-md px-2">
+            <p className="text-blue text-sm">Marketing</p>
           </div>
-          <GoShareAndroid />
-          <MdOutlineBookmarks />
+          <div className="cursor-pointer rounded-sm p-1 hover:bg-slate-200">
+            <GoShareAndroid />
+          </div>
+          <div className="cursor-pointer rounded-sm p-1 hover:bg-slate-200">
+            <MdOutlineBookmarks />
+          </div>
         </div>
       </div>
       <div className="px-5">
@@ -28,8 +33,10 @@ const Lesson = () => {
           <div className="flex flex-col gap-4">
             <p className="">About this course</p>
             <p className="text-sm">
-              Learn web design in 1 hour with 25+ simple-to-use rules and
-              guidelines — tons of amazing web design resources included!
+              Discover the essentials of marketing with Unilever, one of the
+              world's leading consumer goods brands. This course provides
+              actionable strategies and insights to enhance your marketing
+              skills.
             </p>
           </div>
           <Divider />
@@ -39,11 +46,11 @@ const Lesson = () => {
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <IoMdCheckmark />
-                  <p>Skill level: All Level</p>
+                  <p>Skill level: Intermediate</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <GoPeople />
-                  <p>Students: 38,815</p>
+                  <p>Students: 12,500</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <IoGlobeOutline />
@@ -57,11 +64,11 @@ const Lesson = () => {
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <BsCameraVideo />
-                  <p>Lectures: 19</p>
+                  <p>Lectures: 15</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <IoIosTimer />
-                  <p>Video: 1.5 total hours</p>
+                  <p>Video: 3 total hours</p>
                 </div>
               </div>
             </div>
@@ -70,16 +77,15 @@ const Lesson = () => {
           <div className="flex flex-col gap-4">
             <p className="">Description</p>
             <p className="text-sm">
-              The material of this course is also covered in my other course
-              about web design and development with HTML5 & CSS3. Scroll to the
-              bottom of this page to check out that course, too! If you're
-              already taking my other course, you already have all it takes to
-              start designing beautiful websites today!
+              Gain insights into Unilever's marketing approach, including
+              branding strategies, market analysis, and the art of consumer
+              engagement. Whether you're a budding marketer or a professional
+              looking to expand your skills, this course offers practical
+              knowledge applicable to real-world scenarios.
             </p>
             <p className="text-sm">
-              "Best web design course: If you're interested in web design, but
-              want more than just a "how to use WordPress" course, I highly
-              recommend this one." — Florian Giusti
+              "This course is a game-changer for marketing professionals.
+              Unilever's branding insights are invaluable." — Alex Harper
             </p>
           </div>
           <Divider />
@@ -89,13 +95,15 @@ const Lesson = () => {
               <Image
                 width={38}
                 height={38}
-                src={""}
-                alt=""
+                src={ImageDemo}
+                alt="Prof. Emily Carter"
                 className="rounded-full"
               />
               <div className="flex flex-col gap-1">
-                <p className="">L.M.Khang</p>
-                <p className="text-sm">Web Developer, Designer, and Teacher</p>
+                <p className="">Emily Carter</p>
+                <p className="text-sm">
+                  Marketing Strategist and Brand Consultant
+                </p>
               </div>
             </div>
           </div>

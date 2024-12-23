@@ -16,6 +16,7 @@ import { ProductType } from "@/types/product.type";
 import { copyString, formatNumberToK, formatVND } from "@/utils/string";
 import { MarketplaceEnum } from "@/services/ProductProvider";
 import useTracking from "@/hooks/useTracking";
+import { useAuthContext } from "@/services/AuthProvider";
 
 interface ProductCardProps {
   product: ProductType;
@@ -25,6 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const { trackEvent } = useTracking();
+  const { user } = useAuthContext();
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -56,22 +58,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
         </div>
       )}
-
-      <div className="absolute -right-1 -top-[13px] z-10 h-[30px] w-[79px]">
-        <Image src={PyramidIcon} className="" alt="" width={100} height={100} />
-        <div className="absolute left-1/2 top-1 flex -translate-x-1/2 items-center gap-1 text-xs font-bold text-white">
-          <div className="h-3 w-3">
-            <Image
-              src={ImageHand}
-              className="h-3 w-3"
-              alt=""
-              width={40}
-              height={30}
-            />
+      {user && (
+        <div className="absolute -right-1 -top-[13px] z-10 h-[30px] w-[79px]">
+          <Image
+            src={PyramidIcon}
+            className=""
+            alt=""
+            width={100}
+            height={100}
+          />
+          <div className="absolute left-1/2 top-1 flex -translate-x-1/2 items-center gap-1 text-xs font-bold text-white">
+            <div className="h-3 w-3">
+              <Image
+                src={ImageHand}
+                className="h-3 w-3"
+                alt=""
+                width={40}
+                height={30}
+              />
+            </div>
+            <p>{product.commission * 100}%</p>
           </div>
-          <p>{product.commission * 100}%</p>
         </div>
-      </div>
+      )}
 
       <div className="absolute left-2 top-2 z-10 h-6 w-6 rounded-full bg-white p-1">
         {product?.publisher == MarketplaceEnum.LAZADA && (

@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ContentLibraryIcon from "@/assets/images/content_library.svg";
 import AffiliateIcon from "@/assets/images/affiliate_leaderboard.svg";
-import HoaHongIcon from "@/assets/images/hh_icon.svg";
-import ChienDichDacBiet from "@/assets/images/special-campaign.png";
-import FeaturedVideo from "@/assets/images/featured-video.png";
-import Ranking from "@/assets/images/ranking.png";
+import HoaHongIcon from "@/assets/images/home_1.png";
+import ChienDichDacBiet from "@/assets/images/home_2.png";
+import FeaturedVideo from "@/assets/images/home_3.png";
+import Ranking from "@/assets/images/home_4.png";
 
 const Title = () => {
   const router = useRouter();

@@ -200,7 +200,9 @@ const BrandInspiration2 = () => {
               }}
               inputProps={{ "aria-label": "iOS style switch" }}
             />
-            <p>Ẩn khoá học đã hoàn thành</p>
+            <p className="font-normal text-grays/50">
+              Ẩn khoá học đã hoàn thành
+            </p>
           </div>
         </div>
       </div>
